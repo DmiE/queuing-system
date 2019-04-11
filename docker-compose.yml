@@ -1,34 +1,43 @@
 version: '3.5'
 
 services:
-  qmanager-authentication-service:
-    container_name: qmanager-authentication-service
-    stdin_open: true
-    tty: true
-    build:
-      context: qmanager-authentication-service
-      dockerfile: Dockerfile
-    ports:
-      - 5000:5000
-
   mariadb:
+    build:
+      context: ./mariaDB
+      dockerfile: Dockerfile
     container_name: mariaDB
-    image: bitnami/mariadb:latest
     restart: always
+    hostname: mariaDB
     ports:
       - 3306:3306
     environment:
       - MARIADB_ROOT_PASSWORD=master_root_password
       - MARIADB_USER=admin
       - MARIADB_PASSWORD=admin
-      - MARIADB_DATABASE=db
-
+      - MARIADB_DATABASE=users_db
+      - ALLOW_EMPTY_PASSWORD=yes
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
+    hostname: phpmyadmin
+    depends_on:
+      - mariadb
     environment:
-      - PMA_HOST=db
-      - PMA_PORT=3306
+      - PMA_ARBITRARY=1
     restart: always
     ports:
       - 5050:80
+
+  qmanager-authentication-service:
+    container_name: qmanager-authentication-service
+    stdin_open: true
+    hostname: auth-service
+    depends_on:
+      - mariadb
+    tty: true
+    build:
+      context: ./qmanager-authentication-service
+      dockerfile: Dockerfile
+    ports:
+      - 5000:5000
+
