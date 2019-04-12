@@ -4,6 +4,7 @@ package app.entity;
 import app.form.UserForm;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "user")
@@ -28,6 +29,8 @@ public class User {
     @Transient
     private String passwordConfirm;
 
+    @ManyToMany
+    private Set<Role> roles;
 
     public User(String first_name, String last_name, String email, String password) {
         this.firstName = last_name;
@@ -53,19 +56,19 @@ public class User {
         this.id = id;
     }
 
-    public String getFirst_name() {
+    public String getFirstName() {
         return firstName;
     }
 
-    public void setFirst_name(String first_name) {
+    public void setFirstName(String first_name) {
         this.firstName = first_name;
     }
 
-    public String getLast_name() {
+    public String getLastName() {
         return lastName;
     }
 
-    public void setLast_name(String last_name) {
+    public void setLastName(String last_name) {
         this.lastName = last_name;
     }
 
@@ -93,5 +96,8 @@ public class User {
         this.passwordConfirm = passwordConfirm;
     }
 
+    public Set<Role> getRoles() { return roles; }
+
+    public void setRoles(Set<Role> roles) { this.roles = roles;}
 
 }

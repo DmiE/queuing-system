@@ -2,7 +2,9 @@ package app.controller;
 
 import app.entity.User;
 import app.form.UserForm;
+import app.service.SecurityService;
 import app.service.UserService;
+import app.service.UserValidatorService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,8 +20,18 @@ import java.util.List;
 
 @Controller
 public class UserController {
+    private final UserService userService;
+
+    private final SecurityService securityService;
+
+    private final UserValidatorService userValidator;
+
     @Autowired
-    private UserService userService;
+    public UserController(UserService userService, SecurityService securityService, UserValidatorService userValidator) {
+        this.userService = userService;
+        this.securityService = securityService;
+        this.userValidator = userValidator;
+    }
 
     @PostMapping("/user")
     public ResponseEntity<String> addUser(@RequestBody UserForm user) {
