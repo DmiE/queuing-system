@@ -2,9 +2,8 @@ package app.controller;
 
 import app.entity.User;
 import app.form.UserForm;
-import app.service.SecurityService;
+import app.service.UserDetailsServiceImpl;
 import app.service.UserService;
-import app.service.UserValidatorService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,16 +20,13 @@ import java.util.List;
 @Controller
 public class UserController {
     private final UserService userService;
+    private final UserDetailsServiceImpl userDetailsService;
 
-    private final SecurityService securityService;
-
-    private final UserValidatorService userValidator;
 
     @Autowired
-    public UserController(UserService userService, SecurityService securityService, UserValidatorService userValidator) {
+    public UserController(UserService userService, UserDetailsServiceImpl userDetailsService) {
         this.userService = userService;
-        this.securityService = securityService;
-        this.userValidator = userValidator;
+        this.userDetailsService = userDetailsService;
     }
 
     @PostMapping("/user")
@@ -47,8 +43,8 @@ public class UserController {
 
     @GetMapping("/user")
     public ResponseEntity getUser(@RequestParam String email) {
-        userService.findByEmail(email);
-        return new ResponseEntity<>(userService.findByEmail(email), HttpStatus.OK);
+        userDetailsService.loadUserByUsername(email);
+        return new ResponseEntity<>(userDetailsService.loadUserByUsername(email), HttpStatus.OK);
     }
 
     @GetMapping("/")
