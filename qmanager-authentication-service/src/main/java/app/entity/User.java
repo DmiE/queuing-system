@@ -1,14 +1,20 @@
 package app.entity;
 
 
-import app.form.UserForm;
+import app.payload.LoginRequest;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "user")
-public class User {
+@Table(name = "users", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {
+                "email"
+        })
+})
+
+public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
@@ -26,11 +32,11 @@ public class User {
     @Column(name="password")
     private String password;
 
-    @Transient
-    private String passwordConfirm;
-
-    @ManyToMany
-    private Set<Role> roles;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 
     public User(String first_name, String last_name, String email, String password) {
         this.firstName = last_name;
@@ -38,14 +44,6 @@ public class User {
         this.password = password;
         this.lastName = first_name;
     }
-
-    public User(UserForm form) {
-        this.lastName = form.getLastName();
-        this.email = form.getEmail();
-        this.password = form.getPassword();
-        this.firstName = form.getFirstName();
-    }
-
     public User(){}
 
     public Long getId() {
@@ -86,14 +84,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getPasswordConfirm() {
-        return passwordConfirm;
-    }
-
-    public void setPasswordConfirm(String passwordConfirm) {
-        this.passwordConfirm = passwordConfirm;
     }
 
     public Set<Role> getRoles() { return roles; }

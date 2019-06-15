@@ -6,6 +6,9 @@ services:
       context: ./mariaDB
       dockerfile: Dockerfile
     container_name: mariaDB
+    volumes:
+      - container-volume:/var/lib/mysql
+      - ./mariaDB/dump.sql:/docker-entrypoint-initdb.d/dump.sql
     restart: always
     hostname: mariaDB
     ports:
@@ -14,8 +17,9 @@ services:
       - MARIADB_ROOT_PASSWORD=master_root_password
       - MARIADB_USER=admin
       - MARIADB_PASSWORD=admin
-      - MARIADB_DATABASE=users_db
+      - MARIADB_DATABASE=app
       - ALLOW_EMPTY_PASSWORD=yes
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
@@ -40,4 +44,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - 5000:5000
+volumes:
+  container-volume:
 
