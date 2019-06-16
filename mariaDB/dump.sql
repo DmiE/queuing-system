@@ -1,7 +1,9 @@
 BEGIN;
 
-DROP TABLE IF EXISTS `users`;
+DROP TABLE IF EXISTS `user_roles`;
+DROP TABLE IF EXISTS `queue`;
 DROP TABLE IF EXISTS `roles`;
+DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE `users` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -30,9 +32,17 @@ CREATE TABLE `user_roles` (
   CONSTRAINT `fk_user_roles_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-SELECT 'LOADING Users' as 'INFO';
-INSERT INTO `users` (`first_name`,`last_name`,`email`,`password`)   VALUES
-("fantastic", "user", "user@user.com","password");
+CREATE TABLE `queue` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ququeID` bigint(20) NOT NULL,
+  `user_id` bigint(20) NOT NULL, 
+  `finished` boolean,
+  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_queue_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 SELECT 'LOADING Roles' as 'INFO';
 INSERT IGNORE INTO roles(name) VALUES('ROLE_ADMIN');
