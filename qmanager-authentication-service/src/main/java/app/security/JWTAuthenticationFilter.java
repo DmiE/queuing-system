@@ -1,61 +1,57 @@
 package app.security;
 
-import app.entity.User;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.security.authentication.AuthenticationManager;
+import app.service.UserDetailsServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.util.StringUtils;
+import org.springframework.web.filter.OncePerRequestFilter;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
 
-import static app.config.SecurityConstants.*;
+public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
-public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+    @Autowired
+    private JWTTokenProvider tokenProvider;
 
-    private AuthenticationManager authenticationManager;
+    @Autowired
+    private UserDetailsServiceImpl userDetailsServiceimpl;
 
-    public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
-        this.authenticationManager = authenticationManager;
-    }
+    private static final Logger logger = LoggerFactory.getLogger(JWTAuthenticationFilter.class);
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest req,
-                                                HttpServletResponse res) throws AuthenticationException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
-            User creds = new ObjectMapper()
-                    .readValue(req.getInputStream(), User.class);
-            return authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            creds.getEmail(),
-                            creds.getPassword(),
-                            new ArrayList<>())
-            );
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            String jwt = getJwtFromRequest(request);
+
+            if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
+                Long userId = tokenProvider.getUserIdFromJWT(jwt);
+
+                UserDetails userDetails = userDetailsServiceimpl.loadUserById(userId);
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+        } catch (Exception ex) {
+            logger.error("Could not set user authentication in security context", ex);
         }
+
+        filterChain.doFilter(request, response);
     }
 
-    @Override
-    protected void successfulAuthentication(HttpServletRequest req,
-                                            HttpServletResponse res,
-                                            FilterChain chain,
-                                            Authentication auth) throws IOException, ServletException {
-        String token = Jwts.builder()
-                .setSubject(((User) auth.getPrincipal()).getEmail())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(SignatureAlgorithm.HS512, SECRET)
-                .compact();
-        res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
+    private String getJwtFromRequest(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7, bearerToken.length());
+        }
+        return null;
     }
-
 }

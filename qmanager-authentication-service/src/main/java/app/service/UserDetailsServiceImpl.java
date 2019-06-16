@@ -17,8 +17,7 @@ import java.util.Set;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-
-    private final UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
     public UserDetailsServiceImpl(UserRepository userRepository) {
@@ -26,18 +25,20 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String email) {
-        User user = userRepository.findByEmail(email);
-        if (user == null) throw new UsernameNotFoundException(email);
+    @Transactional
+    public UserDetails loadUserByUsername(String usernameOrEmail)
+            throws UsernameNotFoundException {
+        // Let people login with either username or email
+        User user = userRepository.findByEmail(usernameOrEmail).
+                orElseThrow(() ->new UsernameNotFoundException("User not found with username or email : " + usernameOrEmail));
+        return UserPrincipal.create(user);
+    }
 
-        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        for (Role role : user.getRoles()){
-            grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
-        }
-        System.out.println("dupa");
-        System.out.println(grantedAuthorities.toString());
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), grantedAuthorities);
+    // This method is used by JWTAuthenticationFilter
+    @Transactional
+    public UserDetails loadUserById(Long id) {
+        User user = userRepository.findById(id).
+                orElseThrow(() -> new UsernameNotFoundException("User not found with id : " + id));
+        return UserPrincipal.create(user);
     }
 }
-
