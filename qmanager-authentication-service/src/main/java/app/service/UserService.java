@@ -5,7 +5,7 @@ import app.entity.User;
 import java.util.List;
 
 public interface UserService {
-    void save(User user);
+    Boolean save(User user);
     User findByEmail(String username);
 
     default List<User> findAll() {
