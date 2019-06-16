@@ -37,3 +37,4 @@ INSERT INTO `users` (`first_name`,`last_name`,`email`,`password`)   VALUES
 SELECT 'LOADING Roles' as 'INFO';
 INSERT IGNORE INTO roles(name) VALUES('ROLE_ADMIN');
 INSERT IGNORE INTO roles(name) VALUES('ROLE_USER');
+
