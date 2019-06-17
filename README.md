@@ -11,10 +11,16 @@ localhost:5050 - phpmyadmin
 localhost:3306 - mariaDB
 
 http://192.168.0.33:5000/swagger-ui.html <- swagger api
+
+
 admin user:
+
 firstName: admin
+
 lastName: admin
+
 email: admin@admin.com
+
 password: password
 
 authenitcation
