@@ -15,7 +15,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/")
 public class UserController{
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -24,20 +24,19 @@ public class UserController{
     @Autowired
     public UserController(UserServiceMariaImpl userService) {this.userService = userService;}
 
-    @PostMapping("")
+    @PostMapping("user")
     public ResponseEntity<?> postUser(@Valid @RequestBody PostUserRequest postUserRequest) {
         User user = Mapper.mapPostUserRequestToUser(postUserRequest);
-        Boolean result = userService.save(user,false);
-        return result ? new ResponseEntity<>(new ApiResponse(true, "OK"), HttpStatus.OK):
-                new ResponseEntity<>(new ApiResponse(false, "Cannot inert User"), HttpStatus.BAD_REQUEST);
+        userService.save(user,false);
+        return new ResponseEntity<>(new ApiResponse(true, "OK"), HttpStatus.OK);
     }
 
-    @GetMapping("/{email}")
+    @GetMapping("user/{email}")
     public ResponseEntity<?> getUser(@PathVariable(value = "email") String email) {
         return ResponseEntity.ok(new GetUserResponse(userService.findByEmail(email)));
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("users")
     public ResponseEntity<?> getUsers() {
         List<User> users = userService.findAll();
         return ResponseEntity.ok(new GetAllUsersResponse(users));

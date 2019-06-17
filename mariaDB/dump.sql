@@ -1,8 +1,8 @@
 BEGIN;
 
 DROP TABLE IF EXISTS `user_roles`;
-DROP TABLE IF EXISTS `queue`;
 DROP TABLE IF EXISTS `roles`;
+DROP TABLE IF EXISTS `queues`;
 DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE `users` (
@@ -32,19 +32,27 @@ CREATE TABLE `user_roles` (
   CONSTRAINT `fk_user_roles_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `queue` (
+CREATE TABLE `queues` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `ququeID` bigint(20) NOT NULL,
+  `quque_name` varchar(20) NOT NULL,
   `user_id` bigint(20) NOT NULL, 
   `finished` boolean,
   `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  CONSTRAINT `fk_queue_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+  CONSTRAINT `fk_queues_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 SELECT 'LOADING Roles' as 'INFO';
-INSERT IGNORE INTO roles(name) VALUES('ROLE_ADMIN');
-INSERT IGNORE INTO roles(name) VALUES('ROLE_USER');
+INSERT IGNORE INTO roles(id,`name`) VALUES(1,'ROLE_ADMIN');
+INSERT IGNORE INTO roles(id,`name`) VALUES(2,'ROLE_USER');
+
+SELECT 'LOADING Users' as 'INFO';
+INSERT INTO users (`first_name`,`last_name`,`email`,`password`) VALUES
+("admin", "admin", "admin@admin.com","$2a$10$zVRbsmuxar7PibSddr8a8e1IbyzfjSXgn5N1HtqRxdy24kCuhuVdy");
+
+SELECT 'LOADING User Roles' as 'INFO';
+INSERT INTO user_roles (`user_id`,`role_id`)  VALUES(1,1);
+
 

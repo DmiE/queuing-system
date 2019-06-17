@@ -56,8 +56,7 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
         User user = Mapper.mapSignUpRequestToUser(signUpRequest);
-        Boolean result = userService.save(user, false);
-        return result ? new ResponseEntity<>(new ApiResponse(true, "User registered successfully"), HttpStatus.OK):
-                new ResponseEntity<>(new ApiResponse(false, "Email Address already in use!"), HttpStatus.BAD_REQUEST);
+        userService.save(user, false);
+        return new ResponseEntity<>(new ApiResponse(true, "User registered successfully"), HttpStatus.OK);
     }
 }

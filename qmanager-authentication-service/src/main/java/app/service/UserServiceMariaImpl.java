@@ -4,6 +4,7 @@ import app.entity.Role;
 import app.entity.RoleName;
 import app.entity.User;
 import app.exceptions.AppException;
+import app.exceptions.ResourceAlreadyExistsException;
 import app.exceptions.ResourceNotFoundException;
 import app.repository.RoleRepository;
 import app.repository.UserRepository;
@@ -29,21 +30,26 @@ public class UserServiceMariaImpl implements  UserService{
     }
 
     @Override
-    public Boolean save(User user, Boolean isAdmin) {
+    public void save(User user, Boolean isAdmin) {
 
         if(userRepository.existsByEmail(user.getEmail())){
-            return false;
+            throw new ResourceAlreadyExistsException(String.format("User with email %s already exists", user.getEmail()));
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(Collections.singleton(setUserRole(isAdmin)));
         userRepository.save(user);
-        return true;
     }
 
     @Override
     public User findByEmail(String email) {
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("User", "email", email));
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("User with email %s does not exists", email)));
+    }
+
+    @Override
+    public User findById(Long userID) {
+        return userRepository.findById(userID)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("User with id %s does not exists", userID)));
     }
 
     @Override

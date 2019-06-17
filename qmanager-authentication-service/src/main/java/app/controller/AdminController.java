@@ -2,7 +2,9 @@ package app.controller;
 
 import app.entity.User;
 import app.payload.ApiResponse;
+import app.payload.PostQueueRequest;
 import app.payload.PostUserRequest;
+import app.service.QueueService;
 import app.service.UserService;
 import app.service.UserServiceMariaImpl;
 import app.utils.Mapper;
@@ -25,16 +27,28 @@ public class AdminController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private UserService userService;
+    private QueueService queueService;
 
     @Autowired
-    public AdminController(UserServiceMariaImpl userService) {this.userService = userService;}
-
-    @PostMapping("/")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> postAdminUser(@Valid @RequestBody PostUserRequest postUserRequest) {
-        User user = Mapper.mapPostUserRequestToUser(postUserRequest);
-        Boolean result = userService.save(user, true);
-        return result ? new ResponseEntity<>(new ApiResponse(true, "OK"), HttpStatus.OK):
-                new ResponseEntity<>(new ApiResponse(false, "Cannot inert User"), HttpStatus.BAD_REQUEST);
+    public AdminController(UserServiceMariaImpl userService, QueueService queueService) {
+        this.userService = userService;
+        this.queueService = queueService;
     }
+
+    @PostMapping("/user")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> createAdminUser(@Valid @RequestBody PostUserRequest postUserRequest) {
+        User user = Mapper.mapPostUserRequestToUser(postUserRequest);
+        userService.save(user, true);
+        return new ResponseEntity<>(new ApiResponse(true, "OK"), HttpStatus.OK);
+    }
+
+    @PostMapping("/queue")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> createQueue(@Valid @RequestBody PostQueueRequest postqueueRequest) {
+        queueService.createQueue(postqueueRequest.getQueueName(), postqueueRequest.getUserId());
+        return new ResponseEntity<>(new ApiResponse(true, "OK"), HttpStatus.OK);
+    }
+
+
 }

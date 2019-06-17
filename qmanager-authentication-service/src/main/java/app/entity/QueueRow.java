@@ -1,28 +1,21 @@
 package app.entity;
 
 import app.entity.Audit.DateAudit;
-import app.payload.LoginRequest;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import java.util.HashSet;
-import java.util.Set;
-
 @Entity
-@Table(name = "queue", uniqueConstraints = {
+@Table(name = "queues", uniqueConstraints = {
         @UniqueConstraint(columnNames = {
                 "id"
         })
 })
-public class Queue extends DateAudit {
+public class QueueRow extends DateAudit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Id
-    @Column(name="ququeID")
-    private Long ququeID;
+    @Column(name="quque_name")
+    private String queueName;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
@@ -31,10 +24,19 @@ public class Queue extends DateAudit {
     @Column(name="finished")
     private Boolean finished;
 
-    public Queue(Long ququeID, User user, Boolean finished){
-        this.ququeID = ququeID;
+    public QueueRow(String name, User user){
+        super();
+        this.queueName = name;
         this.user = user;
-        this.finished = finished;
+        this.finished = false;
+    }
+
+    public QueueRow(String name, User user, Boolean is_finished ) {
+        super();
+        this.queueName = name;
+        this.user = user;
+        this.finished = is_finished;
+
     }
 
     public Long getId() {
@@ -43,14 +45,6 @@ public class Queue extends DateAudit {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getQuqueID() {
-        return ququeID;
-    }
-
-    public void setQuqueID(Long ququeID) {
-        this.ququeID = ququeID;
     }
 
     public User getUser() {
@@ -68,4 +62,8 @@ public class Queue extends DateAudit {
     public void setFinished(Boolean finished) {
         this.finished = finished;
     }
+
+    public String getQueueName() { return queueName; }
+
+    public void setQueueName(String queueName) { this.queueName = queueName; }
 }

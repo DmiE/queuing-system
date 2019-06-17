@@ -77,10 +77,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .antMatchers("/api/auth/**")
                         .permitAll()
-                    .antMatchers(HttpMethod.GET, "/api/polls/**", "/api/users/**")
-                    .permitAll()
+                    .antMatchers("/api/admin/**")
+                        .hasRole("ADMIN")
+                    .antMatchers(  "/api/users/**","/api/user/**")
+                        .permitAll()
                     .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**")
-                    .permitAll()
+                        .authenticated()
                 .anyRequest()
                 .authenticated();
 
