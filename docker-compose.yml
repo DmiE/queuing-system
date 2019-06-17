@@ -57,6 +57,21 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: admin
       ME_CONFIG_MONGODB_SERVER: mongodb
 
+
+  frontend:
+    container_name: mgr-frontend
+    build:
+      context: ./frontend/mgr-frontend
+      dockerfile: Dockerfile
+    volumes:
+      - './frontend/mgr-frontend:/app'
+      - '/app/node_modules'
+    ports:
+      - '3001:3000'
+    environment:
+      - NODE_ENV=development
+
+
   qmanager-authentication-service:
     container_name: qmanager-authentication-service
     stdin_open: true
