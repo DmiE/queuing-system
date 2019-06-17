@@ -1,6 +1,7 @@
 package app.entity;
 
 import app.entity.Audit.DateAudit;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 @Entity
@@ -19,10 +20,14 @@ public class QueueRow extends DateAudit {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private User user;
 
     @Column(name="finished")
     private Boolean finished;
+
+    public QueueRow(){
+    }
 
     public QueueRow(String name, User user){
         super();

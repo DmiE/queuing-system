@@ -1,5 +1,6 @@
 package app.service;
 
+import app.annotations.CurrentUser;
 import app.entity.QueueRow;
 import app.entity.User;
 import app.exceptions.ResourceAlreadyExistsException;
@@ -7,6 +8,8 @@ import app.exceptions.ResourceNotFoundException;
 import app.repository.QueueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class QueueServicMariaImpl implements QueueService {
@@ -20,25 +23,31 @@ public class QueueServicMariaImpl implements QueueService {
     }
 
     @Override
-    public Boolean addUserToQueue(String  queueName, Long userID) {
+    public void addUserToQueue(String  queueName, Long userID) {
         User user = userService.findById(userID);
-        if(queueRepository.existsByQueueName(queueName)) {
+        if(! queueRepository.existsByQueueName(queueName)) {
             throw new ResourceNotFoundException(String.format("Queue with name %s does not exists", queueName));
         }
-        if(! queueRepository.existsByQueueNameAndUserAndFinished(queueName, user, true)){
+        if( queueRepository.existsByQueueNameAndUserAndFinished(queueName, user, true)){
             throw new ResourceAlreadyExistsException(String.format("User with id %s already exist in queue with name %s", userID, queueName));
         }
         queueRepository.save(new QueueRow(queueName, user));
-        return true;
     }
 
     @Override
-    public Boolean createQueue(String queueName, Long userID) {
+    public List<QueueRow>getQueue(String queueName){
+        if (! queueRepository.existsByQueueName(queueName)){
+            throw  new ResourceNotFoundException(String.format("Queue with name: %s does not exists",queueName));
+        }
+        return  queueRepository.findByQueueNameAndFinishedOrderByCreatedAtAsc(queueName, false);
+    }
+
+    @Override
+    public void createQueue(String queueName, Long userID) {
         User user = userService.findById(userID);
-        if (queueRepository.existsByQueueName(queueName)){
+        if (! queueRepository.existsByQueueName(queueName)){
             throw  new ResourceAlreadyExistsException(String.format("Queue with name: %s already exists",queueName));
         }
         queueRepository.save(new QueueRow(queueName, user, true));
-        return true;
     }
 }

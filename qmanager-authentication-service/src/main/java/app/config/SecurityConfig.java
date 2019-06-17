@@ -79,7 +79,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .permitAll()
                     .antMatchers("/api/admin/**")
                         .hasRole("ADMIN")
-                    .antMatchers(  "/api/users/**")
+                    .antMatchers(  "/api/users/**", "/api/queues/**")
                         .permitAll()
                     .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**")
                         .authenticated()

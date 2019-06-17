@@ -2,7 +2,6 @@ package app.payload;
 
 import app.entity.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GetAllUsersResponse {
