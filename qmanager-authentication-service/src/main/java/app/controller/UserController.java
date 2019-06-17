@@ -24,14 +24,14 @@ public class UserController{
     @Autowired
     public UserController(UserServiceMariaImpl userService) {this.userService = userService;}
 
-    @PostMapping("user")
+    @PostMapping("users")
     public ResponseEntity<?> postUser(@Valid @RequestBody PostUserRequest postUserRequest) {
         User user = Mapper.mapPostUserRequestToUser(postUserRequest);
         userService.save(user,false);
         return new ResponseEntity<>(new ApiResponse(true, "OK"), HttpStatus.OK);
     }
 
-    @GetMapping("user/{email}")
+    @GetMapping("users/{email}")
     public ResponseEntity<?> getUser(@PathVariable(value = "email") String email) {
         return ResponseEntity.ok(new GetUserResponse(userService.findByEmail(email)));
     }
