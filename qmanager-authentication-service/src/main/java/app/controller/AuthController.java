@@ -1,7 +1,8 @@
 package app.controller;
 
 import app.entity.User;
-import app.payload.ApiResponse;
+import app.exceptions.ResourceAlreadyExistsException;
+import app.payload.MyApiResponse;
 import app.payload.JWTAuthenticationResponse;
 import app.payload.LoginRequest;
 import app.payload.SignUpRequest;
@@ -9,6 +10,8 @@ import app.security.JWTTokenProvider;
 import app.service.UserService;
 import app.service.UserServiceMariaImpl;
 import app.utils.Mapper;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +41,9 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
+    @ApiResponses({//
+            @ApiResponse(code = 200, message = "OK", response = JWTAuthenticationResponse.class)
+    })
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
         Authentication authentication = authenticationManager.authenticate(
@@ -56,8 +62,7 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
         User user = Mapper.mapSignUpRequestToUser(signUpRequest);
-        Boolean result = userService.save(user, false);
-        return result ? new ResponseEntity<>(new ApiResponse(true, "User registered successfully"), HttpStatus.OK):
-                new ResponseEntity<>(new ApiResponse(false, "Email Address already in use!"), HttpStatus.BAD_REQUEST);
+        userService.save(user, false);
+        return new ResponseEntity<>(new MyApiResponse(true, "User registered successfully"), HttpStatus.OK);
     }
 }

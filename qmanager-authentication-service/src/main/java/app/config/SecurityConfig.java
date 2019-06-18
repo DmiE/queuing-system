@@ -5,7 +5,6 @@ import app.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -77,10 +76,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .antMatchers("/api/auth/**")
                         .permitAll()
-                    .antMatchers(HttpMethod.GET, "/api/polls/**", "/api/users/**")
-                    .permitAll()
-                    .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**")
-                    .permitAll()
+                    .antMatchers("/api/admin/**")
+                        .hasRole("ADMIN")
+                    .antMatchers(  "/api/users/**", "/api/queues/**")
+                        .permitAll()
+                    .antMatchers("/swagger-ui.html","/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**")
+                        .permitAll()
                 .anyRequest()
                 .authenticated();
 
