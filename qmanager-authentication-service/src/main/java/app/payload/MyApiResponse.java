@@ -1,10 +1,10 @@
 package app.payload;
 
-public class ApiResponse {
+public class MyApiResponse {
     private Boolean success;
     private String message;
 
-    public ApiResponse(Boolean success, String message) {
+    public MyApiResponse(Boolean success, String message) {
         this.success = success;
         this.message = message;
     }

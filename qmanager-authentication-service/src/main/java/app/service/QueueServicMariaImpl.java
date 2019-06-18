@@ -28,8 +28,8 @@ public class QueueServicMariaImpl implements QueueService {
         if(! queueRepository.existsByQueueName(queueName)) {
             throw new ResourceNotFoundException(String.format("Queue with name %s does not exists", queueName));
         }
-        if( queueRepository.existsByQueueNameAndUserAndFinished(queueName, user, true)){
-            throw new ResourceAlreadyExistsException(String.format("User with id %s already exist in queue with name %s", userID, queueName));
+        if( queueRepository.existsByUserAndFinished(user, false)){
+            throw new ResourceAlreadyExistsException(String.format("User with id %s already exist in queue", userID));
         }
         queueRepository.save(new QueueRow(queueName, user));
     }
@@ -45,7 +45,7 @@ public class QueueServicMariaImpl implements QueueService {
     @Override
     public void createQueue(String queueName, Long userID) {
         User user = userService.findById(userID);
-        if (! queueRepository.existsByQueueName(queueName)){
+        if ( queueRepository.existsByQueueName(queueName)){
             throw  new ResourceAlreadyExistsException(String.format("Queue with name: %s already exists",queueName));
         }
         queueRepository.save(new QueueRow(queueName, user, true));

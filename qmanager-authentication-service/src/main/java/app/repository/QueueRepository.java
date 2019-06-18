@@ -9,7 +9,7 @@ import java.util.List;
 
 
 public interface QueueRepository extends JpaRepository<QueueRow, Long> {
-    Boolean existsByQueueNameAndUserAndFinished(String  Name, User user, Boolean isFinished);
+    Boolean existsByUserAndFinished(User user, Boolean isFinished);
     Boolean existsByQueueName(String queueName);
     List<QueueRow> findByQueueNameAndFinishedOrderByCreatedAtAsc(String  queueName, Boolean isfinished);
 }
