@@ -3,10 +3,13 @@ package app.utils;
 import app.entity.Helper.UserInQueue;
 import app.entity.QueueRow;
 import app.entity.User;
+import app.payload.GetAllQueueResponse;
 import app.payload.GetQueueResponse;
 import app.payload.PostUserRequest;
 import app.payload.SignUpRequest;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Mapper {
@@ -27,4 +30,24 @@ public class Mapper {
         rows.forEach(queueRow -> response.setUserInQueue(new UserInQueue(queueRow)));
         return response;
     }
+
+    public static GetAllQueueResponse mapQueueRowToGetAllQueueResponse(List<QueueRow> rows) {
+        List<GetQueueResponse> getQueueResponses = new ArrayList<>();
+
+        System.out.println(rows.toString());
+        for (QueueRow row : rows) {
+            if (getQueueResponses.stream().noneMatch(response -> response.getQueueName().equals(row.getQueueName()))) {
+                getQueueResponses.add(new GetQueueResponse(row.getQueueName(), row.getId().toString(), new UserInQueue(row)));
+            }
+            else {
+                getQueueResponses.stream().
+                        filter(response -> response.getQueueName().equals(row.getQueueName())).
+                        forEach(response -> response.setUserInQueue(new UserInQueue(row)));
+            }
+            System.out.println(row.toString());
+        }
+        return new GetAllQueueResponse(getQueueResponses);
+    }
+
+
 }

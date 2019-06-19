@@ -14,6 +14,13 @@ public class GetQueueResponse {
         userInQueue = new ArrayList<>();
     }
 
+    public GetQueueResponse(String queueName, String queueId, UserInQueue userInQueue) {
+        this.queueName = queueName;
+        this.queueId = queueId;
+        this.userInQueue = new ArrayList<>();
+        this.userInQueue.add(userInQueue);
+    }
+
     public String getQueueName() {
         return queueName;
     }

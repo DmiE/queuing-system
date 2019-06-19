@@ -1,6 +1,5 @@
 package app.service;
 
-import app.annotations.CurrentUser;
 import app.entity.QueueRow;
 import app.entity.User;
 import app.exceptions.ResourceAlreadyExistsException;
@@ -41,6 +40,12 @@ public class QueueServicMariaImpl implements QueueService {
         }
         return  queueRepository.findByQueueNameAndFinishedOrderByCreatedAtAsc(queueName, false);
     }
+
+    @Override
+    public List<QueueRow> getAllQueues() {
+        return  queueRepository.findByFinishedOrderByQueueName(false);
+    }
+
 
     @Override
     public void createQueue(String queueName, Long userID) {
