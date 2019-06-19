@@ -49,7 +49,6 @@ class Register extends Component {
             lastName: this.state.inputs.lastName.value,
             password: this.state.inputs.password.value
         }
-        // axios.post('https://smoothienewsletter.firebaseio.com/newsletters.json', formData)
         axios.post('http://192.168.0.25:5000/api/auth/signup', formData)
             .then( response => {
                 console.log(response + "form was send")
