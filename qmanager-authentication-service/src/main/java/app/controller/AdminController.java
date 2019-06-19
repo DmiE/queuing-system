@@ -2,7 +2,10 @@ package app.controller;
 
 import app.annotations.CurrentUser;
 import app.entity.User;
+import app.exceptions.AppException;
 import app.exceptions.ResourceAlreadyExistsException;
+import app.exceptions.ResourceNotFoundException;
+import app.payload.DeleteUserRequest;
 import app.payload.MyApiResponse;
 import app.payload.PostQueueRequest;
 import app.payload.PostUserRequest;
@@ -19,10 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 
 @RestController
@@ -43,7 +44,7 @@ public class AdminController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiResponses({//
             @ApiResponse(code = 200, message = "OK", response = MyApiResponse.class),
-            @ApiResponse(code = 409, message = "User with email %s already exists", response = ResourceAlreadyExistsException.class)//
+            @ApiResponse(code = 409, message = "User with email %s already exists", response = ResourceAlreadyExistsException.class)
     })
     public ResponseEntity<?> createAdminUser(@Valid @RequestBody PostUserRequest postUserRequest) {
         User user = Mapper.mapPostUserRequestToUser(postUserRequest);
@@ -51,16 +52,32 @@ public class AdminController {
         return new ResponseEntity<>(new MyApiResponse(true, "OK"), HttpStatus.OK);
     }
 
-    @PostMapping("/queue")
+    @PostMapping("/queues")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiResponses({//
             @ApiResponse(code = 200, message = "OK", response = MyApiResponse.class),
-            @ApiResponse(code = 409, message = "Queue with name:  already exists", response = ResourceAlreadyExistsException.class)//
+            @ApiResponse(code = 409, message = "Queue with name:  already exists", response = ResourceAlreadyExistsException.class)
     })
     public ResponseEntity<?> createQueue(@Valid @RequestBody PostQueueRequest postqueueRequest, @CurrentUser UserPrincipal currentUser) {
         queueService.createQueue(postqueueRequest.getQueueName(), currentUser.getId());
         return new ResponseEntity<>(new MyApiResponse(true, "OK"), HttpStatus.OK);
     }
 
+    @DeleteMapping("/queues/user")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK", response = MyApiResponse.class),
+            @ApiResponse(code = 404, message = "User  with name:  does not exists", response = ResourceNotFoundException.class),
+            @ApiResponse(code = 404, message = "Queue with name:  does not exists", response = ResourceNotFoundException.class),
+            @ApiResponse(code = 500, message = "User not deleted", response = ResourceNotFoundException.class)
+
+    })
+    public ResponseEntity<?> deleteUserFromQueue(@Valid @RequestBody DeleteUserRequest deleteUserRequest) {
+        if (deleteUserRequest.getQueueName().isEmpty()){
+            throw new AppException("QueueName is not provided");
+        }
+        queueService.deleteUserFromQueue(deleteUserRequest.getEmail(), deleteUserRequest.getQueueName());
+        return new ResponseEntity<>(new MyApiResponse(true, "OK"), HttpStatus.OK);
+    }
 
 }
