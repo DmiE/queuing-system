@@ -1,8 +1,8 @@
 package app.controller;
 
+import app.entity.MariaEntities.UserMaria;
 import app.entity.User;
 import app.exceptions.ResourceAlreadyExistsException;
-import app.exceptions.ResourceNotFoundException;
 import app.payload.*;
 import app.service.UserService;
 import app.service.UserServiceMariaImpl;
@@ -34,15 +34,15 @@ public class UserController{
             @ApiResponse(code = 409, message = "Queue with name alreadu exists", response = ResourceAlreadyExistsException.class),
     })
     public ResponseEntity<?> postUser(@Valid @RequestBody PostUserRequest postUserRequest) {
-        User user = Mapper.mapPostUserRequestToUser(postUserRequest);
-        userService.save(user,false);
+        UserMaria userMaria = Mapper.mapPostUserRequestToUser(postUserRequest);
+        userService.save(userMaria,false);
         return new ResponseEntity<>(new MyApiResponse(true, "OK"), HttpStatus.OK);
     }
 
     @GetMapping("users/{email}")
     @ApiResponses({//
             @ApiResponse(code = 200, message = "OK", response = GetQueueResponse.class),
-            @ApiResponse(code = 400, message = "User with email does not exists", response = GetUserResponse.class),
+            @ApiResponse(code = 400, message = "UserMaria with email does not exists", response = GetUserResponse.class),
     })
     public ResponseEntity<?> getUser(@PathVariable(value = "email") String email) {
         return ResponseEntity.ok(new GetUserResponse(userService.findByEmail(email)));
@@ -53,8 +53,8 @@ public class UserController{
             @ApiResponse(code = 200, message = "OK", response = GetAllUsersResponse.class),
     })
     public ResponseEntity<?> getUsers() {
-        List<User> users = userService.findAll();
-        return ResponseEntity.ok(new GetAllUsersResponse(users));
+        List<User> userMarias = userService.findAll();
+        return ResponseEntity.ok(new GetAllUsersResponse(userMarias));
     }
 
 

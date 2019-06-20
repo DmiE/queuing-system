@@ -1,7 +1,6 @@
 package app.controller;
 
-import app.entity.User;
-import app.exceptions.ResourceAlreadyExistsException;
+import app.entity.MariaEntities.UserMaria;
 import app.payload.MyApiResponse;
 import app.payload.JWTAuthenticationResponse;
 import app.payload.LoginRequest;
@@ -61,8 +60,8 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
-        User user = Mapper.mapSignUpRequestToUser(signUpRequest);
-        userService.save(user, false);
-        return new ResponseEntity<>(new MyApiResponse(true, "User registered successfully"), HttpStatus.OK);
+        UserMaria userMaria = Mapper.mapSignUpRequestToUser(signUpRequest);
+        userService.save(userMaria, false);
+        return new ResponseEntity<>(new MyApiResponse(true, "UserMaria registered successfully"), HttpStatus.OK);
     }
 }

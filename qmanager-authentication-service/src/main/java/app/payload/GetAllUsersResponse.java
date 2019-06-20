@@ -1,5 +1,6 @@
 package app.payload;
 
+import app.entity.MariaEntities.UserMaria;
 import app.entity.User;
 
 import java.util.List;
@@ -11,12 +12,12 @@ public class GetAllUsersResponse {
         this.users = users;
     }
 
-    public List<User> getUsers() {
+    public List<User> getUserMarias() {
         return this.users;
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public void setUserMarias(List<User> userMarias) {
+        this.users = userMarias;
     }
 
 }

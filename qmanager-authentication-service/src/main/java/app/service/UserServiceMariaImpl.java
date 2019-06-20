@@ -2,6 +2,7 @@ package app.service;
 
 import app.entity.Role;
 import app.entity.RoleName;
+import app.entity.MariaEntities.UserMaria;
 import app.entity.User;
 import app.exceptions.AppException;
 import app.exceptions.ResourceAlreadyExistsException;
@@ -11,6 +12,8 @@ import app.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -37,7 +40,7 @@ public class UserServiceMariaImpl implements  UserService{
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(Collections.singleton(setUserRole(isAdmin)));
-        userRepository.save(user);
+        userRepository.save(new UserMaria(user));
     }
 
     @Override
@@ -47,14 +50,14 @@ public class UserServiceMariaImpl implements  UserService{
     }
 
     @Override
-    public User findById(Long userID) {
+    public UserMaria findById(Long userID) {
         return userRepository.findById(userID)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("User with id %s does not exists", userID)));
     }
 
     @Override
     public List<User> findAll() {
-        return userRepository.findAll();
+        return new ArrayList<>(userRepository.findAll());
     }
 
     private Role setUserRole(Boolean isAdmin){

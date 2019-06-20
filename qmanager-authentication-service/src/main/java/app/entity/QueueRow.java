@@ -1,6 +1,7 @@
 package app.entity;
 
 import app.entity.Audit.DateAudit;
+import app.entity.MariaEntities.UserMaria;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -21,7 +22,7 @@ public class QueueRow extends DateAudit {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private User user;
+    private UserMaria user;
 
     @Column(name="finished")
     private Boolean finished;
@@ -29,14 +30,14 @@ public class QueueRow extends DateAudit {
     public QueueRow(){
     }
 
-    public QueueRow(String name, User user){
+    public QueueRow(String name, UserMaria user){
         super();
         this.queueName = name;
         this.user = user;
         this.finished = false;
     }
 
-    public QueueRow(String name, User user, Boolean is_finished ) {
+    public QueueRow(String name, UserMaria user, Boolean is_finished ) {
         super();
         this.queueName = name;
         this.user = user;
@@ -52,11 +53,11 @@ public class QueueRow extends DateAudit {
         this.id = id;
     }
 
-    public User getUser() {
+    public UserMaria getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserMaria user) {
         this.user = user;
     }
 

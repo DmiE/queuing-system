@@ -1,6 +1,6 @@
 package app.service;
-
 import app.entity.QueueRow;
+import app.entity.MariaEntities.UserMaria;
 import app.entity.User;
 import app.exceptions.AppException;
 import app.exceptions.ResourceAlreadyExistsException;
@@ -8,7 +8,6 @@ import app.exceptions.ResourceNotFoundException;
 import app.repository.QueueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -29,10 +28,10 @@ public class QueueServicMariaImpl implements QueueService {
         if(! queueRepository.existsByQueueName(queueName)) {
             throw new ResourceNotFoundException(String.format("Queue with name %s does not exists", queueName));
         }
-        if( queueRepository.existsByUserAndFinished(user, false)){
-            throw new ResourceAlreadyExistsException(String.format("User with id %s already exist in queue", userID));
+        if( queueRepository.existsByUserAndFinished(new UserMaria(user), false)){
+            throw new ResourceAlreadyExistsException(String.format("UserMaria with id %s already exist in queue", userID));
         }
-        queueRepository.save(new QueueRow(queueName, user));
+        queueRepository.save(new QueueRow(queueName, new UserMaria(user)));
     }
 
     @Override
@@ -55,7 +54,7 @@ public class QueueServicMariaImpl implements QueueService {
         if ( queueRepository.existsByQueueName(queueName)){
             throw  new ResourceAlreadyExistsException(String.format("Queue with name: %s already exists",queueName));
         }
-        queueRepository.save(new QueueRow(queueName, user, true));
+        queueRepository.save(new QueueRow(queueName, new UserMaria(user), true));
     }
 
     @SuppressWarnings("Duplicates")
@@ -65,23 +64,23 @@ public class QueueServicMariaImpl implements QueueService {
         if(! queueRepository.existsByQueueName(queueName)) {
             throw new ResourceNotFoundException(String.format("Queue with name %s does not exists", queueName));
         }
-        if(! queueRepository.existsByUserAndFinished(user, false)){
-            throw new ResourceNotFoundException(String.format("User with id %d does not exists ", user.getId()));
+        if(! queueRepository.existsByUserAndFinished(new UserMaria(user), false)){
+            throw new ResourceNotFoundException(String.format("UserMaria with id %d does not exists ", user.getId()));
         }
-        List<QueueRow> deleted= queueRepository.deleteByUserAndQueueName(user, queueName);
+        List<QueueRow> deleted= queueRepository.deleteByUserAndQueueName(new UserMaria(user), queueName);
         if( deleted.size() ==0 ){
-            throw new AppException("User not deleted ");
+            throw new AppException("UserMaria not deleted ");
         }
     }
     @Override
     public void deleteUserFromQueue(String email){
         User user = userService.findByEmail(email);
-        if(! queueRepository.existsByUserAndFinished(user, false)){
-            throw new ResourceNotFoundException(String.format("User with id %d does not exists ", user.getId()));
+        if(! queueRepository.existsByUserAndFinished(new UserMaria(user), false)){
+            throw new ResourceNotFoundException(String.format("UserMaria with id %d does not exists ", user.getId()));
         }
-        List<QueueRow> deleted= queueRepository.deleteByUser(user);
+        List<QueueRow> deleted= queueRepository.deleteByUser(new UserMaria(user));
         if( deleted.size() ==0 ){
-            throw new AppException("User not deleted ");
+            throw new AppException("UserMaria not deleted ");
         }
     }
 
