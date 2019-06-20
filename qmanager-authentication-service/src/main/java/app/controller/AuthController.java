@@ -1,7 +1,6 @@
 package app.controller;
 
 import app.config.ApplicationConfig;
-import app.entity.MariaEntities.UserMaria;
 import app.entity.User;
 import app.payload.MyApiResponse;
 import app.payload.JWTAuthenticationResponse;
@@ -67,6 +66,6 @@ public class AuthController {
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
         User user = Mapper.mapSignUpRequestToUser(signUpRequest);
         userService.save(user, false);
-        return new ResponseEntity<>(new MyApiResponse(true, "UserMaria registered successfully"), HttpStatus.OK);
+        return new ResponseEntity<>(new MyApiResponse(true, "UserMariaDB registered successfully"), HttpStatus.OK);
     }
 }

@@ -1,6 +1,6 @@
 package app.service.MariaServices;
 
-import app.entity.MariaEntities.UserMaria;
+import app.entity.MariaEntities.UserMariaDB;
 import app.entity.User;
 import app.repository.MariaRepositories.MariaDBUserRepository;
 import app.service.UserDetailsServiceIf;
@@ -24,14 +24,14 @@ public class UserDetailsServiceMariaImpl implements UserDetailsServiceIf {
     @Transactional
     public UserDetails loadUserByUsername(String usernameOrEmail)
             throws UsernameNotFoundException {
-        UserMaria userMaria = userRepository.findByEmail(usernameOrEmail).
+        UserMariaDB userMaria = userRepository.findByEmail(usernameOrEmail).
                 orElseThrow(() ->new UsernameNotFoundException("User not found with username or email : " + usernameOrEmail));
         return UserPrincipal.create(new User(userMaria));
     }
 
     @Transactional
     public UserDetails loadUserById(Long id) {
-        UserMaria userMaria = userRepository.findById(id).
+        UserMariaDB userMaria = userRepository.findById(id).
                 orElseThrow(() -> new UsernameNotFoundException("User not found with id : " + id));
         return UserPrincipal.create(new User(userMaria));
     }

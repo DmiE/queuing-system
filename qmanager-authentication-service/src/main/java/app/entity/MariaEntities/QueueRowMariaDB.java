@@ -1,7 +1,5 @@
-package app.entity;
-
+package app.entity.MariaEntities;
 import app.entity.Audit.DateAudit;
-import app.entity.MariaEntities.UserMaria;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -11,7 +9,7 @@ import javax.persistence.*;
                 "id"
         })
 })
-public class QueueRow extends DateAudit {
+public class QueueRowMariaDB extends DateAudit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,30 +17,28 @@ public class QueueRow extends DateAudit {
     @Column(name="quque_name")
     private String queueName;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private UserMaria user;
+    private UserMariaDB user;
 
     @Column(name="finished")
     private Boolean finished;
-
-    public QueueRow(){
+    public QueueRowMariaDB(){
     }
 
-    public QueueRow(String name, UserMaria user){
+    public QueueRowMariaDB(String name, UserMariaDB user){
         super();
         this.queueName = name;
         this.user = user;
         this.finished = false;
     }
 
-    public QueueRow(String name, UserMaria user, Boolean is_finished ) {
+    public QueueRowMariaDB(String name, UserMariaDB user, Boolean isFinished ) {
         super();
         this.queueName = name;
         this.user = user;
-        this.finished = is_finished;
-
+        this.finished = isFinished;
     }
 
     public Long getId() {
@@ -53,11 +49,11 @@ public class QueueRow extends DateAudit {
         this.id = id;
     }
 
-    public UserMaria getUser() {
+    public UserMariaDB getUser() {
         return user;
     }
 
-    public void setUser(UserMaria user) {
+    public void setUser(UserMariaDB user) {
         this.user = user;
     }
 

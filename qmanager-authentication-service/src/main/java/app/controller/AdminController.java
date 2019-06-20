@@ -2,7 +2,6 @@ package app.controller;
 
 import app.annotations.CurrentUser;
 import app.config.ApplicationConfig;
-import app.entity.MariaEntities.UserMaria;
 import app.entity.User;
 import app.exceptions.AppException;
 import app.exceptions.ResourceAlreadyExistsException;
@@ -64,7 +63,7 @@ public class AdminController {
             @ApiResponse(code = 409, message = "Queue with name:  already exists", response = ResourceAlreadyExistsException.class)
     })
     public ResponseEntity<?> createQueue(@Valid @RequestBody PostQueueRequest postqueueRequest, @CurrentUser UserPrincipal currentUser) {
-        queueService.createQueue(postqueueRequest.getQueueName(), currentUser.getId());
+        queueService.createQueue(postqueueRequest.getQueueName(), currentUser.getEmail());
         return new ResponseEntity<>(new MyApiResponse(true, "OK"), HttpStatus.OK);
     }
 

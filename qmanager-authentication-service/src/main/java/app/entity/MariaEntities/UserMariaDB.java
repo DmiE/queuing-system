@@ -1,8 +1,9 @@
 package app.entity.MariaEntities;
-
-
-import app.entity.Role;
 import app.entity.User;
+import app.service.MariaServices.QueueServiceMariaImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,7 +15,7 @@ import java.util.Set;
         })
 })
 
-public class UserMaria{
+public class UserMariaDB {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
@@ -32,30 +33,35 @@ public class UserMaria{
     @Column(name="password")
     private String password;
 
+    private static final Logger logger = LoggerFactory.getLogger(QueueServiceMariaImpl.class);
+
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+    private Set<RoleMariaDB> roles = new HashSet<>();
 
-    public UserMaria(String first_name, String last_name, String email, String password) {
+    public UserMariaDB(String first_name, String last_name, String email, String password) {
         this.firstName = last_name;
         this.email = email;
         this.password = password;
         this.lastName = first_name;
     }
 
-    public UserMaria(User user) {
+    public UserMariaDB(User user) {
         this.firstName = user.getFirstName();
         this.email = user.getEmail();
         this.password = user.getPassword();
         this.lastName = user.getFirstName();
+        this.id = user.getId();
+        System.out.println("NO HUJ");
+        logger.error(String.format("DEBUG MICHAL2 user2 konr %S", this.getId()));
+        logger.error(String.format("DEBUG MICHAL2 user2 passed %S", user.getId()));
     }
 
-    public UserMaria(){
-        super();
+    public UserMariaDB() {
     }
-
     public Long getId() {
         return id;
     }
@@ -96,8 +102,8 @@ public class UserMaria{
         this.password = password;
     }
 
-    public Set<Role> getRoles() { return roles; }
+    public Set<RoleMariaDB> getRoles() { return roles; }
 
-    public void setRoles(Set<Role> roles) { this.roles = roles;}
+    public void setRoles(Set<RoleMariaDB> roles) { this.roles = roles;}
 
 }

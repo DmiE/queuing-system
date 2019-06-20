@@ -1,7 +1,6 @@
 package app.payload;
 
 
-import app.entity.MariaEntities.UserMaria;
 import app.entity.User;
 
 public class GetUserResponse {

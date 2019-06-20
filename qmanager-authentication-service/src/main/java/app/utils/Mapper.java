@@ -1,8 +1,7 @@
 package app.utils;
 
 import app.entity.Helper.UserInQueue;
-import app.entity.QueueRow;
-import app.entity.MariaEntities.UserMaria;
+import app.entity.MariaEntities.QueueRowMariaDB;
 import app.entity.User;
 import app.payload.GetAllQueueResponse;
 import app.payload.GetQueueResponse;
@@ -23,7 +22,7 @@ public class Mapper {
         return new User(signUpRequest.getFirstName(), signUpRequest.getLastName(),
                 signUpRequest.getEmail(), signUpRequest.getPassword());
     }
-    public static GetQueueResponse mapQueueRowtoGetQueueResponse(List<QueueRow> rows){
+    public static GetQueueResponse mapQueueRowtoGetQueueResponse(List<QueueRowMariaDB> rows){
         GetQueueResponse response = new GetQueueResponse();
         response.setQueueId(rows.get(0).getId().toString());
         response.setQueueName(rows.get(0).getQueueName());
@@ -31,11 +30,11 @@ public class Mapper {
         return response;
     }
 
-    public static GetAllQueueResponse mapQueueRowToGetAllQueueResponse(List<QueueRow> rows) {
+    public static GetAllQueueResponse mapQueueRowToGetAllQueueResponse(List<QueueRowMariaDB> rows) {
         List<GetQueueResponse> getQueueResponses = new ArrayList<>();
 
         System.out.println(rows.toString());
-        for (QueueRow row : rows) {
+        for (QueueRowMariaDB row : rows) {
             if (getQueueResponses.stream().noneMatch(response -> response.getQueueName().equals(row.getQueueName()))) {
                 getQueueResponses.add(new GetQueueResponse(row.getQueueName(), row.getId().toString(), new UserInQueue(row)));
             }

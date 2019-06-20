@@ -1,7 +1,7 @@
 package app.entity;
 
-import app.entity.MariaEntities.UserMaria;
-
+import app.entity.MariaEntities.RoleMariaDB;
+import app.entity.MariaEntities.UserMariaDB;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,7 +11,7 @@ public class User {
     private String lastName;
     private String email;
     private String password;
-    private Set<Role> roles = new HashSet<>();
+    private Set<RoleMariaDB> roles = new HashSet<>();
 
     public User(String first_name, String last_name, String email, String password) {
         this.firstName = last_name;
@@ -20,7 +20,7 @@ public class User {
         this.lastName = first_name;
     }
 
-    public User(UserMaria user) {
+    public User(UserMariaDB user) {
         this.firstName = user.getFirstName();
         this.email = user.getEmail();
         this.password = user.getPassword();
@@ -71,11 +71,11 @@ public class User {
         this.password = password;
     }
 
-    public Set<Role> getRoles() {
+    public Set<RoleMariaDB> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(Set<RoleMariaDB> roles) {
         this.roles = roles;
     }
 }
