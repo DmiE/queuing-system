@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import './Register.css';
+import './SignUp.css';
 import axios from 'axios';
 import Input from '../../components/input/Input';
 
-class Register extends Component {
+class SignUp extends Component {
     state = {
         inputs: {
             firstName: {
@@ -81,11 +81,11 @@ class Register extends Component {
                     {inputArray.map(inputObject => (
                         <Input key={inputObject.id} elementConfig={inputObject.config.elementConfig} value={inputObject.config.value} changed={(event) => this.inputHandler(event, inputObject.id)} />
                     ))}
-                    <button type="submit">Register In</button>
+                    <button type="submit">SignUp</button>
                 </form>
             </div>
         )
     }
 }
 
-export default Register;
+export default SignUp;

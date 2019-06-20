@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { connect } from 'react-redux';
 
 class SignIn extends Component {
     state = {
@@ -28,17 +29,9 @@ class SignIn extends Component {
         axios.post('http://192.168.0.25:5000/api/auth/signin', formData)
             .then((response) => {
                 const newAccessToken = ("Bearer " + response.data.accessToken)
-                this.setState({ accessToken: newAccessToken })
+                // this.setState({ accessToken: newAccessToken })
+                this.props.setAuthToken(newAccessToken);
             })
-    }
-
-    getAllUsers = () => {
-        axios.get('http://192.168.0.25:5000/api/user/getAll', { headers: { Authorization: this.state.accessToken } })
-            .then((response) => {
-                const users = response.data.users
-                console.log(users)
-            }
-            )
     }
 
     render() {
@@ -48,11 +41,23 @@ class SignIn extends Component {
                     <input type="email" id="email" placeholder="Your E-Mail" onChange={this.changeHandler} />
                     <input type="password" id="password" placeholder="Your Password" onChange={this.changeHandler} />
                     <button type="submit">Login</button>
+                    <h1>{this.props.authorizationToken}</h1>
                 </form>
-                <button onClick={this.getAllUsers}></button>
             </div>
         )
     }
 }
 
-export default SignIn;
+const mapDispatchToProps = dispatch => {
+    return {
+        setAuthToken: (token) => dispatch({ type: "SETAUTHTOKEN", token: token })
+    };
+};
+
+const mapStateToProps = state => {
+    return {
+        authorizationToken: state.authToken
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
