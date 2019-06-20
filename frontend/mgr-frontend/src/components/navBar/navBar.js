@@ -1,14 +1,15 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const navBar = () => {
     return (
         <header>
             <nav>
                 <ul>
-                    <li>HOME</li>
-                    <li>SIGNUP</li>
-                    <li>SIGNIN</li>
-                    <li>GET ALL USERS</li>
+                    <li><Link to="/">HOME</Link></li>
+                    <li><Link to="/signup">SIGNUP</Link></li>
+                    <li><Link to="/signin">SIGNIN</Link></li>
+                    <li><Link to="/getallusers">GET ALL USERS</Link></li>
                 </ul>
             </nav>
         </header>

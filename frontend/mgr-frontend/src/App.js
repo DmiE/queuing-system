@@ -2,18 +2,15 @@ import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
 import './App.css';
-import Register from './containers/SignUp/SignUp'
-import SingIn from './containers/SignIn/SignIn'
 import NavBar from './components/navBar/navBar';
+import Main from './containers/Main/Main'
 
 function App() {
   return (
     <BrowserRouter>
       <div className="App">
         <NavBar></NavBar>
-        <Register></Register>
-        <SingIn></SingIn>
-
+        <Main></Main>
       </div>
     </BrowserRouter>
   );
