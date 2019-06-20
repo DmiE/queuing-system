@@ -7,8 +7,7 @@ class SignIn extends Component {
         loginInfo: {
             email: "",
             password: ""
-        },
-        accessToken: ""
+        }
     }
 
 
@@ -29,7 +28,6 @@ class SignIn extends Component {
         axios.post('http://192.168.0.25:5000/api/auth/signin', formData)
             .then((response) => {
                 const newAccessToken = ("Bearer " + response.data.accessToken)
-                // this.setState({ accessToken: newAccessToken })
                 this.props.setAuthToken(newAccessToken);
             })
     }
