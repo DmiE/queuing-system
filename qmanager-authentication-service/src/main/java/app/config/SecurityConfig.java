@@ -1,12 +1,14 @@
 package app.config;
 
 import app.security.JWTAuthenticationFilter;
+import app.security.JWTTokenProvider;
 import app.service.MariaServices.UserDetailsServiceMariaImpl;
 import app.service.UserDetailsServiceIf;
 import app.utils.ApplicationBackends;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -30,20 +32,19 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private UserDetailsServiceIf userDetailsServiceMaria;
-
     private final JWTAuthenticationEntryPoint unauthorizedHandler;
+    private  JWTAuthenticationFilter jwtAuthenticationFilter;
 
     @Autowired
-    public SecurityConfig(UserDetailsServiceMariaImpl userDetailsService, JWTAuthenticationEntryPoint unauthorizedHandler) {
+    public SecurityConfig(UserDetailsServiceMariaImpl userDetailsService,
+                          JWTAuthenticationEntryPoint unauthorizedHandler,
+                          JWTAuthenticationFilter jwtAuthenticationFilter) {
+
         if (ApplicationConfig.applicationBackend == ApplicationBackends.MariaDB) {
             this.userDetailsServiceMaria = userDetailsService;
         }
         this.unauthorizedHandler = unauthorizedHandler;
-    }
-
-    @Bean
-    public JWTAuthenticationFilter jwtAuthenticationFilter() {
-        return new JWTAuthenticationFilter();
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
     @Override
@@ -66,6 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        System.out.println("dupaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         http
                 .cors()
                 .and()
@@ -80,15 +82,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .antMatchers("/api/auth/**")
                         .permitAll()
-                    .antMatchers("/api/admin/**")
-                        .hasRole("ADMIN")
-                    .antMatchers(  "/api/users/**", "/api/queues/**")
-                        .authenticated()
-                    .antMatchers("/swagger-ui.html","/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**")
+                    .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**")
                         .permitAll()
                 .anyRequest()
-                .authenticated();
-
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                    .authenticated();
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }

@@ -21,7 +21,7 @@ import javax.validation.Valid;
 
 
 @RestController
-@RequestMapping("/api/queues")
+@RequestMapping("/api/")
 public class QueueController {
     private QueueService queueService;
 

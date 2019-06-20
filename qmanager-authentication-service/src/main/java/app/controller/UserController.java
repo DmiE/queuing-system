@@ -21,7 +21,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("/api/users")
 public class UserController{
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -34,7 +34,7 @@ public class UserController{
         }
     }
 
-    @PostMapping("users")
+    @PostMapping("")
     @ApiResponses({//
             @ApiResponse(code = 200, message = "OK", response = MyApiResponse.class),
             @ApiResponse(code = 409, message = "Queue with name alreadu exists", response = ResourceAlreadyExistsException.class),
@@ -45,7 +45,7 @@ public class UserController{
         return new ResponseEntity<>(new MyApiResponse(true, "OK"), HttpStatus.OK);
     }
 
-    @GetMapping("users/{email}")
+    @GetMapping("/{email}")
     @ApiResponses({//
             @ApiResponse(code = 200, message = "OK", response = GetQueueResponse.class),
             @ApiResponse(code = 400, message = "UserMaria with email does not exists", response = GetUserResponse.class),
@@ -54,7 +54,7 @@ public class UserController{
         return ResponseEntity.ok(new GetUserResponse(userService.findByEmail(email)));
     }
 
-    @GetMapping("users")
+    @GetMapping("")
     @ApiResponses({//
             @ApiResponse(code = 200, message = "OK", response = GetAllUsersResponse.class),
     })

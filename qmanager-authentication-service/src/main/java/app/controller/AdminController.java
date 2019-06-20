@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/admin")
+@RequestMapping("/admin")
 public class AdminController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -49,7 +49,7 @@ public class AdminController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiResponses({//
             @ApiResponse(code = 200, message = "OK", response = MyApiResponse.class),
-            @ApiResponse(code = 409, message = "UserMaria with email %s already exists", response = ResourceAlreadyExistsException.class)
+            @ApiResponse(code = 409, message = "User with email %s already exists", response = ResourceAlreadyExistsException.class)
     })
     public ResponseEntity<?> createAdminUser(@Valid @RequestBody PostUserRequest postUserRequest) {
         User user = Mapper.mapPostUserRequestToUser(postUserRequest);
@@ -72,9 +72,9 @@ public class AdminController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK", response = MyApiResponse.class),
-            @ApiResponse(code = 404, message = "UserMaria  with name:  does not exists", response = ResourceNotFoundException.class),
+            @ApiResponse(code = 404, message = "User  with name:  does not exists", response = ResourceNotFoundException.class),
             @ApiResponse(code = 404, message = "Queue with name:  does not exists", response = ResourceNotFoundException.class),
-            @ApiResponse(code = 500, message = "UserMaria not deleted", response = ResourceNotFoundException.class)
+            @ApiResponse(code = 500, message = "User not deleted", response = ResourceNotFoundException.class)
 
     })
     public ResponseEntity<?> deleteUserFromQueue(@Valid @RequestBody DeleteUserRequest deleteUserRequest) {
