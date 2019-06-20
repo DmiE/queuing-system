@@ -1,6 +1,10 @@
 package app.security;
 
-import app.service.UserDetailsServiceImpl;
+import app.config.ApplicationConfig;
+import app.config.JWTAuthenticationEntryPoint;
+import app.service.MariaServices.UserDetailsServiceMariaImpl;
+import app.service.UserDetailsServiceIf;
+import app.utils.ApplicationBackends;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +26,17 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     private JWTTokenProvider tokenProvider;
 
     @Autowired
-    private UserDetailsServiceImpl userDetailsServiceimpl;
+    private UserDetailsServiceIf userDetailsService;
 
     private static final Logger logger = LoggerFactory.getLogger(JWTAuthenticationFilter.class);
+
+    @Autowired
+    public JWTAuthenticationFilter(UserDetailsServiceMariaImpl userDetailsService, JWTTokenProvider tokenProvider) {
+        if (ApplicationConfig.applicationBackend == ApplicationBackends.MariaDB) {
+            this.userDetailsService = userDetailsService;
+        }
+        this.tokenProvider = tokenProvider;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -34,7 +46,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
                 Long userId = tokenProvider.getUserIdFromJWT(jwt);
 
-                UserDetails userDetails = userDetailsServiceimpl.loadUserById(userId);
+                UserDetails userDetails = userDetailsService.loadUserById(userId);
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 

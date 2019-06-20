@@ -3,8 +3,6 @@ package app.entity.MariaEntities;
 
 import app.entity.Role;
 import app.entity.User;
-import app.payload.LoginRequest;
-
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,7 +14,7 @@ import java.util.Set;
         })
 })
 
-public class UserMaria extends User {
+public class UserMaria{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")

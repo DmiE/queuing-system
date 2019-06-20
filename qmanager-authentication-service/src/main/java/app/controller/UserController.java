@@ -1,11 +1,13 @@
 package app.controller;
 
+import app.config.ApplicationConfig;
 import app.entity.MariaEntities.UserMaria;
 import app.entity.User;
 import app.exceptions.ResourceAlreadyExistsException;
 import app.payload.*;
 import app.service.UserService;
-import app.service.UserServiceMariaImpl;
+import app.service.MariaServices.UserServiceMariaImpl;
+import app.utils.ApplicationBackends;
 import app.utils.Mapper;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -26,7 +28,11 @@ public class UserController{
     private UserService userService;
 
     @Autowired
-    public UserController(UserServiceMariaImpl userService) {this.userService = userService;}
+    public UserController(UserServiceMariaImpl userServiceMaria) {
+        if (ApplicationConfig.applicationBackend == ApplicationBackends.MariaDB){
+            this.userService = userServiceMaria;
+        }
+    }
 
     @PostMapping("users")
     @ApiResponses({//
@@ -34,8 +40,8 @@ public class UserController{
             @ApiResponse(code = 409, message = "Queue with name alreadu exists", response = ResourceAlreadyExistsException.class),
     })
     public ResponseEntity<?> postUser(@Valid @RequestBody PostUserRequest postUserRequest) {
-        UserMaria userMaria = Mapper.mapPostUserRequestToUser(postUserRequest);
-        userService.save(userMaria,false);
+        User user = Mapper.mapPostUserRequestToUser(postUserRequest);
+        userService.save(user,false);
         return new ResponseEntity<>(new MyApiResponse(true, "OK"), HttpStatus.OK);
     }
 
@@ -53,9 +59,7 @@ public class UserController{
             @ApiResponse(code = 200, message = "OK", response = GetAllUsersResponse.class),
     })
     public ResponseEntity<?> getUsers() {
-        List<User> userMarias = userService.findAll();
-        return ResponseEntity.ok(new GetAllUsersResponse(userMarias));
+        List<User> users = userService.findAll();
+        return ResponseEntity.ok(new GetAllUsersResponse(users));
     }
-
-
 }

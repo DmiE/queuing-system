@@ -3,6 +3,7 @@ package app.utils;
 import app.entity.Helper.UserInQueue;
 import app.entity.QueueRow;
 import app.entity.MariaEntities.UserMaria;
+import app.entity.User;
 import app.payload.GetAllQueueResponse;
 import app.payload.GetQueueResponse;
 import app.payload.PostUserRequest;
@@ -13,13 +14,13 @@ import java.util.List;
 
 public class Mapper {
 
-    public static UserMaria mapPostUserRequestToUser(PostUserRequest postUserRequest){
-        return new UserMaria(postUserRequest.getFirstName(), postUserRequest.getLastName(),
+    public static User mapPostUserRequestToUser(PostUserRequest postUserRequest){
+        return new User(postUserRequest.getFirstName(), postUserRequest.getLastName(),
                 postUserRequest.getEmail(), postUserRequest.getPassword());
     }
 
-    public static UserMaria mapSignUpRequestToUser(SignUpRequest signUpRequest){
-        return new UserMaria(signUpRequest.getFirstName(), signUpRequest.getLastName(),
+    public static User mapSignUpRequestToUser(SignUpRequest signUpRequest){
+        return new User(signUpRequest.getFirstName(), signUpRequest.getLastName(),
                 signUpRequest.getEmail(), signUpRequest.getPassword());
     }
     public static GetQueueResponse mapQueueRowtoGetQueueResponse(List<QueueRow> rows){

@@ -1,23 +1,34 @@
 package app.entity;
 
+import app.entity.MariaEntities.UserMaria;
+
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class User {
+public class User {
     private Long id;
     private String firstName;
     private String lastName;
     private String email;
     private String password;
-
     private Set<Role> roles = new HashSet<>();
 
-    protected User(String first_name, String last_name, String email, String password) {
+    public User(String first_name, String last_name, String email, String password) {
         this.firstName = last_name;
         this.email = email;
         this.password = password;
         this.lastName = first_name;
     }
+
+    public User(UserMaria user) {
+        this.firstName = user.getFirstName();
+        this.email = user.getEmail();
+        this.password = user.getPassword();
+        this.lastName = user.getFirstName();
+        this.id = user.getId();
+        this.roles = user.getRoles();
+    }
+
     protected User(){}
 
     public Long getId() {

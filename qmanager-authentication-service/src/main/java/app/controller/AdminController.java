@@ -1,7 +1,9 @@
 package app.controller;
 
 import app.annotations.CurrentUser;
+import app.config.ApplicationConfig;
 import app.entity.MariaEntities.UserMaria;
+import app.entity.User;
 import app.exceptions.AppException;
 import app.exceptions.ResourceAlreadyExistsException;
 import app.exceptions.ResourceNotFoundException;
@@ -12,7 +14,8 @@ import app.payload.PostUserRequest;
 import app.service.QueueService;
 import app.service.UserPrincipal;
 import app.service.UserService;
-import app.service.UserServiceMariaImpl;
+import app.service.MariaServices.UserServiceMariaImpl;
+import app.utils.ApplicationBackends;
 import app.utils.Mapper;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -35,9 +38,11 @@ public class AdminController {
     private QueueService queueService;
 
     @Autowired
-    public AdminController(UserServiceMariaImpl userService, QueueService queueService) {
-        this.userService = userService;
-        this.queueService = queueService;
+    public AdminController(UserServiceMariaImpl userServiceMaria, QueueService queueServiceMaria) {
+        if (ApplicationConfig.applicationBackend == ApplicationBackends.MariaDB){
+            this.userService = userServiceMaria;
+            this.queueService = queueServiceMaria;
+        }
     }
 
     @PostMapping("/user")
@@ -47,8 +52,8 @@ public class AdminController {
             @ApiResponse(code = 409, message = "UserMaria with email %s already exists", response = ResourceAlreadyExistsException.class)
     })
     public ResponseEntity<?> createAdminUser(@Valid @RequestBody PostUserRequest postUserRequest) {
-        UserMaria userMaria = Mapper.mapPostUserRequestToUser(postUserRequest);
-        userService.save(userMaria, true);
+        User user = Mapper.mapPostUserRequestToUser(postUserRequest);
+        userService.save(user, true);
         return new ResponseEntity<>(new MyApiResponse(true, "OK"), HttpStatus.OK);
     }
 

@@ -1,7 +1,9 @@
 package app.config;
 
 import app.security.JWTAuthenticationFilter;
-import app.service.UserDetailsServiceImpl;
+import app.service.MariaServices.UserDetailsServiceMariaImpl;
+import app.service.UserDetailsServiceIf;
+import app.utils.ApplicationBackends;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,13 +29,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private UserDetailsServiceImpl UserDetailsService;
+    private UserDetailsServiceIf userDetailsServiceMaria;
 
     private final JWTAuthenticationEntryPoint unauthorizedHandler;
 
     @Autowired
-    public SecurityConfig(UserDetailsServiceImpl UserDetailsService, JWTAuthenticationEntryPoint unauthorizedHandler) {
-        this.UserDetailsService = UserDetailsService;
+    public SecurityConfig(UserDetailsServiceMariaImpl userDetailsService, JWTAuthenticationEntryPoint unauthorizedHandler) {
+        if (ApplicationConfig.applicationBackend == ApplicationBackends.MariaDB) {
+            this.userDetailsServiceMaria = userDetailsService;
+        }
         this.unauthorizedHandler = unauthorizedHandler;
     }
 
@@ -45,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder
-                .userDetailsService(UserDetailsService)
+                .userDetailsService(userDetailsServiceMaria)
                 .passwordEncoder(passwordEncoder());
     }
 
@@ -79,7 +83,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/api/admin/**")
                         .hasRole("ADMIN")
                     .antMatchers(  "/api/users/**", "/api/queues/**")
-                        .permitAll()
+                        .authenticated()
                     .antMatchers("/swagger-ui.html","/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**")
                         .permitAll()
                 .anyRequest()

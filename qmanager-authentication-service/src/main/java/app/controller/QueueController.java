@@ -1,11 +1,14 @@
 package app.controller;
 
 import app.annotations.CurrentUser;
+import app.config.ApplicationConfig;
 import app.exceptions.ResourceAlreadyExistsException;
 import app.exceptions.ResourceNotFoundException;
 import app.payload.*;
 import app.service.QueueService;
+import app.service.MariaServices.QueueServiceMariaImpl;
 import app.service.UserPrincipal;
+import app.utils.ApplicationBackends;
 import app.utils.Mapper;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -15,7 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/queues")
@@ -23,8 +26,10 @@ public class QueueController {
     private QueueService queueService;
 
     @Autowired
-    public QueueController(QueueService queueService) {
-        this.queueService = queueService;
+    public QueueController(QueueServiceMariaImpl queueServiceMariaImpl) {
+        if (ApplicationConfig.applicationBackend == ApplicationBackends.MariaDB) {
+            this.queueService = queueServiceMariaImpl;
+        }
     }
 
     @PutMapping("/")
@@ -66,10 +71,4 @@ public class QueueController {
         queueService.deleteUserFromQueue(currentUser.getEmail());
         return new ResponseEntity<>(new MyApiResponse(true, "OK"), HttpStatus.OK);
     }
-
-
-
-//    @GetMapping("/")
-//    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-//    }
 }
