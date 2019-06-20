@@ -1,6 +1,6 @@
 package app.entity.Helper;
 
-import app.entity.QueueRow;
+import app.entity.MariaEntities.QueueRowMariaDB;
 import java.time.Instant;
 
 public class UserInQueue {
@@ -11,7 +11,7 @@ public class UserInQueue {
     private String email;
     private Instant createdAt;
     
-    public UserInQueue(QueueRow row){
+    public UserInQueue(QueueRowMariaDB row){
         this.userID = row.getUser().getId();
         this.firstName = row.getUser().getFirstName();
         this.lastName = row.getUser().getLastName();

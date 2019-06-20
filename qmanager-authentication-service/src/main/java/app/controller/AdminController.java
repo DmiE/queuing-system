@@ -1,6 +1,7 @@
 package app.controller;
 
 import app.annotations.CurrentUser;
+import app.config.ApplicationConfig;
 import app.entity.User;
 import app.exceptions.AppException;
 import app.exceptions.ResourceAlreadyExistsException;
@@ -12,7 +13,8 @@ import app.payload.PostUserRequest;
 import app.service.QueueService;
 import app.service.UserPrincipal;
 import app.service.UserService;
-import app.service.UserServiceMariaImpl;
+import app.service.MariaServices.UserServiceMariaImpl;
+import app.utils.ApplicationBackends;
 import app.utils.Mapper;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -27,7 +29,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/admin")
+@RequestMapping("/admin")
 public class AdminController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -35,9 +37,11 @@ public class AdminController {
     private QueueService queueService;
 
     @Autowired
-    public AdminController(UserServiceMariaImpl userService, QueueService queueService) {
-        this.userService = userService;
-        this.queueService = queueService;
+    public AdminController(UserServiceMariaImpl userServiceMaria, QueueService queueServiceMaria) {
+        if (ApplicationConfig.applicationBackend == ApplicationBackends.MariaDB){
+            this.userService = userServiceMaria;
+            this.queueService = queueServiceMaria;
+        }
     }
 
     @PostMapping("/user")
@@ -59,7 +63,7 @@ public class AdminController {
             @ApiResponse(code = 409, message = "Queue with name:  already exists", response = ResourceAlreadyExistsException.class)
     })
     public ResponseEntity<?> createQueue(@Valid @RequestBody PostQueueRequest postqueueRequest, @CurrentUser UserPrincipal currentUser) {
-        queueService.createQueue(postqueueRequest.getQueueName(), currentUser.getId());
+        queueService.createQueue(postqueueRequest.getQueueName(), currentUser.getEmail());
         return new ResponseEntity<>(new MyApiResponse(true, "OK"), HttpStatus.OK);
     }
 

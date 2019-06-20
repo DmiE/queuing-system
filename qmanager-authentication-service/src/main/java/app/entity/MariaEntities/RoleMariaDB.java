@@ -1,11 +1,12 @@
-package app.entity;
+package app.entity.MariaEntities;
 
+import app.entity.RoleName;
 import org.hibernate.annotations.NaturalId;
 import javax.persistence.*;
 
 @Entity
 @Table(name = "roles")
-public class Role {
+public class RoleMariaDB {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -15,11 +16,11 @@ public class Role {
     @Column(length = 60)
     private RoleName name;
 
-    public Role() {
+    public RoleMariaDB() {
 
     }
 
-    public Role(RoleName name) {
+    public RoleMariaDB(RoleName name) {
         this.name = name;
     }
 

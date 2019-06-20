@@ -1,42 +1,17 @@
 package app.entity;
 
-
-import app.payload.LoginRequest;
-
-import javax.persistence.*;
+import app.entity.MariaEntities.RoleMariaDB;
+import app.entity.MariaEntities.UserMariaDB;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-@Table(name = "users", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {
-                "email"
-        })
-})
-
-public class User{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+public class User {
     private Long id;
-
-    @Column(name="first_name")
     private String firstName;
-
-    @Column(name="last_name")
     private String lastName;
-
-    @Column(name="email")
     private String email;
-
-    @Column(name="password")
     private String password;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+    private Set<RoleMariaDB> roles = new HashSet<>();
 
     public User(String first_name, String last_name, String email, String password) {
         this.firstName = last_name;
@@ -44,7 +19,17 @@ public class User{
         this.password = password;
         this.lastName = first_name;
     }
-    public User(){}
+
+    public User(UserMariaDB user) {
+        this.firstName = user.getFirstName();
+        this.email = user.getEmail();
+        this.password = user.getPassword();
+        this.lastName = user.getFirstName();
+        this.id = user.getId();
+        this.roles = user.getRoles();
+    }
+
+    protected User(){}
 
     public Long getId() {
         return id;
@@ -58,16 +43,16 @@ public class User{
         return firstName;
     }
 
-    public void setFirstName(String first_name) {
-        this.firstName = first_name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String last_name) {
-        this.lastName = last_name;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -86,8 +71,11 @@ public class User{
         this.password = password;
     }
 
-    public Set<Role> getRoles() { return roles; }
+    public Set<RoleMariaDB> getRoles() {
+        return roles;
+    }
 
-    public void setRoles(Set<Role> roles) { this.roles = roles;}
-
+    public void setRoles(Set<RoleMariaDB> roles) {
+        this.roles = roles;
+    }
 }

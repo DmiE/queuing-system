@@ -1,14 +1,15 @@
 package app.controller;
 
+import app.config.ApplicationConfig;
 import app.entity.User;
-import app.exceptions.ResourceAlreadyExistsException;
 import app.payload.MyApiResponse;
 import app.payload.JWTAuthenticationResponse;
 import app.payload.LoginRequest;
 import app.payload.SignUpRequest;
 import app.security.JWTTokenProvider;
 import app.service.UserService;
-import app.service.UserServiceMariaImpl;
+import app.service.MariaServices.UserServiceMariaImpl;
+import app.utils.ApplicationBackends;
 import app.utils.Mapper;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -34,8 +35,10 @@ public class AuthController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    public AuthController(UserServiceMariaImpl userService, JWTTokenProvider tokenProvider, AuthenticationManager authenticationManager) {
-        this.userService = userService;
+    public AuthController(UserServiceMariaImpl userServiceMaria, JWTTokenProvider tokenProvider, AuthenticationManager authenticationManager) {
+        if (ApplicationConfig.applicationBackend == ApplicationBackends.MariaDB){
+            this.userService = userServiceMaria;
+        }
         this.tokenProvider = tokenProvider;
         this.authenticationManager = authenticationManager;
     }
@@ -63,6 +66,6 @@ public class AuthController {
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
         User user = Mapper.mapSignUpRequestToUser(signUpRequest);
         userService.save(user, false);
-        return new ResponseEntity<>(new MyApiResponse(true, "User registered successfully"), HttpStatus.OK);
+        return new ResponseEntity<>(new MyApiResponse(true, "UserMariaDB registered successfully"), HttpStatus.OK);
     }
 }

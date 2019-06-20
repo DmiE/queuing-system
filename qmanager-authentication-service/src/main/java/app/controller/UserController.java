@@ -1,11 +1,12 @@
 package app.controller;
 
+import app.config.ApplicationConfig;
 import app.entity.User;
 import app.exceptions.ResourceAlreadyExistsException;
-import app.exceptions.ResourceNotFoundException;
 import app.payload.*;
 import app.service.UserService;
-import app.service.UserServiceMariaImpl;
+import app.service.MariaServices.UserServiceMariaImpl;
+import app.utils.ApplicationBackends;
 import app.utils.Mapper;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -19,16 +20,20 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("/api/users")
 public class UserController{
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private UserService userService;
 
     @Autowired
-    public UserController(UserServiceMariaImpl userService) {this.userService = userService;}
+    public UserController(UserServiceMariaImpl userServiceMaria) {
+        if (ApplicationConfig.applicationBackend == ApplicationBackends.MariaDB){
+            this.userService = userServiceMaria;
+        }
+    }
 
-    @PostMapping("users")
+    @PostMapping("")
     @ApiResponses({//
             @ApiResponse(code = 200, message = "OK", response = MyApiResponse.class),
             @ApiResponse(code = 409, message = "Queue with name alreadu exists", response = ResourceAlreadyExistsException.class),
@@ -39,16 +44,16 @@ public class UserController{
         return new ResponseEntity<>(new MyApiResponse(true, "OK"), HttpStatus.OK);
     }
 
-    @GetMapping("users/{email}")
+    @GetMapping("/{email}")
     @ApiResponses({//
             @ApiResponse(code = 200, message = "OK", response = GetQueueResponse.class),
-            @ApiResponse(code = 400, message = "User with email does not exists", response = GetUserResponse.class),
+            @ApiResponse(code = 400, message = "UserMariaDB with email does not exists", response = GetUserResponse.class),
     })
     public ResponseEntity<?> getUser(@PathVariable(value = "email") String email) {
         return ResponseEntity.ok(new GetUserResponse(userService.findByEmail(email)));
     }
 
-    @GetMapping("users")
+    @GetMapping("")
     @ApiResponses({//
             @ApiResponse(code = 200, message = "OK", response = GetAllUsersResponse.class),
     })
@@ -56,6 +61,4 @@ public class UserController{
         List<User> users = userService.findAll();
         return ResponseEntity.ok(new GetAllUsersResponse(users));
     }
-
-
 }
