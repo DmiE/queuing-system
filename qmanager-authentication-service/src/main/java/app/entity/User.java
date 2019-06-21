@@ -2,16 +2,19 @@ package app.entity;
 
 import app.entity.MariaEntities.RoleMariaDB;
 import app.entity.MariaEntities.UserMariaDB;
+import app.entity.MongoEntities.UserMongoDB;
+import app.utils.Mapper;
+
 import java.util.HashSet;
 import java.util.Set;
 
 public class User {
-    private Long id;
+    private String id;
     private String firstName;
     private String lastName;
     private String email;
     private String password;
-    private Set<RoleMariaDB> roles = new HashSet<>();
+    private Set<RoleName> roles = new HashSet<>();
 
     public User(String first_name, String last_name, String email, String password) {
         this.firstName = last_name;
@@ -24,18 +27,27 @@ public class User {
         this.firstName = user.getFirstName();
         this.email = user.getEmail();
         this.password = user.getPassword();
-        this.lastName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.id = user.getId().toString();
+        this.roles = Mapper.mapSetRoleMariaDBtoSetRoleName(user.getRoles());
+    }
+
+    public User(UserMongoDB user) {
+        this.firstName = user.getFirstName();
+        this.email = user.getEmail();
+        this.password = user.getPassword();
+        this.lastName = user.getLastName();
         this.id = user.getId();
-        this.roles = user.getRoles();
+        this.roles = user.getRole();
     }
 
     protected User(){}
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -71,11 +83,11 @@ public class User {
         this.password = password;
     }
 
-    public Set<RoleMariaDB> getRoles() {
+    public Set<RoleName> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<RoleMariaDB> roles) {
+    public void setRoles(Set<RoleName> roles) {
         this.roles = roles;
     }
 }

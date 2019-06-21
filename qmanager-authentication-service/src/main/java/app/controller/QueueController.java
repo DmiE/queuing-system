@@ -6,7 +6,7 @@ import app.exceptions.ResourceAlreadyExistsException;
 import app.exceptions.ResourceNotFoundException;
 import app.payload.*;
 import app.service.QueueService;
-import app.service.MariaServices.QueueServiceMariaImpl;
+import app.service.MariaDBServices.QueueServiceMariaImpl;
 import app.service.UserPrincipal;
 import app.utils.ApplicationBackends;
 import app.utils.Mapper;

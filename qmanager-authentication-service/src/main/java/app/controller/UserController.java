@@ -4,8 +4,9 @@ import app.config.ApplicationConfig;
 import app.entity.User;
 import app.exceptions.ResourceAlreadyExistsException;
 import app.payload.*;
+import app.service.MongoDBServices.UserServiceMongoImpl;
 import app.service.UserService;
-import app.service.MariaServices.UserServiceMariaImpl;
+import app.service.MariaDBServices.UserServiceMariaImpl;
 import app.utils.ApplicationBackends;
 import app.utils.Mapper;
 import io.swagger.annotations.ApiResponse;
@@ -27,10 +28,12 @@ public class UserController{
     private UserService userService;
 
     @Autowired
-    public UserController(UserServiceMariaImpl userServiceMaria) {
+    public UserController(UserServiceMariaImpl userServiceMaria, UserServiceMongoImpl userServiceMongo) {
         if (ApplicationConfig.applicationBackend == ApplicationBackends.MariaDB){
             this.userService = userServiceMaria;
         }
+            this.userService = userServiceMongo;
+
     }
 
     @PostMapping("")

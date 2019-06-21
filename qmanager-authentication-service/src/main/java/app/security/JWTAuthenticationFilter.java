@@ -1,7 +1,8 @@
 package app.security;
 
 import app.config.ApplicationConfig;
-import app.service.MariaServices.UserDetailsServiceMariaImpl;
+import app.service.MariaDBServices.UserDetailsServiceMariaImpl;
+import app.service.MongoDBServices.UserDetailsServiceMongoImpl;
 import app.service.UserDetailsServiceIf;
 import app.utils.ApplicationBackends;
 import org.slf4j.Logger;
@@ -33,9 +34,15 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     private static final Logger logger = LoggerFactory.getLogger(JWTAuthenticationFilter.class);
 
     @Autowired
-    public JWTAuthenticationFilter(UserDetailsServiceMariaImpl userDetailsService, JWTTokenProvider tokenProvider) {
+    public JWTAuthenticationFilter(UserDetailsServiceMariaImpl userDetailsServiceMaria,
+                                   JWTTokenProvider tokenProvider,
+                                   UserDetailsServiceMongoImpl userDetailsServiceMongo) {
+
         if (ApplicationConfig.applicationBackend == ApplicationBackends.MariaDB) {
-            this.userDetailsService = userDetailsService;
+            this.userDetailsService = userDetailsServiceMaria;
+        }
+        else {
+            this.userDetailsService = userDetailsServiceMongo;
         }
         this.tokenProvider = tokenProvider;
     }
@@ -44,11 +51,11 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             String jwt = getJwtFromRequest(request);
-
+            org.apache.log4j.Logger.getRootLogger().setLevel(org.apache.log4j.Level.DEBUG);
             if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
-                Long userId = tokenProvider.getUserIdFromJWT(jwt);
-
-                UserDetails userDetails = userDetailsService.loadUserById(userId);
+                String email = tokenProvider.getUserEmailFromJWT(jwt);
+                UserDetails userDetails = userDetailsService.loadUserByEmail(email);
+                logger.error("USER Email" + email);
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 

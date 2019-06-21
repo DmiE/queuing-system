@@ -1,7 +1,8 @@
 package app.config;
 
 import app.security.JWTAuthenticationFilter;
-import app.service.MariaServices.UserDetailsServiceMariaImpl;
+import app.service.MariaDBServices.UserDetailsServiceMariaImpl;
+import app.service.MongoDBServices.UserDetailsServiceMongoImpl;
 import app.service.UserDetailsServiceIf;
 import app.utils.ApplicationBackends;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,17 +30,21 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private UserDetailsServiceIf userDetailsServiceMaria;
+    private UserDetailsServiceIf userDetailsService;
     private final JWTAuthenticationEntryPoint unauthorizedHandler;
     private  JWTAuthenticationFilter jwtAuthenticationFilter;
 
     @Autowired
-    public SecurityConfig(UserDetailsServiceMariaImpl userDetailsService,
+    public SecurityConfig(UserDetailsServiceMariaImpl userDetailsServiceMaria,
                           JWTAuthenticationEntryPoint unauthorizedHandler,
-                          JWTAuthenticationFilter jwtAuthenticationFilter) {
+                          JWTAuthenticationFilter jwtAuthenticationFilter,
+                          UserDetailsServiceMongoImpl userDetailsServiceMongo) {
 
         if (ApplicationConfig.applicationBackend == ApplicationBackends.MariaDB) {
-            this.userDetailsServiceMaria = userDetailsService;
+            this.userDetailsService = userDetailsServiceMaria;
+        }
+        else {
+            this.userDetailsService = userDetailsServiceMongo;
         }
         this.unauthorizedHandler = unauthorizedHandler;
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
@@ -48,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder
-                .userDetailsService(userDetailsServiceMaria)
+                .userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder());
     }
 

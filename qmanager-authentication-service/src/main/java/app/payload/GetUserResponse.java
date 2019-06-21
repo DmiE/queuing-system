@@ -5,7 +5,7 @@ import app.entity.User;
 
 public class GetUserResponse {
 
-    private Long id;
+    private String id;
     private String firstName;
     private String lastName;
     private String email;
@@ -17,9 +17,9 @@ public class GetUserResponse {
         email = user.getEmail();
     }
 
-    public Long getId() { return id; }
+    public String getId() { return id; }
 
-    public void setId(Long id) { this.id = id; }
+    public void setId(String id) { this.id = id; }
 
     public String getFirstName() { return firstName;}
 

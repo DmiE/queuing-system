@@ -2,14 +2,19 @@ package app.utils;
 
 import app.entity.Helper.UserInQueue;
 import app.entity.MariaEntities.QueueRowMariaDB;
+import app.entity.MariaEntities.RoleMariaDB;
+import app.entity.RoleName;
 import app.entity.User;
 import app.payload.GetAllQueueResponse;
 import app.payload.GetQueueResponse;
 import app.payload.PostUserRequest;
 import app.payload.SignUpRequest;
 
+import javax.management.relation.Role;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Mapper {
 
@@ -48,5 +53,16 @@ public class Mapper {
         return new GetAllQueueResponse(getQueueResponses);
     }
 
+    public static Set<RoleName> mapSetRoleMariaDBtoSetRoleName(Set<RoleMariaDB> roleNames){
+        Set<RoleName> roles = new HashSet<>();
+        for (RoleName role : RoleName.values()){
+            for (RoleMariaDB roleMaria : roleNames){
+                if (role == (roleMaria.getName())){
+                    roles.add(role);
+                }
+            }
+        }
+        return roles;
+    }
 
 }
