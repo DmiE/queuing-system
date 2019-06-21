@@ -1,6 +1,7 @@
-package app.service.MariaServices;
+package app.service.MariaDBServices;
 
 import app.entity.MariaEntities.UserMariaDB;
+import app.entity.MongoEntities.UserMongoDB;
 import app.entity.User;
 import app.repository.MariaRepositories.MariaDBUserRepository;
 import app.service.UserDetailsServiceIf;
@@ -22,11 +23,11 @@ public class UserDetailsServiceMariaImpl implements UserDetailsServiceIf {
 
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String usernameOrEmail)
+    public UserDetails loadUserByUsername(String email)
             throws UsernameNotFoundException {
-        UserMariaDB userMaria = userRepository.findByEmail(usernameOrEmail).
-                orElseThrow(() ->new UsernameNotFoundException("User not found with username or email : " + usernameOrEmail));
-        return UserPrincipal.create(new User(userMaria));
+        UserMariaDB user = userRepository.findByEmail(email).
+                orElseThrow(() ->new UsernameNotFoundException("User not found with username or email : " + email));
+        return UserPrincipal.create(new User(user));
     }
 
     @Transactional
@@ -35,4 +36,14 @@ public class UserDetailsServiceMariaImpl implements UserDetailsServiceIf {
                 orElseThrow(() -> new UsernameNotFoundException("User not found with id : " + id));
         return UserPrincipal.create(new User(userMaria));
     }
+
+    @Override
+    @Transactional
+    public UserDetails loadUserByEmail(String email)
+            throws UsernameNotFoundException {
+        UserMariaDB user = userRepository.findByEmail(email).
+                orElseThrow(() ->new UsernameNotFoundException("User not found with username or email : " + email));
+        return UserPrincipal.create(new User(user));
+    }
+
 }

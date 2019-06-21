@@ -1,5 +1,4 @@
-package app.service.MariaServices;
-import app.controller.UserController;
+package app.service.MariaDBServices;
 import app.entity.MariaEntities.QueueRowMariaDB;
 import app.entity.MariaEntities.UserMariaDB;
 import app.entity.User;

@@ -1,4 +1,4 @@
-package app.service.MariaServices;
+package app.service.MariaDBServices;
 
 import app.entity.MariaEntities.RoleMariaDB;
 import app.entity.RoleName;

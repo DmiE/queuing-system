@@ -1,6 +1,6 @@
 package app.entity.MariaEntities;
 import app.entity.User;
-import app.service.MariaServices.QueueServiceMariaImpl;
+import app.service.MariaDBServices.QueueServiceMariaImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,10 +54,7 @@ public class UserMariaDB {
         this.email = user.getEmail();
         this.password = user.getPassword();
         this.lastName = user.getFirstName();
-        this.id = user.getId();
-        System.out.println("NO HUJ");
-        logger.error(String.format("DEBUG MICHAL2 user2 konr %S", this.getId()));
-        logger.error(String.format("DEBUG MICHAL2 user2 passed %S", user.getId()));
+        this.id = Long.parseLong(user.getId());
     }
 
     public UserMariaDB() {

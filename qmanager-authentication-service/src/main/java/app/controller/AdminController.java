@@ -13,7 +13,7 @@ import app.payload.PostUserRequest;
 import app.service.QueueService;
 import app.service.UserPrincipal;
 import app.service.UserService;
-import app.service.MariaServices.UserServiceMariaImpl;
+import app.service.MariaDBServices.UserServiceMariaImpl;
 import app.utils.ApplicationBackends;
 import app.utils.Mapper;
 import io.swagger.annotations.ApiResponse;
