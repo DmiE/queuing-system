@@ -58,8 +58,6 @@ public class UserServiceMariaImpl implements UserService {
     public User findById(Long userID) {
         UserMariaDB user = userRepository.findById(userID)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("User with id %s does not exists", userID)));
-        logger.error(String.format("DEBUG MICHAL service user %S", user.getId()));
-        System.out.println("DUPA sercice"+ user.getId());
         return new User(user);
     }
 

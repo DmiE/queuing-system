@@ -60,16 +60,12 @@ public class AuthController {
             @ApiResponse(code = 200, message = "OK", response = JWTAuthenticationResponse.class)
     })
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-        org.apache.log4j.Logger.getRootLogger().setLevel(org.apache.log4j.Level.DEBUG);
-        logger.error("jestem");
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getUsernameOrEmail(),
                         loginRequest.getPassword()
                 )
         );
-        org.apache.log4j.Logger.getRootLogger().setLevel(org.apache.log4j.Level.DEBUG);
-        logger.error("jestem");
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String jwt = tokenProvider.generateToken(authentication);
@@ -80,6 +76,6 @@ public class AuthController {
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
         User user = Mapper.mapSignUpRequestToUser(signUpRequest);
         userService.save(user, false);
-        return new ResponseEntity<>(new MyApiResponse(true, "UserMariaDB registered successfully"), HttpStatus.OK);
+        return new ResponseEntity<>(new MyApiResponse(true, "User registered successfully"), HttpStatus.OK);
     }
 }

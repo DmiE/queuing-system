@@ -11,11 +11,11 @@ public class GetAllUsersResponse {
         this.users = users;
     }
 
-    public List<User> getUserMarias() {
+    public List<User> getUsers() {
         return this.users;
     }
 
-    public void setUserMarias(List<User> userMarias) {
+    public void setUsers(List<User> userMarias) {
         this.users = userMarias;
     }
 

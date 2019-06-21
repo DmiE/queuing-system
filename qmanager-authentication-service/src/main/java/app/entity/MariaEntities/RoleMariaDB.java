@@ -17,7 +17,6 @@ public class RoleMariaDB {
     private RoleName name;
 
     public RoleMariaDB() {
-
     }
 
     public RoleMariaDB(RoleName name) {
@@ -32,9 +31,7 @@ public class RoleMariaDB {
         this.id = id;
     }
 
-    public RoleName getName() {
-        return name;
-    }
+    public RoleName getName() { return name; }
 
     public void setName(RoleName name) {
         this.name = name;

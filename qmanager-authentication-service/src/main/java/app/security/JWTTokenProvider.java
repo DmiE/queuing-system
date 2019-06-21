@@ -28,7 +28,6 @@ public class JWTTokenProvider {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
 
-        logger.error("IDUPAAA ");
         return Jwts.builder()
                 .setSubject(userPrincipal.getEmail())
                 .setIssuedAt(new Date())
@@ -42,7 +41,6 @@ public class JWTTokenProvider {
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)
                 .getBody();
-        logger.error(claims.getSubject());
         return claims.getSubject();
     }
 

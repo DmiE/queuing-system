@@ -1,17 +1,18 @@
 package app.entity.Helper;
 
-import app.entity.MariaEntities.QueueRowMariaDB;
-import java.time.Instant;
+import app.entity.QueueRow;
+
+import java.util.Date;
 
 public class UserInQueue {
 
-    private Long userID;
+    private String userID;
     private String firstName;
     private String lastName;
     private String email;
-    private Instant createdAt;
+    private Date createdAt;
     
-    public UserInQueue(QueueRowMariaDB row){
+    public UserInQueue(QueueRow row){
         this.userID = row.getUser().getId();
         this.firstName = row.getUser().getFirstName();
         this.lastName = row.getUser().getLastName();
@@ -19,9 +20,9 @@ public class UserInQueue {
         this.createdAt = row.getCreatedAt();    
     }
 
-    public Long getId() { return userID; }
+    public String getId() { return userID; }
 
-    public void setId(Long id) { this.userID = id; }
+    public void setId(String id) { this.userID = id; }
 
     public String getFirstName() { return firstName; }
 
@@ -35,9 +36,9 @@ public class UserInQueue {
 
     public void setEmail(String email) { this.email = email; }
 
-    public Instant getCreatedAt() { return createdAt; }
+    public Date getCreatedAt() { return createdAt; }
 
-    public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
+    public void setCreatedAt(Date createdAt) { this.createdAt = createdAt; }
 
 
 }
