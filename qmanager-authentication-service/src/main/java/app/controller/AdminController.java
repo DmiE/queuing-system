@@ -10,6 +10,9 @@ import app.payload.DeleteUserRequest;
 import app.payload.MyApiResponse;
 import app.payload.PostQueueRequest;
 import app.payload.PostUserRequest;
+import app.service.MariaDBServices.QueueServiceMariaImpl;
+import app.service.MongoDBServices.QueueServiceMongoImpl;
+import app.service.MongoDBServices.UserServiceMongoImpl;
 import app.service.QueueService;
 import app.service.UserPrincipal;
 import app.service.UserService;
@@ -37,10 +40,20 @@ public class AdminController {
     private QueueService queueService;
 
     @Autowired
-    public AdminController(UserServiceMariaImpl userServiceMaria, QueueService queueServiceMaria) {
+    public AdminController(UserServiceMariaImpl userServiceMaria,
+                           QueueServiceMariaImpl queueServiceMaria,
+                           UserServiceMongoImpl userServiceMongo,
+                           QueueServiceMongoImpl queueServiceMongo
+                           ) {
+
         if (ApplicationConfig.applicationBackend == ApplicationBackends.MariaDB){
             this.userService = userServiceMaria;
             this.queueService = queueServiceMaria;
+        }
+        else {
+            this.userService = userServiceMongo;
+            this.queueService = queueServiceMongo;
+
         }
     }
 

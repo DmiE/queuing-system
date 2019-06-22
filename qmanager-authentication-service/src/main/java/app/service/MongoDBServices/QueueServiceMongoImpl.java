@@ -1,12 +1,14 @@
-package app.service.MariaDBServices;
-import app.entity.MariaEntities.QueueRowMariaDB;
-import app.entity.MariaEntities.UserMariaDB;
+package app.service.MongoDBServices;
+
+import app.entity.MongoEntities.QueueRowMongoDB;
+import app.entity.MongoEntities.UserMongoDB;
 import app.entity.QueueRow;
 import app.entity.User;
 import app.exceptions.AppException;
 import app.exceptions.ResourceAlreadyExistsException;
 import app.exceptions.ResourceNotFoundException;
-import app.repository.MariaRepositories.MariaDBQueueRepository;
+import app.repository.MongoRepositories.MongoDBQueueRepository;
+import app.service.MariaDBServices.QueueServiceMariaImpl;
 import app.service.QueueService;
 import app.service.UserService;
 import org.slf4j.Logger;
@@ -14,32 +16,36 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
-public class QueueServiceMariaImpl implements QueueService {
-    private MariaDBQueueRepository queueRepository;
+public class QueueServiceMongoImpl implements QueueService {
+
+    private MongoDBQueueRepository queueRepository;
     private UserService userService;
     private static final Logger logger = LoggerFactory.getLogger(QueueServiceMariaImpl.class);
 
     @Autowired
-    public QueueServiceMariaImpl(MariaDBQueueRepository queueRepository, UserServiceMariaImpl userService) {
+    public QueueServiceMongoImpl(MongoDBQueueRepository queueRepository, UserServiceMongoImpl userService) {
         this.queueRepository = queueRepository;
         this.userService = userService;
     }
 
     @Override
     public void addUserToQueue(String  queueName, String email) {
-        User user2 = userService.findByEmail(email);
-        UserMariaDB user = new UserMariaDB(user2);
+        UserMongoDB user = new UserMongoDB(userService.findByEmail(email));
         if(! queueRepository.existsByQueueName(queueName)) {
             throw new ResourceNotFoundException(String.format("Queue with name %s does not exists", queueName));
         }
         if( queueRepository.existsByUserAndFinished(user, false)){
             throw new ResourceAlreadyExistsException(String.format("User with email %s already exist in queue", email));
         }
-        queueRepository.save(new QueueRowMariaDB(queueName, user));
+        Date currentTime = Timestamp.valueOf(LocalDateTime.now());
+        queueRepository.save(new QueueRowMongoDB(queueName, user, currentTime ,false));
     }
 
     @Override
@@ -47,7 +53,7 @@ public class QueueServiceMariaImpl implements QueueService {
         if (! queueRepository.existsByQueueName(queueName)){
             throw  new ResourceNotFoundException(String.format("Queue with name: %s does not exists",queueName));
         }
-        List<QueueRowMariaDB> queueRows = queueRepository.findByQueueNameAndFinishedOrderByCreatedAtAsc(queueName, false);
+        List<QueueRowMongoDB> queueRows = queueRepository.findByQueueNameAndFinishedOrderByCreatedAtAsc(queueName, false);
         List<QueueRow> rows = new ArrayList<>();
         queueRows.forEach(queueRow -> rows.add(new QueueRow(queueRow)));
         return rows;
@@ -55,7 +61,7 @@ public class QueueServiceMariaImpl implements QueueService {
 
     @Override
     public List<QueueRow> getAllQueues() {
-        List<QueueRowMariaDB> queueRows = queueRepository.findByFinishedOrderByQueueName(false);
+        List<QueueRowMongoDB> queueRows = queueRepository.findByFinishedOrderByQueueName(false);
         List<QueueRow> rows = new ArrayList<>();
         queueRows.forEach(queueRow -> rows.add(new QueueRow(queueRow)));
         return rows;
@@ -64,35 +70,36 @@ public class QueueServiceMariaImpl implements QueueService {
 
     @Override
     public void createQueue(String queueName, String email) {
-        UserMariaDB user = new UserMariaDB(userService.findByEmail(email));
+        UserMongoDB user = new UserMongoDB(userService.findByEmail(email));
         if ( queueRepository.existsByQueueName(queueName)){
             throw  new ResourceAlreadyExistsException(String.format("Queue with name: %s already exists",queueName));
         }
-        queueRepository.save(new QueueRowMariaDB(queueName, user, true));
+        Date currentTime = Timestamp.valueOf(LocalDateTime.now());
+        queueRepository.save(new QueueRowMongoDB(queueName, user, currentTime ,true));
     }
 
     @SuppressWarnings("Duplicates")
     @Override
     public void deleteUserFromQueue(String email, String queueName){
-        UserMariaDB user = new UserMariaDB(userService.findByEmail(email));
+        UserMongoDB user = new UserMongoDB(userService.findByEmail(email));
         if(! queueRepository.existsByQueueName(queueName)) {
             throw new ResourceNotFoundException(String.format("Queue with name %s does not exists", queueName));
         }
         if(! queueRepository.existsByUserAndFinished(user, false)){
-            throw new ResourceNotFoundException(String.format("User with id %d does not exists ", user.getId()));
+            throw new ResourceNotFoundException(String.format("User with id %s does not exists ", user.getId()));
         }
-        List<QueueRowMariaDB> deleted= queueRepository.deleteByUserAndQueueName(user, queueName);
+        List<QueueRowMongoDB> deleted= queueRepository.deleteByUserAndQueueName(user, queueName);
         if( deleted.size() ==0 ){
             throw new AppException("User not deleted ");
         }
     }
     @Override
     public void deleteUserFromQueue(String email){
-        UserMariaDB user = new UserMariaDB(userService.findByEmail(email));
+        UserMongoDB user = new UserMongoDB(userService.findByEmail(email));
         if(! queueRepository.existsByUserAndFinished(user, false)){
-            throw new ResourceNotFoundException(String.format("User with id %d does not exists ", user.getId()));
+            throw new ResourceNotFoundException(String.format("User with id %s does not exists ", user.getId()));
         }
-        List<QueueRowMariaDB> deleted= queueRepository.deleteByUser(user);
+        List<QueueRowMongoDB> deleted= queueRepository.deleteByUser(user);
         if( deleted.size() ==0 ){
             throw new AppException("User not deleted ");
         }

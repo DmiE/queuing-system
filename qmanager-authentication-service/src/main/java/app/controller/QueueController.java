@@ -5,6 +5,8 @@ import app.config.ApplicationConfig;
 import app.exceptions.ResourceAlreadyExistsException;
 import app.exceptions.ResourceNotFoundException;
 import app.payload.*;
+import app.service.MongoDBServices.QueueServiceMongoImpl;
+import app.service.MongoDBServices.UserServiceMongoImpl;
 import app.service.QueueService;
 import app.service.MariaDBServices.QueueServiceMariaImpl;
 import app.service.UserPrincipal;
@@ -30,9 +32,12 @@ public class QueueController {
     private static final Logger logger = LoggerFactory.getLogger(QueueController.class);
 
     @Autowired
-    public QueueController(QueueServiceMariaImpl queueServiceMariaImpl) {
+    public QueueController(QueueServiceMariaImpl queueServiceMaria, QueueServiceMongoImpl queueServiceMongo) {
         if (ApplicationConfig.applicationBackend == ApplicationBackends.MariaDB) {
-            this.queueService = queueServiceMariaImpl;
+            this.queueService = queueServiceMaria;
+        }
+        else{
+            this.queueService = queueServiceMongo;
         }
     }
 
@@ -40,12 +45,10 @@ public class QueueController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK", response = MyApiResponse.class),
             @ApiResponse(code = 400, message = "Queue with name does not exists", response = ResourceNotFoundException.class),
-            @ApiResponse(code = 409, message = "UserMariaDB with id already exists in queue", response = ResourceAlreadyExistsException.class)
+            @ApiResponse(code = 409, message = "Userwith id already exists in queue", response = ResourceAlreadyExistsException.class)
     })
     public ResponseEntity<?> addToQueue(@CurrentUser UserPrincipal currentUser, @Valid @RequestBody AddtoQueueRequest addtoQueue ) {
         org.apache.log4j.Logger.getRootLogger().setLevel(org.apache.log4j.Level.DEBUG);
-        logger.error("MOrawiec" + currentUser.getId().toString());
-        System.out.println("DUPA"+ currentUser.getId());
         queueService.addUserToQueue(addtoQueue.getQueueName(), currentUser.getEmail());
         return new ResponseEntity<>(new MyApiResponse(true, "OK"), HttpStatus.OK);
     }
@@ -70,8 +73,8 @@ public class QueueController {
     @DeleteMapping("/user")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK", response = MyApiResponse.class),
-            @ApiResponse(code = 404, message = "UserMariaDB  with name:  does not exists", response = ResourceNotFoundException.class),
-            @ApiResponse(code = 500, message = "UserMariaDB not deleted", response = ResourceNotFoundException.class)
+            @ApiResponse(code = 404, message = "User  with name:  does not exists", response = ResourceNotFoundException.class),
+            @ApiResponse(code = 500, message = "User not deleted", response = ResourceNotFoundException.class)
 
     })
     public ResponseEntity<?> deleteUserFromQueue(@CurrentUser UserPrincipal currentUser) {

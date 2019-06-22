@@ -50,7 +50,7 @@ public class UserController{
     @GetMapping("/{email}")
     @ApiResponses({//
             @ApiResponse(code = 200, message = "OK", response = GetQueueResponse.class),
-            @ApiResponse(code = 400, message = "UserMariaDB with email does not exists", response = GetUserResponse.class),
+            @ApiResponse(code = 400, message = "User with email does not exists", response = GetUserResponse.class),
     })
     public ResponseEntity<?> getUser(@PathVariable(value = "email") String email) {
         return ResponseEntity.ok(new GetUserResponse(userService.findByEmail(email)));

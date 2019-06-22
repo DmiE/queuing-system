@@ -35,7 +35,6 @@ public class UserMariaDB {
 
     private static final Logger logger = LoggerFactory.getLogger(QueueServiceMariaImpl.class);
 
-
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -54,7 +53,9 @@ public class UserMariaDB {
         this.email = user.getEmail();
         this.password = user.getPassword();
         this.lastName = user.getFirstName();
-        this.id = Long.parseLong(user.getId());
+        if ( user.getId() != null){
+            this.id = Long.parseLong(user.getId());
+        }
     }
 
     public UserMariaDB() {
