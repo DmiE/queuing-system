@@ -1,6 +1,7 @@
 package app.service;
 
 import app.entity.User;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -9,5 +10,6 @@ public interface UserService {
     User findByEmail(String username);
     List<User> findAll();
     User findById(Long userID);
+    @Transactional
     void deleteUser(String email);
 }

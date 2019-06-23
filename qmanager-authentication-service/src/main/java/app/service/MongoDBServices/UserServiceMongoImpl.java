@@ -25,15 +25,15 @@ public class UserServiceMongoImpl implements UserService {
 
     private MongoDBUserRepository userRepository;
     private PasswordEncoder passwordEncoder;
-    private QueueServiceMongoImpl queueService;
+    private MongoDBQueueRepository queueRepository;
 
     @Autowired
     public UserServiceMongoImpl(MongoDBUserRepository userRepository,
                                 PasswordEncoder passwordEncoder,
-                                QueueServiceMongoImpl queueService) {
+                                MongoDBQueueRepository queueRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.queueService = queueService;
+        this.queueRepository = queueRepository;
     }
 
     @Override
@@ -63,11 +63,9 @@ public class UserServiceMongoImpl implements UserService {
 
     @Override
     public void deleteUser(String email) {
-        List<UserMongoDB> deletedUsers =  userRepository.deleteByEmail(email);
-        if (deletedUsers.size() !=0){
-            throw  new ResourceNotFoundException(String.format("User with email %s does not exists", email));
-        }
-        queueService.deleteUserFromQueue(email);
+        User user = findByEmail(email);
+        queueRepository.deleteByUser(new UserMongoDB(findByEmail(email)));
+        userRepository.deleteById(user.getId());
     }
 
     @Override

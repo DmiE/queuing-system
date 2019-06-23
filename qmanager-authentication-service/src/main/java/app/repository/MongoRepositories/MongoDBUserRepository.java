@@ -1,6 +1,5 @@
 package app.repository.MongoRepositories;
 
-import app.entity.MongoEntities.QueueRowMongoDB;
 import app.entity.MongoEntities.UserMongoDB;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
@@ -12,5 +11,5 @@ public interface MongoDBUserRepository extends MongoRepository<UserMongoDB, Stri
     Optional<UserMongoDB> findByLastName(String lastName);
     Boolean existsByEmail(String email);
     List<UserMongoDB> findByIdIn(List<Long> userIds);
-    List<UserMongoDB> deleteByEmail(String email);
+    List<UserMongoDB> deleteByEmailLike(String email);
 }
