@@ -93,6 +93,7 @@ public class UserServiceMariaImpl implements UserService {
             userRole = roleRepository.findByName(RoleName.ROLE_USER)
                     .orElseThrow(() -> new AppException("User RoleMariaDB not set."));
         }
+
         return userRole;
     }
 
