@@ -70,7 +70,6 @@ services:
     environment:
       - NODE_ENV=development
 
-
   qmanager-authentication-service:
     container_name: qmanager-authentication-service
     stdin_open: true
