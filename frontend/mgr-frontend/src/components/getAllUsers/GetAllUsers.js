@@ -8,7 +8,8 @@ class GetAllUsers extends Component {
     }
 
     getUsers = () => {
-        axios.get('http://192.168.0.25:5000/api/user/getAll', { headers: { Authorization: this.props.authorizationToken } })
+        // axios.get('http://192.168.0.25:5000/api/user/getAll', { headers: { Authorization: this.props.authorizationToken } })
+        axios.get('http://' + this.props.ipAddr + ':5000/api/user/getAll', { headers: { Authorization: this.props.authorizationToken } })
             .then((response) => {
                 const newUsers = response.data.users
                 console.log(newUsers)
@@ -33,7 +34,8 @@ class GetAllUsers extends Component {
 
 const mapStateToProps = state => {
     return {
-        authorizationToken: state.authToken
+        authorizationToken: state.authToken,
+        ipAddr: state.ipAddr
     };
 };
 

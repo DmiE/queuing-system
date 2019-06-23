@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
 import './SignUp.css';
 import axios from 'axios';
 import Input from '../../components/input/Input';
@@ -41,7 +43,7 @@ class SignUp extends Component {
         }
     }
 
-    registerHandler = ( event ) => {
+    registerHandler = (event) => {
         event.preventDefault();
         const formData = {
             email: this.state.inputs.eMail.value,
@@ -49,10 +51,11 @@ class SignUp extends Component {
             lastName: this.state.inputs.lastName.value,
             password: this.state.inputs.password.value
         }
-        axios.post('http://192.168.0.25:5000/api/auth/signup', formData)
-            .then( response => {
+        // axios.post('http://192.168.0.25:5000/api/auth/signup', formData)
+        axios.post('http://' + this.props.ipAddr + ':5000/api/auth/signup', formData)
+            .then(response => {
                 console.log(response + "form was send")
-        })
+            })
     }
 
     inputHandler = (event, inputId) => {
@@ -88,4 +91,11 @@ class SignUp extends Component {
     }
 }
 
-export default SignUp;
+const mapStateToProps = state => {
+    return {
+        authorizationToken: state.authToken,
+        ipAddr: state.ipAddr
+    };
+};
+
+export default connect(mapStateToProps)(SignUp);
