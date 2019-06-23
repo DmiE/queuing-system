@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import axios from 'axios';
 
 import './SignUp.css';
-import axios from 'axios';
 import Input from '../../components/input/Input';
 
 class SignUp extends Component {
