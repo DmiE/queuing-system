@@ -25,7 +25,8 @@ class SignIn extends Component {
             usernameOrEmail: this.state.loginInfo.email
         }
 
-        axios.post('http://192.168.0.25:5000/api/auth/signin', formData)
+        // axios.post('http://192.168.0.25:5000/api/auth/signin', formData)
+        axios.post('http://' + this.props.ipAddr + ':5000/api/auth/signin', formData)
             .then((response) => {
                 const newAccessToken = ("Bearer " + response.data.accessToken)
                 this.props.setAuthToken(newAccessToken);
@@ -54,7 +55,8 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = state => {
     return {
-        authorizationToken: state.authToken
+        authorizationToken: state.authToken,
+        ipAddr: state.ipAddr
     };
 };
 
