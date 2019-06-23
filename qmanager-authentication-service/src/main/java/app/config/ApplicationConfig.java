@@ -3,5 +3,5 @@ package app.config;
 import app.utils.ApplicationBackends;
 
 public class ApplicationConfig {
-    public static ApplicationBackends applicationBackend = ApplicationBackends.MariaDB;
+    public static ApplicationBackends applicationBackend = ApplicationBackends.MongoDB;
 }

@@ -7,6 +7,7 @@ import app.entity.User;
 import app.exceptions.AppException;
 import app.exceptions.ResourceAlreadyExistsException;
 import app.exceptions.ResourceNotFoundException;
+import app.repository.MariaRepositories.MariaDBQueueRepository;
 import app.repository.MariaRepositories.MariaDBRoleRepository;
 import app.repository.MariaRepositories.MariaDBUserRepository;
 import app.service.UserService;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -26,14 +28,19 @@ public class UserServiceMariaImpl implements UserService {
     private MariaDBUserRepository userRepository;
     private MariaDBRoleRepository roleRepository;
     private  PasswordEncoder passwordEncoder;
+    private MariaDBQueueRepository queueRepository;
     private static final Logger logger = LoggerFactory.getLogger(QueueServiceMariaImpl.class);
 
-
     @Autowired
-    public UserServiceMariaImpl(MariaDBUserRepository userRepository, MariaDBRoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceMariaImpl(MariaDBUserRepository userRepository,
+                                MariaDBRoleRepository roleRepository,
+                                PasswordEncoder passwordEncoder,
+                                MariaDBQueueRepository queueService) {
+
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.queueRepository = queueService;
     }
 
     @Override
@@ -62,8 +69,15 @@ public class UserServiceMariaImpl implements UserService {
     }
 
     @Override
+    public void deleteUser(String email) {
+        User user = findByEmail(email);
+        queueRepository.deleteByUser(new UserMariaDB(findByEmail(email)));
+        userRepository.deleteById(Long.parseLong(user.getId()));
+    }
+
+    @Override
     public List<User> findAll() {
-        List<UserMariaDB> usersMaria = userRepository.findAll();
+        List<UserMariaDB> usersMaria = (List<UserMariaDB>) userRepository.findAll();
         List<User> users = new ArrayList<>();
         usersMaria.forEach(userMaria -> users.add(new User(userMaria)));
         return users;
@@ -79,7 +93,6 @@ public class UserServiceMariaImpl implements UserService {
             userRole = roleRepository.findByName(RoleName.ROLE_USER)
                     .orElseThrow(() -> new AppException("User RoleMariaDB not set."));
         }
-
         return userRole;
     }
 

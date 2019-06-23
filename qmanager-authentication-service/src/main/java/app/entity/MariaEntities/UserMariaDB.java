@@ -33,13 +33,13 @@ public class UserMariaDB {
     @Column(name="password")
     private String password;
 
-    private static final Logger logger = LoggerFactory.getLogger(QueueServiceMariaImpl.class);
-
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<RoleMariaDB> roles = new HashSet<>();
+
+    private static final Logger logger = LoggerFactory.getLogger(QueueServiceMariaImpl.class);
 
     public UserMariaDB(String first_name, String last_name, String email, String password) {
         this.firstName = last_name;

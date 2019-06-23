@@ -5,7 +5,9 @@ import app.entity.RoleName;
 import app.entity.User;
 import app.exceptions.ResourceAlreadyExistsException;
 import app.exceptions.ResourceNotFoundException;
+import app.repository.MongoRepositories.MongoDBQueueRepository;
 import app.repository.MongoRepositories.MongoDBUserRepository;
+import app.service.QueueService;
 import app.service.UserService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +25,15 @@ public class UserServiceMongoImpl implements UserService {
 
     private MongoDBUserRepository userRepository;
     private PasswordEncoder passwordEncoder;
-
+    private MongoDBQueueRepository queueRepository;
 
     @Autowired
-    public UserServiceMongoImpl(MongoDBUserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceMongoImpl(MongoDBUserRepository userRepository,
+                                PasswordEncoder passwordEncoder,
+                                MongoDBQueueRepository queueRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.queueRepository = queueRepository;
     }
 
     @Override
@@ -54,6 +59,13 @@ public class UserServiceMongoImpl implements UserService {
         UserMongoDB user = userRepository.findById(userID.toString())
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("User with id %s does not exists", userID)));
         return new User(user);
+    }
+
+    @Override
+    public void deleteUser(String email) {
+        User user = findByEmail(email);
+        queueRepository.deleteByUser(new UserMongoDB(findByEmail(email)));
+        userRepository.deleteById(user.getId());
     }
 
     @Override

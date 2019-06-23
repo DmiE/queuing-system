@@ -11,5 +11,5 @@ public interface MongoDBUserRepository extends MongoRepository<UserMongoDB, Stri
     Optional<UserMongoDB> findByLastName(String lastName);
     Boolean existsByEmail(String email);
     List<UserMongoDB> findByIdIn(List<Long> userIds);
-
+    List<UserMongoDB> deleteByEmailLike(String email);
 }

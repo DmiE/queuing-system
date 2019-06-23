@@ -1,22 +1,26 @@
 package app.controller;
 
+import app.annotations.CurrentUser;
 import app.config.ApplicationConfig;
 import app.entity.User;
 import app.exceptions.ResourceAlreadyExistsException;
+import app.exceptions.ResourceNotFoundException;
 import app.payload.*;
-import app.service.MongoDBServices.UserServiceMongoImpl;
-import app.service.UserService;
 import app.service.MariaDBServices.UserServiceMariaImpl;
+import app.service.MongoDBServices.UserServiceMongoImpl;
+import app.service.UserPrincipal;
+import app.service.UserService;
 import app.utils.ApplicationBackends;
 import app.utils.Mapper;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import javax.validation.Valid;
 import java.util.List;
 
@@ -25,15 +29,20 @@ import java.util.List;
 public class UserController{
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
     private UserService userService;
 
     @Autowired
-    public UserController(UserServiceMariaImpl userServiceMaria, UserServiceMongoImpl userServiceMongo) {
+    public UserController(UserServiceMariaImpl userServiceMaria,
+                           UserServiceMongoImpl userServiceMongo
+    ) {
+
         if (ApplicationConfig.applicationBackend == ApplicationBackends.MariaDB){
             this.userService = userServiceMaria;
         }
+        else {
             this.userService = userServiceMongo;
-
+        }
     }
 
     @PostMapping("")
@@ -63,5 +72,17 @@ public class UserController{
     public ResponseEntity<?> getUsers() {
         List<User> users = userService.findAll();
         return ResponseEntity.ok(new GetAllUsersResponse(users));
+    }
+
+    @DeleteMapping("")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK", response = MyApiResponse.class),
+            @ApiResponse(code = 404, message = "User  with name:  does not exists", response = ResourceNotFoundException.class),
+            @ApiResponse(code = 500, message = "User not deleted", response = ResourceNotFoundException.class)
+
+    })
+    public ResponseEntity<?> deleteUserFromQueue(@CurrentUser UserPrincipal currentUser) {
+        userService.deleteUser(currentUser.getEmail());
+        return new ResponseEntity<>(new MyApiResponse(true, "OK"), HttpStatus.OK);
     }
 }
