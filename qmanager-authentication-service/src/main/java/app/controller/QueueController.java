@@ -41,7 +41,7 @@ public class QueueController {
         }
     }
 
-    @PutMapping("/")
+    @PutMapping("")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK", response = MyApiResponse.class),
             @ApiResponse(code = 400, message = "Queue with name does not exists", response = ResourceNotFoundException.class),
@@ -53,7 +53,7 @@ public class QueueController {
         return new ResponseEntity<>(new MyApiResponse(true, "OK"), HttpStatus.OK);
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK", response = GetAllQueueResponse.class),
     })

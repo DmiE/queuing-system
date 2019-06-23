@@ -26,14 +26,20 @@ public class UserServiceMariaImpl implements UserService {
     private MariaDBUserRepository userRepository;
     private MariaDBRoleRepository roleRepository;
     private  PasswordEncoder passwordEncoder;
+    private QueueServiceMariaImpl queueService;
     private static final Logger logger = LoggerFactory.getLogger(QueueServiceMariaImpl.class);
 
 
     @Autowired
-    public UserServiceMariaImpl(MariaDBUserRepository userRepository, MariaDBRoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceMariaImpl(MariaDBUserRepository userRepository,
+                                MariaDBRoleRepository roleRepository,
+                                PasswordEncoder passwordEncoder,
+                                QueueServiceMariaImpl queueService) {
+
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.queueService = queueService;
     }
 
     @Override
@@ -62,6 +68,15 @@ public class UserServiceMariaImpl implements UserService {
     }
 
     @Override
+    public void deleteUser(String email) {
+        List<UserMariaDB> deletedUsers =  userRepository.deleteByEmail(email);
+        if (deletedUsers.size() !=0){
+            throw  new ResourceNotFoundException(String.format("User with email %s does not exists", email));
+        }
+        queueService.deleteUserFromQueue(email);
+    }
+
+    @Override
     public List<User> findAll() {
         List<UserMariaDB> usersMaria = userRepository.findAll();
         List<User> users = new ArrayList<>();
@@ -79,7 +94,6 @@ public class UserServiceMariaImpl implements UserService {
             userRole = roleRepository.findByName(RoleName.ROLE_USER)
                     .orElseThrow(() -> new AppException("User RoleMariaDB not set."));
         }
-
         return userRole;
     }
 

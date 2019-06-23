@@ -1,10 +1,13 @@
 package app.controller;
 
+import app.annotations.CurrentUser;
 import app.config.ApplicationConfig;
 import app.entity.User;
 import app.exceptions.ResourceAlreadyExistsException;
+import app.exceptions.ResourceNotFoundException;
 import app.payload.*;
 import app.service.MongoDBServices.UserServiceMongoImpl;
+import app.service.UserPrincipal;
 import app.service.UserService;
 import app.service.MariaDBServices.UserServiceMariaImpl;
 import app.utils.ApplicationBackends;
@@ -63,5 +66,17 @@ public class UserController{
     public ResponseEntity<?> getUsers() {
         List<User> users = userService.findAll();
         return ResponseEntity.ok(new GetAllUsersResponse(users));
+    }
+
+    @DeleteMapping("")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK", response = MyApiResponse.class),
+            @ApiResponse(code = 404, message = "User  with name:  does not exists", response = ResourceNotFoundException.class),
+            @ApiResponse(code = 500, message = "User not deleted", response = ResourceNotFoundException.class)
+
+    })
+    public ResponseEntity<?> deleteUserFromQueue(@CurrentUser UserPrincipal currentUser) {
+        userService.deleteUser(currentUser.getEmail());
+        return new ResponseEntity<>(new MyApiResponse(true, "OK"), HttpStatus.OK);
     }
 }
