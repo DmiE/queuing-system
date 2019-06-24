@@ -51,10 +51,9 @@ class SignUp extends Component {
             lastName: this.state.inputs.lastName.value,
             password: this.state.inputs.password.value
         }
-        // axios.post('http://192.168.0.25:5000/api/auth/signup', formData)
         axios.post('http://' + this.props.ipAddr + ':5000/api/auth/signup', formData)
             .then(response => {
-                console.log(response + "form was send")
+                console.log(response)
             })
     }
 
@@ -93,7 +92,6 @@ class SignUp extends Component {
 
 const mapStateToProps = state => {
     return {
-        authorizationToken: state.authToken,
         ipAddr: state.ipAddr
     };
 };

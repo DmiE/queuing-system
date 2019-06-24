@@ -11,6 +11,8 @@ const navBar = () => {
                     <li><Link to="/signin">SIGNIN</Link></li>
                     <li><Link to="/getallusers">GET ALL USERS</Link></li>
                     <li><Link to="/getuserinfo">GET USER INFO</Link></li>
+                    <li><Link to="/queuecontroller">QUEUE CONTROLLER</Link></li>
+                    <li><Link to="/admincontroller">ADMIN CONTROLLER</Link></li>
                 </ul>
             </nav>
         </header>

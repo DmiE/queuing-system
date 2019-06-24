@@ -37,7 +37,7 @@ class SignIn extends Component {
         return (
             <div>
                 <form onSubmit={this.submitHandler}>
-                    <input type="email" id="email" placeholder="Your E-Mail" onChange={this.changeHandler} />
+                    <input type="text" id="email" placeholder="Your E-Mail" onChange={this.changeHandler} />
                     <input type="password" id="password" placeholder="Your Password" onChange={this.changeHandler} />
                     <button type="submit">Login</button>
                     <h1>{this.props.authorizationToken}</h1>

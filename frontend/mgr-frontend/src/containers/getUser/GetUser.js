@@ -17,7 +17,7 @@ class getUser extends Component {
     
     getUserHandler = (event) => {
         event.preventDefault();
-        axios.get('http://' + this.props.ipAddr + ':5000/api/user/' + this.state.email, { headers: { Authorization: this.props.authorizationToken } })
+        axios.get('http://' + this.props.ipAddr + ':5000/api/users/' + this.state.email, { headers: { Authorization: this.props.authorizationToken } })
             .then((response) => {
                 const newUser = {...this.state.user}
                 newUser.email = response.data.email
