@@ -1,5 +1,6 @@
 package app.repository.MongoRepositories;
 
+import app.entity.MariaEntities.QueueRowMariaDB;
 import app.entity.MongoEntities.QueueRowMongoDB;
 import app.entity.MongoEntities.UserMongoDB;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -13,4 +14,5 @@ public interface MongoDBQueueRepository extends MongoRepository<QueueRowMongoDB,
     List<QueueRowMongoDB> findByFinishedOrderByQueueName(Boolean finished);
     List<QueueRowMongoDB> deleteByUserAndQueueName(UserMongoDB userMongoDB, String queueName);
     List<QueueRowMongoDB> deleteByUser(UserMongoDB userMongoDB);
+    List<QueueRowMongoDB> findAll();
 }

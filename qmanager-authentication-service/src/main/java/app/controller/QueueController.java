@@ -61,6 +61,15 @@ public class QueueController {
         return ResponseEntity.ok(Mapper.mapQueueRowToGetAllQueueResponse(queueService.getAllQueues()));
     }
 
+    @GetMapping("/queueNames")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK", response = GetAllQueueResponse.class),
+    })
+    public ResponseEntity<?> getQueueNames() {
+        return ResponseEntity.ok( new GetQueueNamesResponse(queueService.getQueueNames()));
+    }
+
+
     @GetMapping("/{queueName}")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK", response = GetQueueResponse.class),

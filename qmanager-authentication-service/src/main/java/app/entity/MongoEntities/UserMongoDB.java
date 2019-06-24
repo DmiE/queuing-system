@@ -15,7 +15,6 @@ public class UserMongoDB {
     @Id
     private String id;
 
-    @Indexed(unique = true)
     private String email;
 
     private String firstName;
@@ -37,9 +36,9 @@ public class UserMongoDB {
         this.firstName = user.getFirstName();
         this.email = user.getEmail();
         this.password = user.getPassword();
-        this.lastName = user.getFirstName();
+        this.lastName = user.getLastName();
         if ( user.getId() != null){
-            this.id = user.getId().toString();
+            this.id = user.getId();
         }
     }
 

@@ -14,4 +14,5 @@ public interface MariaDBQueueRepository  extends JpaRepository<QueueRowMariaDB, 
     List<QueueRowMariaDB> findByFinishedOrderByQueueName(Boolean finished);
     List<QueueRowMariaDB> deleteByUserAndQueueName(UserMariaDB userMaria, String queueName);
     List<QueueRowMariaDB> deleteByUser(UserMariaDB userMaria);
+    List<QueueRowMariaDB> findAll();
 }

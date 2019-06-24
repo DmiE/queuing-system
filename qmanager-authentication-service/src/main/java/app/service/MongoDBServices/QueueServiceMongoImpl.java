@@ -3,7 +3,6 @@ package app.service.MongoDBServices;
 import app.entity.MongoEntities.QueueRowMongoDB;
 import app.entity.MongoEntities.UserMongoDB;
 import app.entity.QueueRow;
-import app.entity.User;
 import app.exceptions.AppException;
 import app.exceptions.ResourceAlreadyExistsException;
 import app.exceptions.ResourceNotFoundException;
@@ -76,6 +75,14 @@ public class QueueServiceMongoImpl implements QueueService {
         }
         Date currentTime = Timestamp.valueOf(LocalDateTime.now());
         queueRepository.save(new QueueRowMongoDB(queueName, user, currentTime ,true));
+    }
+
+    @Override
+    public List<String> getQueueNames(){
+        List<QueueRowMongoDB> rows = queueRepository.findAll();
+        List <String> queueNames = new ArrayList<>();
+        rows.forEach(queueRowMariaDB -> queueNames.add(queueRowMariaDB.getQueueName()));
+        return queueNames;
     }
 
     @SuppressWarnings("Duplicates")

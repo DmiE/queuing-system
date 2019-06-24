@@ -52,7 +52,7 @@ public class UserMariaDB {
         this.firstName = user.getFirstName();
         this.email = user.getEmail();
         this.password = user.getPassword();
-        this.lastName = user.getFirstName();
+        this.lastName = user.getLastName();
         if ( user.getId() != null){
             this.id = Long.parseLong(user.getId());
         }

@@ -14,4 +14,5 @@ public interface QueueService {
     void deleteUserFromQueue(String userEmail, String queueName);
     @Transactional
     void deleteUserFromQueue(String userEmail);
+    List<String> getQueueNames();
 }

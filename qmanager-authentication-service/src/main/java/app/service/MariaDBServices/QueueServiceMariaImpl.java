@@ -61,7 +61,6 @@ public class QueueServiceMariaImpl implements QueueService {
         return rows;
     }
 
-
     @Override
     public void createQueue(String queueName, String email) {
         UserMariaDB user = new UserMariaDB(userService.findByEmail(email));
@@ -96,5 +95,13 @@ public class QueueServiceMariaImpl implements QueueService {
         if( deleted.size() ==0 ){
             throw new AppException("User not deleted ");
         }
+    }
+
+    @Override
+    public List<String> getQueueNames(){
+        List<QueueRowMariaDB> rows = queueRepository.findAll();
+        List <String> queueNames = new ArrayList<>();
+        rows.forEach(queueRowMariaDB -> queueNames.add(queueRowMariaDB.getQueueName()));
+        return queueNames;
     }
 }
