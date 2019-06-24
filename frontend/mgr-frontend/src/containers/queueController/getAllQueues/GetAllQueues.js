@@ -11,7 +11,7 @@ class getAllQueues extends Component {
         axios.get('http://' + this.props.ipAddress + ':5000/api/queues', { headers: { Authorization: this.props.token } })
             .then((response) => {
                 console.log(response)
-                this.setState({queues: response.getAllQueueResponse})
+                this.setState({queues: response.data.getAllQueueResponse})
             })
             .catch(error => this.setState({error: true}))
     }
@@ -19,15 +19,20 @@ class getAllQueues extends Component {
     
     render() {
 
-        let queuesDisplay = (<div>{this.state.queues}</div>)
+        // let queuesDisplay = {this.state.queues.map(queue => (
+        //     <h1 key={queue.id}>queue name: {queue.queueName}</h1>
+        // ))}
     
-        if (this.state.error) {
-            queuesDisplay = (<h1>Please SignIn</h1>)
-        }
+        // if (this.state.error) {
+        //     queuesDisplay = (<h1>Please SignIn</h1>)
+        // }
+
+        console.log(this.state.queues)
 
         return (
             <div>
-                {queuesDisplay}
+                <h1>List of Queues</h1>
+                {this.state.queues.map(queue => (<h6 key={queue.id}>queue name: {queue.queueName}</h6>))}
             </div>
         )
     }
