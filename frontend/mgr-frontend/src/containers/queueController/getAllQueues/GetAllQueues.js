@@ -6,6 +6,7 @@ class getAllQueues extends Component {
         error: false,
         queues: []
     }
+    //trzeba przerobic zeby do stanu trafialy tylko nazwy 
 
     componentDidMount() {
         axios.get('http://' + this.props.ipAddress + ':5000/api/queues', { headers: { Authorization: this.props.token } })
@@ -32,7 +33,7 @@ class getAllQueues extends Component {
         return (
             <div>
                 <h1>List of Queues</h1>
-                {this.state.queues.map(queue => (<h6 key={queue.id}>queue name: {queue.queueName}</h6>))}
+                {this.state.queues.map(queue => (<h6 key={queue.queueID}>queue name: {queue.queueName}</h6>))}
             </div>
         )
     }
