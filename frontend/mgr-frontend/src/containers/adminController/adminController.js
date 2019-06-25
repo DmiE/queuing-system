@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import CreateQueue from './createQueue/CreateQueue';
 import CreateAdminUser from './createAdminUser/createAdminUser';
+import DeleteUserFromQueue from './deleteUserFromQueue/DeleteUserFromQueue';
 
 
 class AdminController extends Component {
@@ -11,6 +12,7 @@ class AdminController extends Component {
             <div>
                 <CreateQueue ipAddress={this.props.ipAddr} token={this.props.authorizationToken}/>
                 <CreateAdminUser ipAddress={this.props.ipAddr} token={this.props.authorizationToken}/>
+                <DeleteUserFromQueue ipAddress={this.props.ipAddr} token={this.props.authorizationToken}/>
             </div>
         )
     }
