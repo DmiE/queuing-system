@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import axios from 'axios';
 
 class getUser extends Component {
@@ -17,7 +16,7 @@ class getUser extends Component {
     
     getUserHandler = (event) => {
         event.preventDefault();
-        axios.get('http://' + this.props.ipAddr + ':5000/api/users/' + this.state.email, { headers: { Authorization: this.props.authorizationToken } })
+        axios.get('http://' + this.props.ipAddress + ':5000/api/users/' + this.state.email, { headers: { Authorization: this.props.token } })
             .then((response) => {
                 const newUser = {...this.state.user}
                 newUser.email = response.data.email
@@ -48,13 +47,4 @@ class getUser extends Component {
     }
 }
 
-
-
-const mapStateToProps = state => {
-    return {
-        authorizationToken: state.authToken,
-        ipAddr: state.ipAddr
-    };
-};
-
-export default connect(mapStateToProps)(getUser);
+export default getUser;
