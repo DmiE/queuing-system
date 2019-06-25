@@ -17,9 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class QueueServiceMongoImpl implements QueueService {
@@ -78,9 +76,9 @@ public class QueueServiceMongoImpl implements QueueService {
     }
 
     @Override
-    public List<String> getQueueNames(){
+    public Set<String> getQueueNames(){
         List<QueueRowMongoDB> rows = queueRepository.findAll();
-        List <String> queueNames = new ArrayList<>();
+        Set<String> queueNames = new HashSet<>();
         rows.forEach(queueRowMariaDB -> queueNames.add(queueRowMariaDB.getQueueName()));
         return queueNames;
     }

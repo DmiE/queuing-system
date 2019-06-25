@@ -17,10 +17,10 @@ public class User {
     private Set<RoleName> roles = new HashSet<>();
 
     public User(String first_name, String last_name, String email, String password) {
-        this.firstName = last_name;
+        this.firstName = first_name;
         this.email = email;
         this.password = password;
-        this.lastName = first_name;
+        this.lastName = last_name;
     }
 
     public User(UserMariaDB user) {

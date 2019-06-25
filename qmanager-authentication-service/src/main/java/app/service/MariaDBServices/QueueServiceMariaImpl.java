@@ -15,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class QueueServiceMariaImpl implements QueueService {
@@ -98,9 +100,9 @@ public class QueueServiceMariaImpl implements QueueService {
     }
 
     @Override
-    public List<String> getQueueNames(){
+    public Set<String> getQueueNames(){
         List<QueueRowMariaDB> rows = queueRepository.findAll();
-        List <String> queueNames = new ArrayList<>();
+        Set <String> queueNames = new HashSet<>();
         rows.forEach(queueRowMariaDB -> queueNames.add(queueRowMariaDB.getQueueName()));
         return queueNames;
     }

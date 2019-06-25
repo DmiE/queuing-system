@@ -1,20 +1,19 @@
 package app.payload;
 
-import java.util.List;
+import java.util.Set;
 
 public class GetQueueNamesResponse {
 
-    List<String> queueNames;
+    Set <String> queueNames;
 
-    public GetQueueNamesResponse(List<String> queueNames){
-        this.queueNames = queueNames;
+    public GetQueueNamesResponse(Set<String> queueNames){ this.queueNames = queueNames;
     }
 
-    public List<String> getQueueNames() {
+    public Set<String> getQueueNames() {
         return queueNames;
     }
 
-    public void setQueueNames(List<String> queueNames) {
+    public void setQueueNames(Set<String> queueNames) {
         this.queueNames = queueNames;
     }
 }
