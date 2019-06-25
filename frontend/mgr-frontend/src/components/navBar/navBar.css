@@ -1,0 +1,19 @@
+.navBar {
+    background-color: blue;
+}
+
+.mainMenu {
+    list-style: none;
+    text-align: center;
+    color: white;
+}
+
+.mainMenu li {
+    display: inline-block;
+    margin: 10px;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
