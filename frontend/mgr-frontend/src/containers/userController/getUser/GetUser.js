@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+import mainClasses from '../../../App.css';
+
 class getUser extends Component {
 
     state = {
@@ -35,10 +37,10 @@ class getUser extends Component {
     render() {
         return (
             <div>
-                <h1>Get User Info</h1>
+                <h1>GET USER INFO</h1>
                 <form onSubmit={this.getUserHandler}>
-                    <input type="email" id="getUserEmail" placeholder="Type user E-mail" onChange={this.changeHandler} />
-                    <button type='submit'>Get User Info</button>
+                    <input className={mainClasses.AppInput} type="email" id="getUserEmail" placeholder="Type user E-mail" onChange={this.changeHandler} />
+                    <button className={mainClasses.AppButton} type='submit'>Get User Info</button>
                 </form>
                 {this.state.user.firstName}
                 {/* TUTAJ MOZNA DODAC OBIEKT KTORY PRZED WYSLANIEM GETA BEDZIE FORMEM A PO BEDZIE WYNIKIEMY MOZNA WROCIC PO KLIKNIECIU PRZYCISKU BACK */}

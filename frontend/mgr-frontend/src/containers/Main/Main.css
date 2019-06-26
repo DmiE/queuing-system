@@ -1,0 +1,9 @@
+.ContentSection {
+    background-image: url('../../assets/background2.jpg');
+    height: 100%;
+    padding-top: 150px;
+}
+
+.MainSection {
+    height: 100vh;
+}

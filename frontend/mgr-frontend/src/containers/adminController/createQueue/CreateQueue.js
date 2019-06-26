@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+import mainClasses from '../../../App.css';
 
 class CreateQueue extends Component {
     state = {
@@ -26,8 +27,8 @@ class CreateQueue extends Component {
         return (
             <div>
                 <form onSubmit={this.createQueueHandler}>
-                    <input type="text" id="queueName" placeholder="Type Queue Name" onChange={this.changeHandler} />
-                    <button type="submit">Create Queue</button>
+                    <input className={mainClasses.AppInput} type="text" id="queueName" placeholder="Type Queue Name" onChange={this.changeHandler} />
+                    <button className={mainClasses.AppButton} type="submit">Create Queue</button>
                 </form>
             </div>
         )

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+import mainClasses from '../../../App.css';
 
 class DeleteUserFromQueue extends Component {
     state = {
@@ -38,9 +39,9 @@ class DeleteUserFromQueue extends Component {
             <div>
                 <h2>Delete User from Queue</h2>
                 <form onSubmit={this.addToQueueHandler}>
-                    <input type="email" id="emailOfUserToDelete" placeholder="Type user email" onChange={this.changeHandler} />
-                    <input type="text" id="deleteFromQueueName" placeholder="Type name of queue" onChange={this.changeHandler} />
-                    <button type="submit">Delete from queue</button>
+                    <input className={mainClasses.AppInput} type="email" id="emailOfUserToDelete" placeholder="Type user email" onChange={this.changeHandler} />
+                    <input className={mainClasses.AppInput} type="text" id="deleteFromQueueName" placeholder="Type name of queue" onChange={this.changeHandler} />
+                    <button className={mainClasses.AppButton} type="submit">Delete from queue</button>
                 </form>
             </div>
         )

@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 
+import mainClasses from '../../../App.css';
 
 const deleteFromQueueHandler = (props) => {
 
@@ -14,7 +15,7 @@ const DeleteFromQueue = (props) => {
     return (
         <div>
             <h2>Delete Me from Queue</h2>
-            <button onClick={() => deleteFromQueueHandler(props)}>DELETE</button>
+            <button className={mainClasses.AppButton} onClick={() => deleteFromQueueHandler(props)}>DELETE</button>
         </div>
     )
 }

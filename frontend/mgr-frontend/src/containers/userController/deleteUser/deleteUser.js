@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 
+import mainClasses from '../../../App.css';
 
 const deleteUserHandler = (props) => {
 
@@ -13,8 +14,8 @@ const deleteUserHandler = (props) => {
 const deleteUser = (props) => {
     return (
         <div>
-            <h2>Delete User</h2>
-            <button onClick={() => deleteUserHandler(props)}>DELETE</button>
+            <h1>DELETE MY ACCOUNT</h1>
+            <button className={mainClasses.AppButton} onClick={() => deleteUserHandler(props)}>DELETE</button>
         </div>
     )
 }

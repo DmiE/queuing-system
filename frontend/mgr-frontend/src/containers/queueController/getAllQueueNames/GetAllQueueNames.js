@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+import mainClasses from '../../../App.css';
+
 class GetAllQueueNames extends Component {
     state = {
         queues: []
@@ -20,7 +22,7 @@ class GetAllQueueNames extends Component {
         return (
             <div>
                 <h1>GET LIST OF ALL QUEUES</h1>
-                <button onClick={this.getQueues}>SHOW ALL QUEUES</button>
+                <button className={mainClasses.AppButton} onClick={this.getQueues}>SHOW ALL QUEUES</button>
                 {this.state.queues.map(queue => (
                     <h1>dupa</h1>
                     // <h1 key={user.id}>first name: {user.firstName} last name: {user.lastName}</h1>

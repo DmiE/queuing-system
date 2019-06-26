@@ -1,0 +1,8 @@
+.UserControllerMain {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.UserControllerChild {
+    width: 600px;
+}

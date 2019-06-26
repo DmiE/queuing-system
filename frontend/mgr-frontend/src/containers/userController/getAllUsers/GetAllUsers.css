@@ -1,0 +1,18 @@
+.UserTable {
+    overflow: auto;
+    border-radius: 0;
+    background-color: #282828;
+    border-color: #1b1c20;
+    height: 400px;
+    width: 500px;
+    margin: 50px auto;
+    padding: 10px;
+}
+
+.UserTable li {
+    font-size: 20px;
+    list-style: none;
+    margin: 5px;
+    padding: 10px;
+    background-color: #1b1c20;
+}

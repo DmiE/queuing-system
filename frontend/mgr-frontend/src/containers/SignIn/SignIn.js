@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
 
+import mainClasses from '../../App.css'
+import ReactAux from '../../hoc/ReactAux/ReactAux';
+import classes from './SignIn.css';
+
 class SignIn extends Component {
     state = {
         loginInfo: {
@@ -18,6 +22,11 @@ class SignIn extends Component {
         this.setState({ loginInfo: newStateLoginInfo })
     }
 
+    logOut = () => {
+        this.setState({ifLogedIn: ""})
+        this.props.resetAuthToken()
+    }
+ 
     submitHandler = (event) => {
         event.preventDefault();
         const formData = {
@@ -25,7 +34,6 @@ class SignIn extends Component {
             usernameOrEmail: this.state.loginInfo.email
         }
 
-        // axios.post('http://192.168.0.25:5000/api/auth/signin', formData)
         axios.post('http://' + this.props.ipAddr + ':5000/api/auth/signin', formData)
             .then((response) => {
                 const newAccessToken = ("Bearer " + response.data.accessToken)
@@ -34,14 +42,28 @@ class SignIn extends Component {
     }
 
     render() {
+
+        let logedIn = ( 
+            <form className={mainClasses.SignForm} onSubmit={this.submitHandler}>
+            <input className={mainClasses.AppInput} type="text" id="email" placeholder="Your E-Mail" value={this.state.loginInfo.email} onChange={this.changeHandler} />
+            <input className={mainClasses.AppInput} type="password" id="password" placeholder="Your Password" value={this.state.loginInfo.password} onChange={this.changeHandler} />
+            <button className={mainClasses.AppButton} type="submit">Login</button>
+        </form>)
+        
+        if (this.props.authorizationToken) {
+            logedIn = (
+                <ReactAux>
+                    <h1>You are logged in !</h1>
+                    <button className={mainClasses.AppButton} onClick={this.logOut}>Log out</button>
+                </ReactAux>
+            )
+        }
+        
+
+
         return (
-            <div>
-                <form onSubmit={this.submitHandler}>
-                    <input type="text" id="email" placeholder="Your E-Mail" onChange={this.changeHandler} />
-                    <input type="password" id="password" placeholder="Your Password" onChange={this.changeHandler} />
-                    <button type="submit">Login</button>
-                    <h1>{this.props.authorizationToken}</h1>
-                </form>
+            <div className={classes.SignInSection}>
+                {logedIn}
             </div>
         )
     }
@@ -49,7 +71,8 @@ class SignIn extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        setAuthToken: (token) => dispatch({ type: "SETAUTHTOKEN", token: token })
+        setAuthToken: (token) => dispatch({ type: "SETAUTHTOKEN", token: token }),
+        resetAuthToken: () => dispatch({type: "RESETAUTHTOKEN"})
     };
 };
 

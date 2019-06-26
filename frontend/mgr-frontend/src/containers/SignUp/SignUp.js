@@ -2,54 +2,26 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
-import './SignUp.css';
-import Input from '../../components/input/Input';
+import classes from './SignUp.css';
+import mainClasses from '../../App.css';
 
 class SignUp extends Component {
     state = {
         inputs: {
-            firstName: {
-                elementConfig: {
-                    type: 'text',
-                    name: 'firstName',
-                    placeholder: 'First Name'
-                },
-                value: ''
-            },
-            lastName: {
-                elementConfig: {
-                    type: 'text',
-                    name: 'lastName',
-                    placeholder: 'Last Name'
-                },
-                value: ''
-            },
-            eMail: {
-                elementConfig: {
-                    type: 'email',
-                    name: 'email',
-                    placeholder: 'E-mail Address'
-                },
-                value: ''
-            },
-            password: {
-                elementConfig: {
-                    type: 'text',
-                    name: 'password',
-                    placeholder: 'Password'
-                },
-                value: ''
-            }
+            firstName: '',
+            lastName: '',
+            eMail: '',
+            password: ''
         }
     }
 
     registerHandler = (event) => {
         event.preventDefault();
         const formData = {
-            email: this.state.inputs.eMail.value,
-            firstName: this.state.inputs.firstName.value,
-            lastName: this.state.inputs.lastName.value,
-            password: this.state.inputs.password.value
+            email: this.state.inputs.eMail,
+            firstName: this.state.inputs.firstName,
+            lastName: this.state.inputs.lastName,
+            password: this.state.inputs.password
         }
         axios.post('http://' + this.props.ipAddr + ':5000/api/auth/signup', formData)
             .then(response => {
@@ -57,33 +29,24 @@ class SignUp extends Component {
             })
     }
 
-    inputHandler = (event, inputId) => {
+    changeHandler = (event) => {
         const updatedStateInputs = { ...this.state.inputs };
-        const updatedStateInputsElement = { ...updatedStateInputs[inputId] }
-
-        updatedStateInputsElement.value = event.target.value;
-        updatedStateInputs[inputId] = updatedStateInputsElement;
-
+        const inputId = event.target.id;
+        updatedStateInputs[inputId] = event.target.value;
         this.setState({ inputs: updatedStateInputs });
     }
 
     render() {
-        const inputArray = [];
-        for (let key in this.state.inputs) {
-            inputArray.push({
-                id: key,
-                config: this.state.inputs[key]
-            })
-        }
-
 
         return (
             <div>
-                <form onSubmit={this.registerHandler}>
-                    {inputArray.map(inputObject => (
-                        <Input key={inputObject.id} elementConfig={inputObject.config.elementConfig} value={inputObject.config.value} changed={(event) => this.inputHandler(event, inputObject.id)} />
-                    ))}
-                    <button type="submit">SignUp</button>
+                <form className={mainClasses.SignForm} onSubmit={this.registerHandler}>
+                    <input className={mainClasses.AppInput} type="text" id="firstName" placeholder="Firstname" value={this.state.inputs.firstName} onChange={this.changeHandler} />
+                    <input className={mainClasses.AppInput} type="text" id="lastName" placeholder="Lastname" value={this.state.inputs.lastName} onChange={this.changeHandler} />
+                    <input className={mainClasses.AppInput} type="text" id="eMail" placeholder="E-Mail" value={this.state.inputs.eMail} onChange={this.changeHandler} />
+                    <input className={mainClasses.AppInput} type="password" id="password" placeholder="Password" value={this.state.inputs.password} onChange={this.changeHandler} />
+                    <button className={mainClasses.AppButton} type="submit">SignUp</button>
+                    <h1>{this.props.authorizationToken}</h1>
                 </form>
             </div>
         )

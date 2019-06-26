@@ -4,14 +4,19 @@ import { connect } from 'react-redux';
 import GetAllUsers from './getAllUsers/GetAllUsers';
 import DeleteUser from './deleteUser/deleteUser';
 import GetUser from './getUser/GetUser';
+import classes from './userController.css'
 
 class UserController extends Component {
     render() {
         return (
-            <div>
-                <GetAllUsers ipAddress={this.props.ipAddr} token={this.props.authorizationToken}/>
-                <GetUser ipAddress={this.props.ipAddr} token={this.props.authorizationToken}/>
-                <DeleteUser ipAddress={this.props.ipAddr} token={this.props.authorizationToken}/>
+            <div className={classes.UserControllerMain}>
+                <div className={classes.UserControllerChild}>
+                    <GetAllUsers ipAddress={this.props.ipAddr} token={this.props.authorizationToken}/>
+                </div>
+                <div className={classes.UserControllerChild}>
+                    <GetUser ipAddress={this.props.ipAddr} token={this.props.authorizationToken}/>
+                    <DeleteUser ipAddress={this.props.ipAddr} token={this.props.authorizationToken}/>
+                </div>
             </div>
         )
     }

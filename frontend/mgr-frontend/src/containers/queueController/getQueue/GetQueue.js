@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+import mainClasses from '../../../App.css';
+
 class GetQueue extends Component {
 
     state = {
@@ -25,8 +27,8 @@ class GetQueue extends Component {
             <div>
                 <h1>Get Queue Info</h1>
                 <form onSubmit={this.getQueueHandler}>
-                    <input type="text" id="getQueueName" placeholder="Type queue name" onChange={this.changeHandler} />
-                    <button type='submit'>Get Queue Info</button>
+                    <input className={mainClasses.AppInput} type="text" id="getQueueName" placeholder="Type queue name" onChange={this.changeHandler} />
+                    <button className={mainClasses.AppButton} type='submit'>Get Queue Info</button>
                 </form>
                 {this.state.userInQueue.map(user => (<h6 key={user.id}>Firstname: {user.firstName} Lastname: {user.lastName}</h6>))}
             </div>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+import mainClasses from '../../../App.css';
 
 class AddToQueue extends Component {
     state = {
@@ -26,8 +27,8 @@ class AddToQueue extends Component {
         return (
             <div>
                 <form onSubmit={this.addToQueueHandler}>
-                    <input type="text" id="addToQueueName" placeholder="Type name of queue you want to join" onChange={this.changeHandler} />
-                    <button type="submit">Join Queue</button>
+                    <input className={mainClasses.AppInput} type="text" id="addToQueueName" placeholder="Type name of queue you want to join" onChange={this.changeHandler} />
+                    <button className={mainClasses.AppButton} type="submit">Join Queue</button>
                 </form>
             </div>
         )

@@ -1,19 +1,49 @@
 .navBar {
-    background-color: blue;
+    background-color: #f6d367;
+    height: 80px;
+    position: relative;
 }
 
 .mainMenu {
     list-style: none;
     text-align: center;
     color: white;
+    margin: auto;
+    position: absolute;
+    right: 0px;
 }
 
 .mainMenu li {
     display: inline-block;
-    margin: 10px;
+    padding: 27px 30px;
+    background-color: #1b1c20;
+    height: 80px;
+    box-sizing: border-box;
+    border-bottom: #f6d367 solid 2px;
+    transition: 0.2s;
+}
+
+.mainMenu li:hover {
+    border-bottom: #f6d367 solid 4px;
 }
 
 a {
     text-decoration: none;
     color: white;
+    transition: 0.2s;
+}
+
+.adv-search-form{
+    color: #747474;
+    border-radius: 0;
+    background-color: #282828;
+    height: 60px;
+    border-color: #1b1c20;
+    border-width: 2px;
+}
+
+.adv-search-button{
+    height: 70px;
+    background-color: #f6d367;
+    font-size: 20px;
 }

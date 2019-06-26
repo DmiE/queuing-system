@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+import mainClasses from '../../../App.css';
 
 class CreateAdminUser extends Component {
     state = {
@@ -38,11 +39,11 @@ class CreateAdminUser extends Component {
         return (
             <div>
                 <form onSubmit={this.createAdminHandler}>
-                    <input type="text" id="adminFirstName" placeholder="Admin Firstname" onChange={this.changeHandler} />
-                    <input type="text" id="adminLastName" placeholder="Admin Lastame" onChange={this.changeHandler} />
-                    <input type="email" id="adminEmail" placeholder="Admin E-Mail Address" onChange={this.changeHandler} />
-                    <input type="password" id="adminPassword" placeholder="Admin Password" onChange={this.changeHandler} />
-                    <button type="submit">Create Admin</button>
+                    <input className={mainClasses.AppInput} type="text" id="adminFirstName" placeholder="Admin Firstname" onChange={this.changeHandler} />
+                    <input className={mainClasses.AppInput} type="text" id="adminLastName" placeholder="Admin Lastame" onChange={this.changeHandler} />
+                    <input className={mainClasses.AppInput} type="email" id="adminEmail" placeholder="Admin E-Mail Address" onChange={this.changeHandler} />
+                    <input className={mainClasses.AppInput} type="password" id="adminPassword" placeholder="Admin Password" onChange={this.changeHandler} />
+                    <button className={mainClasses.AppButton} type="submit">Create Admin</button>
                 </form>
             </div>
         )

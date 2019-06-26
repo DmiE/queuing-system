@@ -1,6 +1,6 @@
 const initialState = {
     authToken: "",
-    ipAddr: '192.168.55.105'
+    ipAddr: '192.168.55.104'
 }
 
 const reducer = (state = initialState, action) => {
@@ -9,6 +9,11 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 authToken: action.token
+            }
+        case 'RESETAUTHTOKEN':
+            return {
+                ...state,
+                authToken: ""
             }
     }
     return state;

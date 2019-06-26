@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+import mainClasses from '../../../App.css';
+
 class getAllQueues extends Component {
     state = {
         error: false,
