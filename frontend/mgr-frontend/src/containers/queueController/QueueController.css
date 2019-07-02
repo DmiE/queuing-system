@@ -1,0 +1,8 @@
+.QueueControllerMain {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.QueueControllerChild {
+    width: 600px;
+}

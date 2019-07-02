@@ -6,17 +6,31 @@ import AddToQueue from './addToQueue/AddToQueue';
 import GetQueue from './getQueue/GetQueue';
 import DeleteFromQueue from './deleteFromQueue/DeleteFromQueue';
 import GetAllQueueNames from './getAllQueueNames/GetAllQueueNames';
+import classes from './QueueController.css';
 
 
 class QueueController extends Component {
+
+    state = {
+        queuesNames: []
+    }
+
+    loadAllQueues = (allQueues) => {
+        this.setState({ queuesNames: allQueues })
+    }
+
     render() {
+
+
         return (
-            <div>
-                <GetAllQueues ipAddress={this.props.ipAddr} token={this.props.authorizationToken}/>
-                <AddToQueue ipAddress={this.props.ipAddr} token={this.props.authorizationToken}/>
-                <GetQueue ipAddress={this.props.ipAddr} token={this.props.authorizationToken}/>
-                <DeleteFromQueue ipAddress={this.props.ipAddr} token={this.props.authorizationToken}/>
-                <GetAllQueueNames ipAddress={this.props.ipAddr} token={this.props.authorizationToken}/>
+            <div className={classes.QueueControllerMain}>
+                <div><GetAllQueueNames ipAddress={this.props.ipAddr} token={this.props.authorizationToken} loadQueues={(names) => this.loadAllQueues(names)} /></div>
+                <div>
+                    <GetQueue ipAddress={this.props.ipAddr} token={this.props.authorizationToken} />
+                    <AddToQueue ipAddress={this.props.ipAddr} token={this.props.authorizationToken} allQueuesNames={this.state.queuesNames} />
+                    <DeleteFromQueue ipAddress={this.props.ipAddr} token={this.props.authorizationToken} />
+                    {/* <GetAllQueues ipAddress={this.props.ipAddr} token={this.props.authorizationToken} /> */}
+                </div>
             </div>
         )
     }

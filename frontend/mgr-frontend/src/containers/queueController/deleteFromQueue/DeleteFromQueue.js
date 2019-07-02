@@ -14,7 +14,7 @@ const deleteFromQueueHandler = (props) => {
 const DeleteFromQueue = (props) => {
     return (
         <div>
-            <h2>Delete Me from Queue</h2>
+            <h1>DELETE ME FROM QUEUE</h1>
             <button className={mainClasses.AppButton} onClick={() => deleteFromQueueHandler(props)}>DELETE</button>
         </div>
     )

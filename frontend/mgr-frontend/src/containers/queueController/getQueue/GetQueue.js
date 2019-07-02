@@ -25,7 +25,7 @@ class GetQueue extends Component {
     render() {
         return (
             <div>
-                <h1>Get Queue Info</h1>
+                <h1>GET QUEUE INFO</h1>
                 <form onSubmit={this.getQueueHandler}>
                     <input className={mainClasses.AppInput} type="text" id="getQueueName" placeholder="Type queue name" onChange={this.changeHandler} />
                     <button className={mainClasses.AppButton} type='submit'>Get Queue Info</button>

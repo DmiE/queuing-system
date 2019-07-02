@@ -5,7 +5,8 @@ import mainClasses from '../../../App.css';
 
 class AddToQueue extends Component {
     state = {
-        queueName: ""
+        queueName: "",
+        value: "1"
     }
 
     addToQueueHandler = (event) => {
@@ -17,17 +18,24 @@ class AddToQueue extends Component {
     }
 
     changeHandler = (event) => {
-        let joinQueueName = { ...this.state.queueName }
-        joinQueueName = event.target.value
+        console.log(event.target.value)
+        let joinQueueName = event.target.value
         this.setState({ queueName: joinQueueName })
     }
 
     render() {
 
+        let defauleValue = <option value="1" disabled hidden>Sign In to see queues</option>
+
+        if (this.props.token) {defauleValue =  <option value="1" disabled hidden>Select Queue</option>}
+
         return (
             <div>
                 <form onSubmit={this.addToQueueHandler}>
-                    <input className={mainClasses.AppInput} type="text" id="addToQueueName" placeholder="Type name of queue you want to join" onChange={this.changeHandler} />
+                    <select value={this.state.value} className={mainClasses.AppSelect} onChange={this.changeHandler}>
+                        {defauleValue}
+                        {this.props.allQueuesNames.map(queue => (<option key={queue} value={queue}>{queue}</option>))}
+                    </select>
                     <button className={mainClasses.AppButton} type="submit">Join Queue</button>
                 </form>
             </div>

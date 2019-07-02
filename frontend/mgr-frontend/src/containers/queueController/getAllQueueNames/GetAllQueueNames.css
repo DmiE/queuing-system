@@ -1,0 +1,25 @@
+.QueuesTable {
+    overflow: auto;
+    border-radius: 0;
+    background-color: #282828;
+    border-color: #1b1c20;
+    height: 400px;
+    width: 500px;
+    margin: 50px auto;
+    padding: 10px;
+}
+
+.QueuesTable ul {
+    padding: 0px;
+    margin: auto;
+}
+
+.QueuesTable li {
+    font-size: 20px;
+    list-style: none;
+    width: 490px;
+    margin: 5px auto;
+    padding: 10px;
+    background-color: #1b1c20;
+    box-sizing: border-box;
+}
