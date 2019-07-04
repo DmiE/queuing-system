@@ -20,7 +20,7 @@ class AddToQueue extends Component {
     changeHandler = (event) => {
         console.log(event.target.value)
         let joinQueueName = event.target.value
-        this.setState({ queueName: joinQueueName })
+        this.setState({ queueName: joinQueueName, value: joinQueueName })
     }
 
     render() {

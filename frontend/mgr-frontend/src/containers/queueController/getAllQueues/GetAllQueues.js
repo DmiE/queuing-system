@@ -23,16 +23,6 @@ class getAllQueues extends Component {
 
     render() {
 
-        // let queuesDisplay = {this.state.queues.map(queue => (
-        //     <h1 key={queue.id}>queue name: {queue.queueName}</h1>
-        // ))}
-
-        // if (this.state.error) {
-        //     queuesDisplay = (<h1>Please SignIn</h1>)
-        // }
-
-        console.log(this.state.queues)
-
         return (
             <div>
                 <h1>List of Queues</h1>
