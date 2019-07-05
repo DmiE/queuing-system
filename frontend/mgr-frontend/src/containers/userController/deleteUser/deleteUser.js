@@ -9,6 +9,7 @@ const deleteUserHandler = (props) => {
         .then(response => {
             console.log(response)
         })
+    props.resetToken()
 }
 
 const deleteUser = (props) => {
