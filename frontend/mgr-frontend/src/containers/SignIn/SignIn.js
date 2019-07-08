@@ -14,6 +14,10 @@ class SignIn extends Component {
         }
     }
 
+    // componentDidUpdate() {
+    //     if (this.state.)
+    // }
+
 
     changeHandler = (event) => {
         const newStateLoginInfo = { ...this.state.loginInfo }
@@ -25,20 +29,30 @@ class SignIn extends Component {
     logOut = () => {
         this.setState({ifLogedIn: ""})
         this.props.resetAuthToken()
+        this.props.resetEmailAddress()
     }
- 
+
+    getUserData = (email) => {
+        axios.get('http://' + this.props.ipAddr + ':5000/api/users/' + email, { headers: { Authorization: this.props.authorizationToken } })
+        .then((response) => {
+            this.props.setAdminUser(response.data.role.includes("ROLE_ADMIN"))
+        })
+    }
+
     submitHandler = (event) => {
         event.preventDefault();
         const formData = {
             password: this.state.loginInfo.password,
             usernameOrEmail: this.state.loginInfo.email
         }
-
         axios.post('http://' + this.props.ipAddr + ':5000/api/auth/signin', formData)
-            .then((response) => {
-                const newAccessToken = ("Bearer " + response.data.accessToken)
-                this.props.setAuthToken(newAccessToken);
-            })
+        .then((response) => {
+            const newAccessToken = ("Bearer " + response.data.accessToken)
+            this.props.setAuthToken(newAccessToken);
+            this.props.setEmailAddress(formData.usernameOrEmail)
+            this.getUserData(this.state.loginInfo.email)
+            this.props.history.push('/')
+        })
     }
 
     render() {
@@ -72,7 +86,10 @@ class SignIn extends Component {
 const mapDispatchToProps = dispatch => {
     return {
         setAuthToken: (token) => dispatch({ type: "SETAUTHTOKEN", token: token }),
-        resetAuthToken: () => dispatch({type: "RESETAUTHTOKEN"})
+        resetAuthToken: () => dispatch({type: "RESETAUTHTOKEN"}),
+        setEmailAddress: (eMail) => dispatch({type: "SETEMAIL", eMail: eMail}),
+        resetEmailAddress: () => dispatch({type: "RESETEMAIL"}),
+        setAdminUser: (isAdmin) => dispatch({type: 'SETADMINUSER', isAdmin: isAdmin})
     };
 };
 
