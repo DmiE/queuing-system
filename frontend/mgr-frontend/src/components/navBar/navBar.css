@@ -1,15 +1,17 @@
 .navBar {
-    background-color: #2c3e50;
     height: 80px;
     position: relative;
+    background-color: #2c3e50;
 }
 
-.mainMenu,.signInMenu {
+.mainMenu, .signInMenu, .logoutButton {
     list-style: none;
     text-align: center;
     color: white;
-    margin: auto;
     position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0px
 }
 
 .signInMenu {
@@ -27,37 +29,51 @@
 .signIn {
     color: #2c3e50;
     background: white;
-    margin: 20px;
+    margin:0 20px;
 }
 
 .mainMenu li, .signInMenu li {
-    padding: 14px 20px;
-    border-radius: 15px;
-    height: 45px;
     display: inline-block;
     box-sizing: border-box;
 }
 
-/* .mainMenu li:hover {
-    border-bottom: #f6d367 solid 4px;
-} */
+.signInMenu li {
+    padding: 14px 20px;
+    border-radius: 15px;
+    height: 45px;
+    transition: 0.4s;
+}
+
+.mainMenu li {
+    padding:0 20px;
+    font-size: 18px;
+    font-weight: 300;
+}
+
+.logoutButton {
+    right:200px;
+    border-radius: 15px;
+    border: none;
+    text-transform: uppercase;
+    height: 45px;
+    padding: 0 20px;
+    color: #2c3e50;
+    background-color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.4s;
+}
+
+.mainMenu li:hover, .signUp:hover {
+    color: #aaa;
+    border-color: #aaa
+}
+
+.signIn:hover, .logoutButton:hover {
+    background-color: #ccc;
+}
 
 a {
     text-decoration: none;
     color: white;
-}
-
-.adv-search-form{
-    color: #747474;
-    border-radius: 0;
-    background-color: #282828;
-    height: 60px;
-    border-color: #1b1c20;
-    border-width: 2px;
-}
-
-.adv-search-button{
-    height: 70px;
-    background-color: #f6d367;
-    font-size: 20px;
 }
