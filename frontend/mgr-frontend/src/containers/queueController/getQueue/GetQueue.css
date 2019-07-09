@@ -1,4 +1,4 @@
-.QueuesTable {
+.queueInfoTable {
     overflow: auto;
     height: 400px;
     width: 500px;
@@ -10,18 +10,19 @@
     border: 2px solid #ccc;
 }
 
-.QueuesTable ul {
-    padding: 0px;
-    margin: auto;
-}
-
-.QueuesTable li {
-    font-size: 20px;
-    list-style: none;
+.queueInfoTable table {
+    font-size: 18px;
     width: 490px;
     margin: 5px auto;
     padding: 10px;
     background-color: #ccc;
     box-sizing: border-box;
-    cursor: pointer;
+    border: 1px solid #eee;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.queueInfoTable table td, .queueInfoTable table th {
+    border: 4px solid #eee;
+    padding: 10px;
 }

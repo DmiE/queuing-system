@@ -1,8 +1,9 @@
 .UserTable {
     overflow: auto;
-    border-radius: 0;
-    background-color: #282828;
-    border-color: #1b1c20;
+    color: #777;
+    border-radius: 15px;
+    background-color: #eee;
+    border: 2px solid #ccc;
     height: 400px;
     width: 500px;
     margin: 50px auto;
@@ -14,5 +15,5 @@
     list-style: none;
     margin: 5px;
     padding: 10px;
-    background-color: #1b1c20;
+    background-color: #ccc;
 }

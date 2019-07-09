@@ -3,7 +3,8 @@ import axios from 'axios';
 
 import mainClasses from '../../../App.css';
 import ReactAux from '../../../hoc/ReactAux/ReactAux';
-import { thisExpression } from '@babel/types';
+import classes from './GetQueue.css';
+
 
 class GetQueue extends Component {
 
@@ -83,7 +84,7 @@ class GetQueue extends Component {
         return (
             <div>
                 <h1>GET QUEUE INFO</h1>
-                <div>
+                <div className={classes.queueInfoTable}>
                     {queueInfo}
                 </div>
             </div>
