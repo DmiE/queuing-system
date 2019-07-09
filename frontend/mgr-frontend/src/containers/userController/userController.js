@@ -15,12 +15,19 @@ class UserController extends Component {
                 </div>
                 <div className={classes.UserControllerChild}>
                     {/* <GetUser ipAddress={this.props.ipAddr} token={this.props.authorizationToken}/> */}
-                    <DeleteUser ipAddress={this.props.ipAddr} token={this.props.authorizationToken}/>
+                    <DeleteUser ipAddress={this.props.ipAddr} token={this.props.authorizationToken} resetToken={this.props.resetAuthToken}/>
                 </div>
             </div>
         )
     }
 }
+
+const mapDispatchToProps = dispatch => {
+    return {
+        setAuthToken: (token) => dispatch({ type: "SETAUTHTOKEN", token: token }),
+        resetAuthToken: () => dispatch({type: "RESETAUTHTOKEN"})
+    };
+};
 
 const mapStateToProps = state => {
     return {
@@ -29,4 +36,4 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps)(UserController);
+export default connect(mapStateToProps, mapDispatchToProps)(UserController);

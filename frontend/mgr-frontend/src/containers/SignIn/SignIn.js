@@ -27,15 +27,17 @@ class SignIn extends Component {
     }
 
     logOut = () => {
-        this.setState({ifLogedIn: ""})
         this.props.resetAuthToken()
         this.props.resetEmailAddress()
+        this.props.resetAdminUser()
+        this.props.resetUserName()
     }
 
     getUserData = (email) => {
         axios.get('http://' + this.props.ipAddr + ':5000/api/users/' + email, { headers: { Authorization: this.props.authorizationToken } })
         .then((response) => {
             this.props.setAdminUser(response.data.role.includes("ROLE_ADMIN"))
+            this.props.setUserName(response.data.firstName)
         })
     }
 
@@ -89,7 +91,10 @@ const mapDispatchToProps = dispatch => {
         resetAuthToken: () => dispatch({type: "RESETAUTHTOKEN"}),
         setEmailAddress: (eMail) => dispatch({type: "SETEMAIL", eMail: eMail}),
         resetEmailAddress: () => dispatch({type: "RESETEMAIL"}),
-        setAdminUser: (isAdmin) => dispatch({type: 'SETADMINUSER', isAdmin: isAdmin})
+        setAdminUser: (isAdmin) => dispatch({type: 'SETADMINUSER', isAdmin: isAdmin}),
+        resetAdminUser: () => dispatch({type: "RESETADMINUSER"}),
+        setUserName: (userName) => dispatch({type: 'SETUSERNAME', userName: userName}),
+        resetUserName: () => dispatch({type: "RESETUSERNAME"})
     };
 };
 

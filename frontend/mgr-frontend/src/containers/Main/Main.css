@@ -1,9 +1,10 @@
 .ContentSection {
-    background-image: url('../../assets/background2.jpg');
+    background-image: url('../../assets/people_big_25.png');
     height: 100%;
     padding-top: 150px;
+    background-repeat: no-repeat;
+    background-size: 600px;
+    background-position:center 100px;
+    min-height: 100vh;
 }
 
-.MainSection {
-    height: 100vh;
-}

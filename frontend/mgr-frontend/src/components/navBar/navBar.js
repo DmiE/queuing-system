@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 
 import classes from './navBar.css'
 import ReactAux from '../../hoc/ReactAux/ReactAux';
+import Logo from '../Logo/Logo'
 
 class navBar extends Component {
 
@@ -19,11 +20,12 @@ class navBar extends Component {
 
     render() {
         let welcome = this.props.userName ? <p className={classes.welcome}>Hello, {this.props.userName}</p> : null;
-        
+
 
         let navBar = (
             <ReactAux>
                 <nav className={classes.navBar}>
+                    <div className={classes.logo}><Logo /></div>
                     <ul className={classes.signInMenu}>
                         <Link to="/signup"><li className={classes.signUp}>SIGNUP</li></Link>
                         <Link to="/signin"><li className={classes.signIn}>SIGNIN</li></Link>
@@ -35,6 +37,7 @@ class navBar extends Component {
             navBar = (
                 <ReactAux>
                     <nav className={classes.navBar}>
+                        <div className={classes.logo}><Logo /></div>
                         <ul className={classes.mainMenu}>
                             <Link to="/usercontroller"><li>User Panel</li></Link>
                             <Link to="/queuecontroller"><li>Queues Panel</li></Link>
@@ -50,6 +53,7 @@ class navBar extends Component {
             navBar = (
                 <ReactAux>
                     <nav className={classes.navBar}>
+                        <div className={classes.logo}><Logo /></div>
                         <ul className={classes.mainMenu}>
                             <Link to="/usercontroller"><li>User Panel</li></Link>
                             <Link to="/queuecontroller"><li>Queues Panel</li></Link>

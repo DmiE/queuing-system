@@ -22,4 +22,5 @@
     padding: 10px;
     background-color: #1b1c20;
     box-sizing: border-box;
+    cursor: pointer;
 }

@@ -8,45 +8,59 @@ import { thisExpression } from '@babel/types';
 class GetQueue extends Component {
 
     state = {
-        queueName: "",
-        userInQueue: []
+        response: {
+            queueName: undefined,
+            userInQueue: []
+        },
+        error: null
     }
 
     componentDidUpdate() {
-        if (this.state.queueName !== this.props.choosen.queue) {
-            let newState = this.state;
+        //poprawic tak zeby w przypadku bledu nie wysylalo podwojnego zapytania
+        if (this.state.response.queueName !== this.props.choosen.queue) {
+            let newState = { ...this.state }
             axios.get('http://' + this.props.ipAddress + ':5000/api/queues/' + this.props.choosen.queue, { headers: { Authorization: this.props.token } })
-                .then((response) => {
+                .then(response => {
                     newState = {
-                        queueName: this.props.choosen.queue,
-                        userInQueue: response.data.userInQueue
+                        response: {
+                            queueName: this.props.choosen.queue,
+                            userInQueue: response.data.userInQueue
+                        },
+                        error: null
                     }
-                    this.setState(newState)
+                    this.setState(newState);
+                })
+                .catch(error => {
+                    if (error.response.status === 500) {
+                        console.log("dupa")
+                    }
+                    else { console.log(error) }
                 })
         }
     }
 
     render() {
-        console.log(this.state.userInQueue)
-
         let queueInfo = (<h1>choose queue to see details</h1>)
+        // if (this.state.response.queueName !== undefined) {throw new Error('this queue is empty')}
 
-        if (this.state.queueName && this.state.userInQueue.length > 0) {
+        if (this.state.response.queueName && this.state.response.userInQueue.length > 0) {
             let rows = []
 
-            for (let i = 0; i < this.state.userInQueue.length; i++) {
+            for (let i = 0; i < this.state.response.userInQueue.length; i++) {
                 rows.push(
-                    <tr key={this.state.userInQueue[i].id}>
+                    <tr key={this.state.response.userInQueue[i].id}>
                         <td>{i + 1}</td>
-                        <td>{this.state.userInQueue[i].firstName}</td>
-                        <td>{this.state.userInQueue[i].lastName}</td>
+                        <td>{this.state.response.userInQueue[i].firstName}</td>
+                        <td>{this.state.response.userInQueue[i].lastName}</td>
                     </tr>)
             }
 
 
+
+
             queueInfo = (
                 <ReactAux>
-                    <h1>{this.state.queueName}</h1>
+                    <h1>{this.state.response.queueName}</h1>
                     <table>
                         <thead>
                             <tr>
@@ -62,6 +76,9 @@ class GetQueue extends Component {
                 </ReactAux>
             )
         }
+        // else if (this.state.error === 500) {
+        //     queueInfo = (<h1>this queue is empty</h1>)
+        // }
 
         return (
             <div>

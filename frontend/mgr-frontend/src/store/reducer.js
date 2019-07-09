@@ -2,7 +2,8 @@ const initialState = {
     authToken: "",
     ipAddr: '192.168.0.94',
     eMailAddress: "",
-    isAnAdmin: false
+    isAnAdmin: null,
+    userName: ""
 }
 
 const reducer = (state = initialState, action) => {
@@ -31,6 +32,21 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 isAnAdmin: action.isAdmin
+            }
+        case 'RESETADMINUSER':
+            return {
+                ...state,
+                isAnAdmin: null
+            }
+        case 'SETUSERNAME':
+            return {
+                ...state,
+                userName: action.userName
+            }
+        case 'RESETUSERNAME':
+            return {
+                ...state,
+                userName: ""
             }
     }
     return state;
