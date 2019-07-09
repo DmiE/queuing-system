@@ -4,14 +4,15 @@
     background-color: #2c3e50;
 }
 
-.mainMenu, .signInMenu, .logoutButton {
+.mainMenu, .signInMenu, .logoutPanel {
     list-style: none;
     text-align: center;
     color: white;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    margin: 0px
+    margin: 0px;
+    font-family: 'Montserrat';
 }
 
 .signInMenu {
@@ -19,7 +20,7 @@
 }
 
 .mainMenu {
-    left: 200px;
+    left: 150px;
 }
 
 .signUp {
@@ -50,8 +51,12 @@
     font-weight: 300;
 }
 
-.logoutButton {
+.logoutPanel {
     right:200px;
+}
+
+.logoutButton {
+
     border-radius: 15px;
     border: none;
     text-transform: uppercase;
@@ -62,6 +67,13 @@
     font-size: 16px;
     cursor: pointer;
     transition: 0.4s;
+    margin: 0 30px;
+}
+
+.welcome {
+    display: inline-block;
+    font-size: 18px;
+    font-family: 'Montserrat';
 }
 
 .mainMenu li:hover, .signUp:hover {

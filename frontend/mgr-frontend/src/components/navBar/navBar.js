@@ -12,11 +12,15 @@ class navBar extends Component {
         this.props.resetAuthToken()
         this.props.resetEmailAddress()
         this.props.resetAdminUser()
+        this.props.resetUserName()
         this.props.history.push('/signin')
     }
 
 
     render() {
+        let welcome = this.props.userName ? <p className={classes.welcome}>Hello, {this.props.userName}</p> : null;
+        
+
         let navBar = (
             <ReactAux>
                 <nav className={classes.navBar}>
@@ -36,7 +40,10 @@ class navBar extends Component {
                             <Link to="/queuecontroller"><li>Queues Panel</li></Link>
                             <Link to="/admincontroller"><li>Admin Panel</li></Link>
                         </ul>
-                        <button className={classes.logoutButton} onClick={this.logout}>Logout</button>
+                        <div className={classes.logoutPanel}>
+                            {welcome}
+                            <button className={classes.logoutButton} onClick={this.logout}>Logout</button>
+                        </div>
                     </nav>
                 </ReactAux>)
         } else if (this.props.authorizationToken && this.props.eMailAddress) {
@@ -47,7 +54,10 @@ class navBar extends Component {
                             <Link to="/usercontroller"><li>User Panel</li></Link>
                             <Link to="/queuecontroller"><li>Queues Panel</li></Link>
                         </ul>
-                        <button className={classes.logoutButton} onClick={this.logout}>Logout</button>
+                        <div className={classes.logoutPanel}>
+                            {welcome}
+                            <button className={classes.logoutButton} onClick={this.logout}>Logout</button>
+                        </div>
                     </nav>
                 </ReactAux>)
         }
@@ -66,7 +76,8 @@ const mapStateToProps = state => {
         authorizationToken: state.authToken,
         ipAddr: state.ipAddr,
         eMailAddress: state.eMailAddress,
-        isAnAdmin: state.isAnAdmin
+        isAnAdmin: state.isAnAdmin,
+        userName: state.userName
     };
 };
 
@@ -74,7 +85,8 @@ const mapDispatchToProps = dispatch => {
     return {
         resetAuthToken: () => dispatch({ type: "RESETAUTHTOKEN" }),
         resetEmailAddress: () => dispatch({ type: "RESETEMAIL" }),
-        resetAdminUser: () => dispatch({ type: "RESETADMINUSER" })
+        resetAdminUser: () => dispatch({ type: "RESETADMINUSER" }),
+        resetUserName: () => dispatch({ type: "RESETUSERNAME" })
     };
 };
 
