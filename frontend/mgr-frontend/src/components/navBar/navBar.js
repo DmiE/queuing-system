@@ -49,7 +49,7 @@ class navBar extends Component {
                         </div>
                     </nav>
                 </ReactAux>)
-        } else if (this.props.authorizationToken && this.props.eMailAddress) {
+        } else if (this.props.authorizationToken && this.props.eMailAddress && !this.props.isAnAdmin) {
             navBar = (
                 <ReactAux>
                     <nav className={classes.navBar}>

@@ -33,7 +33,14 @@ class GetQueue extends Component {
                 })
                 .catch(error => {
                     if (error.response.status === 500) {
-                        console.log("dupa")
+                        newState = {
+                            response: {
+                                queueName: this.props.choosen.queue,
+                                userInQueue: []
+                            },
+                            error: 500
+                        }
+                        this.setState(newState);
                     }
                     else { console.log(error) }
                 })
@@ -42,10 +49,11 @@ class GetQueue extends Component {
 
     render() {
         let queueInfo = (<h1>choose queue to see details</h1>)
-        // if (this.state.response.queueName !== undefined) {throw new Error('this queue is empty')}
+        let rows = []
+        let tableOfUsers
 
         if (this.state.response.queueName && this.state.response.userInQueue.length > 0) {
-            let rows = []
+            
 
             for (let i = 0; i < this.state.response.userInQueue.length; i++) {
                 rows.push(
@@ -56,27 +64,32 @@ class GetQueue extends Component {
                     </tr>)
             }
 
+            tableOfUsers = (
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nr</th>
+                        <th>Firstname</th>
+                        <th>Lastname</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {rows}
+                </tbody>
+            </table>)
 
+        } else if (this.state.response.queueName && this.state.response.userInQueue.length === 0) {
+            tableOfUsers = <h1>this queue is empty!</h1>
+        }
 
 
             queueInfo = (
                 <ReactAux>
                     <h1>{this.state.response.queueName}</h1>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Nr</th>
-                                <th>Firstname</th>
-                                <th>Lastname</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {rows}
-                        </tbody>
-                    </table>
+                    {tableOfUsers}
                 </ReactAux>
             )
-        }
+        
         // else if (this.state.error === 500) {
         //     queueInfo = (<h1>this queue is empty</h1>)
         // }
