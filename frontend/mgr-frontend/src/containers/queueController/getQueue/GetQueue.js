@@ -17,7 +17,6 @@ class GetQueue extends Component {
     }
 
     componentDidUpdate() {
-        //poprawic tak zeby w przypadku bledu nie wysylalo podwojnego zapytania
         if (this.state.response.queueName !== this.props.choosen.queue) {
             let newState = { ...this.state }
             axios.get('http://' + this.props.ipAddress + ':5000/api/queues/' + this.props.choosen.queue, { headers: { Authorization: this.props.token } })
@@ -53,7 +52,7 @@ class GetQueue extends Component {
         let tableOfUsers
 
         if (this.state.response.queueName && this.state.response.userInQueue.length > 0) {
-            
+
 
             for (let i = 0; i < this.state.response.userInQueue.length; i++) {
                 rows.push(
@@ -65,34 +64,30 @@ class GetQueue extends Component {
             }
 
             tableOfUsers = (
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nr</th>
-                        <th>Firstname</th>
-                        <th>Lastname</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {rows}
-                </tbody>
-            </table>)
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nr</th>
+                            <th>Firstname</th>
+                            <th>Lastname</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {rows}
+                    </tbody>
+                </table>)
 
         } else if (this.state.response.queueName && this.state.response.userInQueue.length === 0) {
             tableOfUsers = <h1>this queue is empty!</h1>
         }
 
 
-            queueInfo = (
-                <ReactAux>
-                    <h1>{this.state.response.queueName}</h1>
-                    {tableOfUsers}
-                </ReactAux>
-            )
-        
-        // else if (this.state.error === 500) {
-        //     queueInfo = (<h1>this queue is empty</h1>)
-        // }
+        queueInfo = (
+            <ReactAux>
+                <h1>{this.state.response.queueName}</h1>
+                {tableOfUsers}
+            </ReactAux>
+        )
 
         return (
             <div>

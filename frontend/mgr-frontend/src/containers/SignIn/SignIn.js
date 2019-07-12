@@ -54,6 +54,8 @@ class SignIn extends Component {
             this.props.setEmailAddress(formData.usernameOrEmail)
             this.getUserData(this.state.loginInfo.email)
             this.props.history.push('/')
+        }).catch(error => {
+            console.log(error)
         })
     }
 

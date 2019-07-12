@@ -1,6 +1,6 @@
 const initialState = {
     authToken: "",
-    ipAddr: '192.168.0.94',
+    ipAddr: '192.168.55.101',
     eMailAddress: "",
     isAnAdmin: null,
     userName: ""

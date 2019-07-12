@@ -1,0 +1,23 @@
+.errorBar {
+    height: 80px;
+    background-color: #d12020;
+    text-align: center;
+    width: 100%;
+    color: white;
+    margin:0;
+    position: fixed;
+    z-index: 2000;
+    transition: all 1s ease-out;
+    cursor: pointer;
+}
+
+.errorBar h1 {
+    width: 100%;
+    margin: auto;
+    font-family: 'Montserrat';
+    font-weight: 400;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+}

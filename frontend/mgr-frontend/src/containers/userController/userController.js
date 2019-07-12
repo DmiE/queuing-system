@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 
 import GetAllUsers from './getAllUsers/GetAllUsers';
 import DeleteUser from './deleteUser/deleteUser';
-import GetUser from './getUser/GetUser';
 import classes from './userController.css'
 
 class UserController extends Component {
@@ -14,7 +13,6 @@ class UserController extends Component {
                     <GetAllUsers ipAddress={this.props.ipAddr} token={this.props.authorizationToken}/>
                 </div>
                 <div className={classes.UserControllerChild}>
-                    {/* <GetUser ipAddress={this.props.ipAddr} token={this.props.authorizationToken}/> */}
                     <DeleteUser ipAddress={this.props.ipAddr} token={this.props.authorizationToken} resetToken={this.props.resetAuthToken}/>
                 </div>
             </div>

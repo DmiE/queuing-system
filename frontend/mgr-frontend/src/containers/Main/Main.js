@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
+import axios from 'axios'
 
 import SignUp from '../SignUp/SignUp';
 import SignIn from '../SignIn/SignIn';
@@ -9,9 +10,13 @@ import AdminController from '../adminController/adminController';
 import classes from './Main.css'
 import NavBar from '../../components/navBar/navBar';
 import ReactAux from '../../hoc/ReactAux/ReactAux';
+import errorHandler from '../../hoc/ErrorHandler/ErrorHandler';
+
 
 class Main extends Component {
+
     render() {
+
         return (
             <ReactAux>
                 <section className={classes.MainSection}>
@@ -30,4 +35,4 @@ class Main extends Component {
     }
 }
 
-export default Main
+export default errorHandler(Main);
