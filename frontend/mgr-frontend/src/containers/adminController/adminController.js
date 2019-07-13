@@ -10,9 +10,18 @@ class AdminController extends Component {
     render() {
         return (
             <div>
-                <CreateQueue ipAddress={this.props.ipAddr} token={this.props.authorizationToken}/>
-                <CreateAdminUser ipAddress={this.props.ipAddr} token={this.props.authorizationToken}/>
-                <DeleteUserFromQueue ipAddress={this.props.ipAddr} token={this.props.authorizationToken}/>
+                <CreateQueue 
+                    ipAddress={this.props.ipAddr} 
+                    token={this.props.authorizationToken} 
+                    showSuccessBar={(message) => this.props.showSuccessBar(message)}/>
+                <CreateAdminUser 
+                    ipAddress={this.props.ipAddr} 
+                    token={this.props.authorizationToken} 
+                    showSuccessBar={(message) => this.props.showSuccessBar(message)}/>
+                <DeleteUserFromQueue 
+                    ipAddress={this.props.ipAddr} 
+                    token={this.props.authorizationToken} 
+                    showSuccessBar={(message) => this.props.showSuccessBar(message)}/>
             </div>
         )
     }

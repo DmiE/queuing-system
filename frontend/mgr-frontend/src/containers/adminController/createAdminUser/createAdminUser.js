@@ -24,7 +24,7 @@ class CreateAdminUser extends Component {
         console.log(AdminData);
         axios.post('http://' + this.props.ipAddress + ':5000/admin/user', AdminData, { headers: { Authorization: this.props.token }})
             .then(response => {
-                console.log(response)
+                this.props.showSuccessBar("New Admin User created sucesfully")
             })
     }
 

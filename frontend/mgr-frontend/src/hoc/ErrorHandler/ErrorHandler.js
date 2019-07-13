@@ -4,7 +4,7 @@ import axios from 'axios'
 import ReactAux from '../ReactAux/ReactAux';
 import ErrorBar from '../../components/ErrorBar/ErrorBar';
 
-const ErrorHandler = ( WrapperdComponent ) => {
+const errorHandler = ( WrapperdComponent ) => {
     return class extends Component {
         state = {
             error: null,
@@ -13,7 +13,6 @@ const ErrorHandler = ( WrapperdComponent ) => {
 
         showError = (errorStatus, errorInfo) => {
             this.setState({error: errorStatus, errorInfo: errorInfo});
-            console.log(errorStatus)
             setTimeout(() => this.setState({error: null, errorInfo: null}), 7000);
             }
 
@@ -35,7 +34,7 @@ const ErrorHandler = ( WrapperdComponent ) => {
 
         render() {
             let errorBar = null
-            if (this.state.error) {errorBar = (<ErrorBar clicked={this.errorConfirmedHandler} error={this.state.error} errorInfo={this.state.errorInfo}/>)}
+            if (this.state.error && this.state.error !== 500) {errorBar = (<ErrorBar clicked={this.errorConfirmedHandler} error={this.state.error} errorInfo={this.state.errorInfo}/>)}
 
             return(
                 <ReactAux>
@@ -47,4 +46,4 @@ const ErrorHandler = ( WrapperdComponent ) => {
     }
 }
 
-export default ErrorHandler;
+export default errorHandler;

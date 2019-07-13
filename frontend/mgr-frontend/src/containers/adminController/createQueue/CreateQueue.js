@@ -13,6 +13,7 @@ class CreateQueue extends Component {
         axios.post('http://' + this.props.ipAddress + ':5000/admin/queues', {queueName: this.state.queueName}, { headers: { Authorization: this.props.token }})
             .then(response => {
                 console.log(response)
+                this.props.showSuccessBar("New Queue created sucesfully")
             })
     }
 

@@ -25,7 +25,8 @@ class SignUp extends Component {
         }
         axios.post('http://' + this.props.ipAddr + ':5000/api/auth/signup', formData)
             .then(response => {
-                console.log(response)
+                this.props.showSuccessBar("You singed up")
+                this.props.history.push('/signin')
             })
     }
 

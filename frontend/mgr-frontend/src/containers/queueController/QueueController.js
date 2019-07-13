@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import GetAllQueues from './getAllQueues/GetAllQueues';
 import AddToQueue from './addToQueue/AddToQueue';
 import GetQueue from './getQueue/GetQueue';
 import DeleteFromQueue from './deleteFromQueue/DeleteFromQueue';
@@ -9,12 +8,10 @@ import GetAllQueueNames from './getAllQueueNames/GetAllQueueNames';
 import classes from './QueueController.css';
 import ReactAux from '../../hoc/ReactAux/ReactAux';
 
-
 class QueueController extends Component {
-
     state = {
         queuesNames: [],
-        choosenQueue: "",
+        choosenQueue: ""
     }
 
     loadAllQueues = (allQueues) => {
@@ -28,7 +25,6 @@ class QueueController extends Component {
 
     render() {
 
-
         return (
             <ReactAux>
                 <div className={classes.QueueControllerMain}>
@@ -39,12 +35,19 @@ class QueueController extends Component {
                             loadQueues={(names) => this.loadAllQueues(names)}
                             clickedQueue={(choosen) => this.clickedQueueHandler(choosen)} /></div>
                     <div>
-                        <GetQueue ipAddress={this.props.ipAddr} token={this.props.authorizationToken} choosen={this.state.choosenQueue} />
+                        <GetQueue ipAddress={this.props.ipAddr} 
+                                  token={this.props.authorizationToken} 
+                                  choosen={this.state.choosenQueue} />
                     </div>
                 </div>
                 <div>
-                    <AddToQueue ipAddress={this.props.ipAddr} token={this.props.authorizationToken} allQueuesNames={this.state.queuesNames} />
-                    <DeleteFromQueue ipAddress={this.props.ipAddr} token={this.props.authorizationToken} />
+                    <AddToQueue ipAddress={this.props.ipAddr} 
+                                token={this.props.authorizationToken} 
+                                allQueuesNames={this.state.queuesNames} 
+                                showSuccessBar={(message) => this.props.showSuccessBar(message)}/>
+                    <DeleteFromQueue ipAddress={this.props.ipAddr} 
+                                     token={this.props.authorizationToken} 
+                                     showSuccessBar={(message) => this.props.showSuccessBar(message)}/>
                 </div>
             </ReactAux>
         )

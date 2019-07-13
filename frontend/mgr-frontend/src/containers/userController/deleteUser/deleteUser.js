@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { withRouter } from 'react-router-dom';
 
 import mainClasses from '../../../App.css';
 
@@ -7,7 +8,8 @@ const deleteUserHandler = (props) => {
 
     axios.delete('http://' + props.ipAddress + ':5000/api/users', { headers: { Authorization: props.token } })
         .then(response => {
-            console.log(response)
+            props.showSuccessBar("Your account was succesfully deleted!")
+            props.history.push('/signup')
         })
     props.resetToken()
 }
@@ -21,4 +23,4 @@ const deleteUser = (props) => {
     )
 }
 
-export default deleteUser;
+export default withRouter(deleteUser);

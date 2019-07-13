@@ -35,6 +35,7 @@ class DeleteUserFromQueue extends Component {
         })
             .then(response => {
                 console.log(response)
+                this.props.showSuccessBar("You deleted " + this.state.choosenName + " user from " + this.state.choosenQueue + " queue")
             })
     }
 
@@ -53,9 +54,16 @@ class DeleteUserFromQueue extends Component {
             })
         }
 
+
+        // WTF ???? 
     userChangeHandler = (event) => {
         let choosenName = event.target.value
-        this.setState({ choosenName: choosenName })
+        let oldState = {...this.state}
+        oldState.choosenName = choosenName
+        console.log(choosenName)
+        this.setState(oldState)
+        console.log(this.state.choosenName)
+        setTimeout(() => console.log(this.state.choosenName), 100)
     }
 
     render() {
@@ -69,11 +77,6 @@ class DeleteUserFromQueue extends Component {
         return (
             <div>
                 <h2>Delete User from Queue</h2>
-                {/* <form onSubmit={this.deleteFromQueueHandler}>
-                    <input className={mainClasses.AppInput} type="email" id="emailOfUserToDelete" placeholder="Type user email" onChange={this.changeHandler} />
-                    <input className={mainClasses.AppInput} type="text" id="deleteFromQueueName" placeholder="Type name of queue" onChange={this.changeHandler} />
-                    <button className={mainClasses.AppButton} type="submit">Delete from queue</button>
-                </form> */}
                 <form onSubmit={this.deleteFromQueueHandler}>
                     <select value={this.state.choosenQueue} className={mainClasses.AppSelect} onChange={(event) => this.queueChangeHandler(event)}>
                         {defauleValue}

@@ -1,0 +1,24 @@
+.successBar {
+    height: 80px;
+    background-color: #12c26a;
+    text-align: center;
+    width: 100%;
+    color: white;
+    margin:0;
+    position: fixed;
+    z-index: 1900;
+    transition: all 1s ease-out;
+    cursor: pointer;
+    top:0px;
+}
+
+.successBar h1 {
+    width: 100%;
+    margin: auto;
+    font-family: 'Montserrat';
+    font-weight: 400;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+}

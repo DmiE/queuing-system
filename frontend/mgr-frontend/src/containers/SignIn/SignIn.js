@@ -53,6 +53,7 @@ class SignIn extends Component {
             this.props.setAuthToken(newAccessToken);
             this.props.setEmailAddress(formData.usernameOrEmail)
             this.getUserData(this.state.loginInfo.email)
+            this.props.showSuccessBar("You are logged in")
             this.props.history.push('/')
         }).catch(error => {
             console.log(error)

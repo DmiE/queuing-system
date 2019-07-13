@@ -7,7 +7,7 @@ const deleteFromQueueHandler = (props) => {
 
     axios.delete('http://' + props.ipAddress + ':5000/api/queues/user', { headers: { Authorization: props.token } })
         .then(response => {
-            console.log(response)
+            props.showSuccessBar('You are deleted from queue')
         })
 }
 

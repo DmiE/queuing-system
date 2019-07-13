@@ -13,7 +13,11 @@ class UserController extends Component {
                     <GetAllUsers ipAddress={this.props.ipAddr} token={this.props.authorizationToken}/>
                 </div>
                 <div className={classes.UserControllerChild}>
-                    <DeleteUser ipAddress={this.props.ipAddr} token={this.props.authorizationToken} resetToken={this.props.resetAuthToken}/>
+                    <DeleteUser 
+                        ipAddress={this.props.ipAddr} 
+                        token={this.props.authorizationToken} 
+                        resetToken={this.props.resetAuthToken} 
+                        showSuccessBar={(message) => this.props.showSuccessBar(message)}/>
                 </div>
             </div>
         )
