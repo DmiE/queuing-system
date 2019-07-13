@@ -8,18 +8,27 @@ class DeleteUserFromQueue extends Component {
         allQueues: [],
         choosenQueue: '1',
         allNames: [],
-        choosenName: '1',
-        value: 1
+        choosenName: '1'
     }
+
 
     componentDidMount() {
         if (this.props.token) {
             axios.get('http://' + this.props.ipAddress + ':5000/api/queues/queueNames', { headers: { Authorization: this.props.token } })
                 .then((response) => {
                     this.setState({ allQueues: response.data.queueNames })
-                    console.log(this.state.allQueues)
                 })
         }
+    }
+
+    getAllUsersFromQueue = (choosenQueue) => {
+        axios.get('http://' + this.props.ipAddress + ':5000/api/queues/' + choosenQueue, { headers: { Authorization: this.props.token } })
+            .then((response) => {
+                this.setState({ allNames: response.data.userInQueue, choosenQueue: choosenQueue })
+            })
+            .catch((error) => {
+                this.setState({ allNames:[], choosenQueue: choosenQueue })
+            })
     }
 
     deleteFromQueueHandler = (event) => {
@@ -28,51 +37,33 @@ class DeleteUserFromQueue extends Component {
             email: this.state.choosenName,
             queueName: this.state.choosenQueue
         }
-        console.log(deleteInfo)
         axios.delete('http://' + this.props.ipAddress + ':5000/admin/queues/user', {
             data: deleteInfo,
             headers: { Authorization: this.props.token }
         })
             .then(response => {
-                console.log(response)
+                this.setState({ state: this.state })
                 this.props.showSuccessBar("You deleted " + this.state.choosenName + " user from " + this.state.choosenQueue + " queue")
+                this.getAllUsersFromQueue(this.state.choosenQueue)
             })
     }
 
     queueChangeHandler = (event) => {
-        let choosenQueue = event.target.value
-        axios.get(
-            'http://' + this.props.ipAddress + ':5000/api/queues/' + choosenQueue,
-            { headers: { Authorization: this.props.token } })
-            .then((response) => {
-                let newState = { 
-                ...this.state,
-                choosenQueue: choosenQueue,
-                allNames: response.data.userInQueue,
-                value: choosenQueue }
-                this.setState(newState);
-            })
-        }
+        this.getAllUsersFromQueue(event.target.value)
+    }
 
-
-        // WTF ???? 
     userChangeHandler = (event) => {
         let choosenName = event.target.value
-        let oldState = {...this.state}
+        let oldState = { ...this.state }
         oldState.choosenName = choosenName
-        console.log(choosenName)
         this.setState(oldState)
-        console.log(this.state.choosenName)
-        setTimeout(() => console.log(this.state.choosenName), 100)
     }
 
     render() {
 
-        let defauleValue = <option value="1" disabled hidden>Select Queue</option>
-        let defaultValueUser = <option value="1" disabled hidden>Select queue to see users</option>
-        if (this.state.choosenQueue !== '1') {defaultValueUser =  <option value="1" disabled hidden>Select User</option>}
-
-        console.log(this.state.allNames)
+        let defauleValue = <option value="1" disabled>Select Queue</option>
+        let defaultValueUser = <option value="1" disabled>Select queue to see users</option>
+        if (this.state.choosenQueue !== '1') { defaultValueUser = <option value="1">Select User</option> }
 
         return (
             <div>
