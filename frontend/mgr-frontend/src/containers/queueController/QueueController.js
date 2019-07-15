@@ -11,7 +11,12 @@ import ReactAux from '../../hoc/ReactAux/ReactAux';
 class QueueController extends Component {
     state = {
         queuesNames: [],
-        choosenQueue: ""
+        choosenQueue: "",
+        refresh: true
+    }
+
+    refreshView = () => {
+        this.setState({refresh: !this.state.refresh})
     }
 
     loadAllQueues = (allQueues) => {
@@ -35,19 +40,25 @@ class QueueController extends Component {
                             loadQueues={(names) => this.loadAllQueues(names)}
                             clickedQueue={(choosen) => this.clickedQueueHandler(choosen)} /></div>
                     <div>
-                        <GetQueue ipAddress={this.props.ipAddr} 
-                                  token={this.props.authorizationToken} 
-                                  choosen={this.state.choosenQueue} />
+                        <GetQueue
+                            ipAddress={this.props.ipAddr}
+                            token={this.props.authorizationToken}
+                            choosen={this.state.choosenQueue} 
+                            refresh={this.state.refresh}/>
                     </div>
                 </div>
                 <div>
-                    <AddToQueue ipAddress={this.props.ipAddr} 
-                                token={this.props.authorizationToken} 
-                                allQueuesNames={this.state.queuesNames} 
-                                showSuccessBar={(message) => this.props.showSuccessBar(message)}/>
-                    <DeleteFromQueue ipAddress={this.props.ipAddr} 
-                                     token={this.props.authorizationToken} 
-                                     showSuccessBar={(message) => this.props.showSuccessBar(message)}/>
+                    <AddToQueue
+                        ipAddress={this.props.ipAddr}
+                        token={this.props.authorizationToken}
+                        allQueuesNames={this.state.queuesNames}
+                        showSuccessBar={(message) => this.props.showSuccessBar(message)}
+                        updateView = {this.refreshView} />
+                    <DeleteFromQueue
+                        ipAddress={this.props.ipAddr}
+                        token={this.props.authorizationToken}
+                        showSuccessBar={(message) => this.props.showSuccessBar(message)}
+                        updateView = {this.refreshView} />
                 </div>
             </ReactAux>
         )

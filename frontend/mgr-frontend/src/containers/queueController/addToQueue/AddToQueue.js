@@ -14,6 +14,7 @@ class AddToQueue extends Component {
         event.preventDefault();
         axios.put('http://' + this.props.ipAddress + ':5000/api/queues', { queueName: this.state.queueName }, { headers: { Authorization: this.props.token } })
             .then(response => {
+                this.props.updateView()
                 this.props.showSuccessBar("you succesfully joined to " + this.state.queueName)
             })
     }

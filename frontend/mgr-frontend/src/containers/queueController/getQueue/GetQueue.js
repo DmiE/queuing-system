@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-import mainClasses from '../../../App.css';
 import ReactAux from '../../../hoc/ReactAux/ReactAux';
 import classes from './GetQueue.css';
 
@@ -13,36 +12,49 @@ class GetQueue extends Component {
             queueName: undefined,
             userInQueue: []
         },
-        error: null
+        error: null,
+        refresh: true
+    }
+
+    componentWillReceiveProps(props) {
+        if (this.state.refresh !== props.refresh) {
+            this.getUsersfromQueue()
+        }
+    }
+
+    getUsersfromQueue = () => {
+        let newState = { ...this.state }
+        axios.get('http://' + this.props.ipAddress + ':5000/api/queues/' + this.props.choosen.queue, { headers: { Authorization: this.props.token } })
+            .then(response => {
+                newState = {
+                    response: {
+                        queueName: this.props.choosen.queue,
+                        userInQueue: response.data.userInQueue
+                    },
+                    error: null,
+                    refresh: this.props.refresh
+                }
+                this.setState(newState);
+            })
+            .catch(error => {
+                if (error.response.status === 500) {
+                    newState = {
+                        response: {
+                            queueName: this.props.choosen.queue,
+                            userInQueue: []
+                        },
+                        error: 500,
+                        refresh: this.props.refresh
+                    }
+                    this.setState(newState);
+                }
+                else { console.log(error) }
+            })
     }
 
     componentDidUpdate() {
         if (this.state.response.queueName !== this.props.choosen.queue) {
-            let newState = { ...this.state }
-            axios.get('http://' + this.props.ipAddress + ':5000/api/queues/' + this.props.choosen.queue, { headers: { Authorization: this.props.token } })
-                .then(response => {
-                    newState = {
-                        response: {
-                            queueName: this.props.choosen.queue,
-                            userInQueue: response.data.userInQueue
-                        },
-                        error: null
-                    }
-                    this.setState(newState);
-                })
-                .catch(error => {
-                    if (error.response.status === 500) {
-                        newState = {
-                            response: {
-                                queueName: this.props.choosen.queue,
-                                userInQueue: []
-                            },
-                            error: 500
-                        }
-                        this.setState(newState);
-                    }
-                    else { console.log(error) }
-                })
+            this.getUsersfromQueue()
         }
     }
 
