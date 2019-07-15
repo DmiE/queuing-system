@@ -22,8 +22,7 @@ class AdminController extends Component {
                     ipAddress={this.props.ipAddr} 
                     token={this.props.authorizationToken} 
                     showSuccessBar={(message) => this.props.showSuccessBar(message)}
-                    updateView = {this.refreshView}
-                    refresh={this.state.refresh}/>
+                    updateView = {this.refreshView}/>
                 <CreateAdminUser 
                     ipAddress={this.props.ipAddr} 
                     token={this.props.authorizationToken} 
@@ -32,7 +31,6 @@ class AdminController extends Component {
                     ipAddress={this.props.ipAddr} 
                     token={this.props.authorizationToken} 
                     showSuccessBar={(message) => this.props.showSuccessBar(message)}
-                    updateView = {this.refreshView}
                     refresh={this.state.refresh}/>
             </div>
         )
