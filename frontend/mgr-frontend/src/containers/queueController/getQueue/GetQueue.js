@@ -90,7 +90,7 @@ class GetQueue extends Component {
                 </table>)
 
         } else if (this.state.response.queueName && this.state.response.userInQueue.length === 0) {
-            tableOfUsers = <h1>this queue is empty!</h1>
+            tableOfUsers = <h3>this queue is empty!</h3>
         }
 
 

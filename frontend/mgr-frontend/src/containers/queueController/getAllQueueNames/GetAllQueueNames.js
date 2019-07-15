@@ -25,7 +25,7 @@ class GetAllQueueNames extends Component {
 
     render() {
 
-        let QueueNames = <h1>Sign in to see queues list</h1>
+        let QueueNames = <h3>Sign in to see queues list</h3>
 
         if (this.props.token) {
             QueueNames = (
