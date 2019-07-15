@@ -8,11 +8,22 @@ class DeleteUserFromQueue extends Component {
         allQueues: [],
         choosenQueue: '1',
         allNames: [],
-        choosenName: '1'
+        choosenName: '1',
+        refresh: false
     }
 
+    componentWillReceiveProps (props) {
+        if (this.state.refresh !== props.refresh) {
+            this.getAllQueues()
+            this.setState({refresh: props.refresh})
+        }
+    }
 
     componentDidMount() {
+        this.getAllQueues()
+    }
+
+    getAllQueues = () => {
         if (this.props.token) {
             axios.get('http://' + this.props.ipAddress + ':5000/api/queues/queueNames', { headers: { Authorization: this.props.token } })
                 .then((response) => {

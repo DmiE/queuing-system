@@ -7,13 +7,23 @@ import DeleteUserFromQueue from './deleteUserFromQueue/DeleteUserFromQueue';
 
 
 class AdminController extends Component {
+    state = {
+        refresh: false
+    }
+
+    refreshView = () => {
+        this.setState({refresh: !this.state.refresh})
+    }
+
     render() {
         return (
             <div>
                 <CreateQueue 
                     ipAddress={this.props.ipAddr} 
                     token={this.props.authorizationToken} 
-                    showSuccessBar={(message) => this.props.showSuccessBar(message)}/>
+                    showSuccessBar={(message) => this.props.showSuccessBar(message)}
+                    updateView = {this.refreshView}
+                    refresh={this.state.refresh}/>
                 <CreateAdminUser 
                     ipAddress={this.props.ipAddr} 
                     token={this.props.authorizationToken} 
@@ -21,7 +31,9 @@ class AdminController extends Component {
                 <DeleteUserFromQueue 
                     ipAddress={this.props.ipAddr} 
                     token={this.props.authorizationToken} 
-                    showSuccessBar={(message) => this.props.showSuccessBar(message)}/>
+                    showSuccessBar={(message) => this.props.showSuccessBar(message)}
+                    updateView = {this.refreshView}
+                    refresh={this.state.refresh}/>
             </div>
         )
     }
