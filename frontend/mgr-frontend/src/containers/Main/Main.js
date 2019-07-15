@@ -10,7 +10,8 @@ import classes from './Main.css'
 import NavBar from '../../components/navBar/navBar';
 import ReactAux from '../../hoc/ReactAux/ReactAux';
 import errorHandler from '../../hoc/ErrorHandler/ErrorHandler';
-import SuccessBar from '../../containers/SuccessBar/SuccessBar'
+import SuccessBar from '../../containers/SuccessBar/SuccessBar';
+import Home from '../../components/Home/Home';
 
 class Main extends Component {
     state = {
@@ -18,7 +19,7 @@ class Main extends Component {
     }
     showSuccess = (message) => {
         this.setState({ successShow: message });
-        setTimeout(() => this.setState({ successShow: null}), 3000);
+        setTimeout(() => this.setState({ successShow: null}), 2000);
     }
 
     clicked = () => {
@@ -40,6 +41,7 @@ class Main extends Component {
                         {/* <Route path="/usercontroller" exact component={UserController} /> */}
                         {/* <Route path="/queuecontroller" exact component={QueueController} /> */}
                         {/* <Route path="/admincontroller" exact component={AdminController} /> */}
+                        <Route path="/" exact component={Home} />
                         <Route path="/signup" render={(props) => <SignUp {...props} showSuccessBar={(message) => this.showSuccess(message)}/>} />
                         <Route path="/signin" render={(props) => <SignIn {...props} showSuccessBar={(message) => this.showSuccess(message)}/>} />
                         <Route path="/usercontroller" render={(props) => <UserController {...props} showSuccessBar={(message) => this.showSuccess(message)}/>} />
