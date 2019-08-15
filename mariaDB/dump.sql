@@ -28,8 +28,8 @@ CREATE TABLE `user_roles` (
   `role_id` bigint(20) NOT NULL,
   PRIMARY KEY (`user_id`,`role_id`),
   KEY `fk_user_roles_role_id` (`role_id`),
-  CONSTRAINT `fk_user_roles_role_id` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`),
-  CONSTRAINT `fk_user_roles_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+  CONSTRAINT `fk_user_roles_role_id` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_user_roles_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `queues` (
@@ -50,9 +50,13 @@ INSERT IGNORE INTO roles(id,`name`) VALUES(2,'ROLE_USER');
 
 SELECT 'LOADING Users' as 'INFO';
 INSERT INTO users (`first_name`,`last_name`,`email`,`password`) VALUES
-("admin", "admin", "admin@admin.com","$2a$10$zVRbsmuxar7PibSddr8a8e1IbyzfjSXgn5N1HtqRxdy24kCuhuVdy");
+("admin", "admin", "admin@admin.com","$2a$10$zVRbsmuxar7PibSddr8a8e1IbyzfjSXgn5N1HtqRxdy24kCuhuVdy"),
+("admin1", "admin1", "admin@admin.com1","$2a$10$zVRbsmuxar7PibSddr8a8e1IbyzfjSXgn5N1HtqRxdy24kCuhuVdy");
+;
 
 SELECT 'LOADING User Roles' as 'INFO';
-INSERT INTO user_roles (`user_id`,`role_id`)  VALUES(1,1);
+INSERT INTO user_roles (`user_id`,`role_id`)  VALUES(1,1),
+INSERT INTO user_roles (`user_id`,`role_id`)  VALUES(2,1)
+;
 
 
